@@ -28,7 +28,7 @@
     "webpack-cli": "^3.0.8",
     "webpack-merge": "^4.1.3"
   },
-  "main": "dist/bloomreach-react-sdk.js",
+  "main": "dist/bloomreach-experience-react-sdk.js",
   "scripts": {
     "build": "webpack --config webpack.prod.js",
     "build-dev": "webpack --config webpack.dev.js --watch",

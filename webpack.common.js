@@ -5,7 +5,7 @@ module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bloomreach-react-sdk.js',
+    filename: 'bloomreach-experience-react-sdk.js',
     globalObject: 'this',
     library: 'BloomreachReactSdk',
     libraryTarget: 'umd'
