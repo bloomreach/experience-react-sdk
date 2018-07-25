@@ -4,3 +4,4 @@ webpack.prod.js
 .babelrc
 .gitignore
 examples
+.idea

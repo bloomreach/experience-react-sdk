@@ -109,6 +109,11 @@ if (response.ok) {
 }
 ```  
 
+## Example React apps
+
+There are two example React apps available that use the SDK. One client-side rendered, and one server-side rendered 
+using [Next.js](https://github.com/zeit/next.js). You can find the [example apps on Github](https://github.com/bloomreach/experience-react-sdk/tree/master/examples).
+
 ## Creating custom components
 
 Any components that are supplied through the `compenentDefinitions` prop can be any type of valid React component, 
@@ -262,10 +267,9 @@ optional):
 
 ###### `componentDefinitions` property
 
-Maps CMS catalog components to React components. Expects input object with *hst:label* of the CMS components as keys and 
-React components as values.
-
-Additionally, see example below:
+Maps CMS catalog components to React components. Expects as input an object with `hst:label` of the CMS components as 
+keys and as value another object. The nested object has the mandatory property `component` who's value maps the CMS 
+component to a React component. See the example below:
 
 ```js
 const componentDefinitions = {
@@ -273,6 +277,10 @@ const componentDefinitions = {
   "AnotherCmsComponent": { component: AnotherReactComponent, wrapInContentComponent: true }
 };
 ```
+
+Additionally, the property `wrapInContentComponent: true` can be used for components 
+that reference a single content-item. When this property is set on a component, it will be wrapped in a convenient 
+wrapper class. See section *Content components*.
 
 ##### `createLink` property
 
