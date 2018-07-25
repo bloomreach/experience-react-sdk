@@ -1,0 +1,31 @@
+body {
+  padding-bottom: 0;
+}
+
+#header {
+  margin-bottom: 30px;
+}
+
+.container {
+  padding-top: 3rem;
+}
+
+footer {
+  margin-top: 30px;
+}
+
+.jumbotron img {
+  width: 100%;
+}
+
+.navbar-nav .nav-link {
+  text-transform: capitalize;
+}
+
+.blog-post-date {
+  margin-right: 10px;
+}
+
+.has-edit-button {
+  position: relative;
+}
