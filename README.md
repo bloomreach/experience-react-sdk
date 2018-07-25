@@ -207,7 +207,7 @@ class Banner extends React.Component {
 
 ### More component examples
 
-For more detailed examples, see the components included in the example applications. 
+For more detailed examples, see the components included in the [example applications](https://github.com/bloomreach/experience-react-sdk/tree/master/examples/client-side-rendered/src/components). 
 
 ### Helper functions
 
