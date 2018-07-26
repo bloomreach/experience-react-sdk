@@ -8,9 +8,7 @@ import Content from './components/content';
 import NewsItem from './components/news-item';
 import NewsList from './components/news-list';
 
-const cmsUrls = {
-  cmsPort: 9080
-};
+const cmsUrls = {};
 
 const componentDefinitions = {
   "Banner": { component: Banner, wrapInContentComponent: true },
