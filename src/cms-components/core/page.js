@@ -59,8 +59,7 @@ export default class CmsPage extends React.Component {
   }
 
   initializeCmsIntegration() {
-    const windowSPAInitialized = (typeof window !== 'undefined' && typeof window.SPA !== 'undefined');
-    if (!windowSPAInitialized) {
+    if (typeof window !== 'undefined') {
       window.SPA = {
         renderComponent: (id, propertiesMap) => {
           this.updateComponent(id, propertiesMap);
