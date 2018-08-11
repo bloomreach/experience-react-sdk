@@ -5,6 +5,7 @@ export { default as RenderCmsComponent } from './cms-components/core/render-cms-
 
 // exports for building custom components
 export { default as ContentComponentWrapper } from './cms-components/core/content-component-wrapper';
+export { default as ManageContentButton } from './cms-components/core/manage-content-button'
 export { default as Placeholder } from './cms-components/core/placeholder';
 export { default as createLink } from './utils/create-link';
 export { default as parseDate } from './utils/date';
