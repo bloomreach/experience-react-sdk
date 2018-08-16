@@ -27,7 +27,7 @@ const componentDefinitions = {
 
 class MyApp extends React.Component {
   render() {
-    const currentUrl = window.location.href.pathname
+    const currentUrl = window.location.pathname
     return (
       <CmsPage componentDefinitions={componentDefinitions} url={currentUrl}>
         { () =>
@@ -48,7 +48,7 @@ updates on component changes in the CMS; and it initializes and manages state, a
 `<RenderCmsComponent>` renders components based on the Page Model API response.
 
 The `<CmsPage>` component can be put anywhere within a React App. It functions as a higher-order component (HOC). 
-`<RenderCmsComponent>` consumes the state from `<CmsPage>` and renders the components and any content refereced from the 
+`<RenderCmsComponent>` consumes the state from `<CmsPage>` and renders the components and any content referenced from the 
 components as contained in the Page Model API response. The `<RenderCmsComponent>` should be placed in the React app at 
 the exact location where you want BloomReach Experience to render its components.
 
