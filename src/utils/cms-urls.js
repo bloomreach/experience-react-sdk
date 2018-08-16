@@ -2,7 +2,7 @@ import pathToRegexp from 'path-to-regexp';
 
 const defaultCmsUrls = {
   scheme: 'http',
-  hostName: 'localhost',
+  hostname: 'localhost',
   port: '8080',
   contextPath: 'site',
   channelPath: '',
@@ -38,9 +38,9 @@ export function updateCmsUrls(urls = {}) {
 function setUrlsWithDefault(urls = {}, defaultUrls = {}) {
   const newUrls = {};
   newUrls.scheme = urls.scheme ? urls.scheme : defaultUrls.scheme;
-  newUrls.hostName = urls.hostName ? urls.hostName : defaultUrls.hostName;
+  newUrls.hostname = urls.hostname ? urls.hostname : defaultUrls.hostname;
   newUrls.port = urls.port !== undefined ? urls.port : defaultUrls.port;
-  newUrls.baseUrl = `${newUrls.scheme}://${newUrls.hostName}`;
+  newUrls.baseUrl = `${newUrls.scheme}://${newUrls.hostname}`;
   if (newUrls.port) {
     newUrls.baseUrl = `${newUrls.baseUrl}:${newUrls.port}`;
   }
