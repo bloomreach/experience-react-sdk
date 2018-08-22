@@ -4,7 +4,7 @@ import { addBodyComments } from '../../utils/add-html-comment';
 import { updateCmsUrls } from '../../utils/cms-urls';
 import { fetchCmsPage, fetchComponentUpdate } from '../../utils/fetch';
 import findChildById from '../../utils/find-child-by-id';
-import parseUrlPath from '../../utils/parse-url';
+import parseRequest from '../../utils/parse-request';
 
 export default class CmsPage extends React.Component {
   constructor(props) {
@@ -14,7 +14,7 @@ export default class CmsPage extends React.Component {
     updateCmsUrls(this.props.cmsUrls);
     this.setComponentDefinitions(this.props.componentDefinitions);
     this.state.createLink = this.props.createLink;
-    this.parseUrl(this.props.urlPath, true);
+    this.parseRequest(this.props.request);
 
     if (this.props.pageModel) {
       this.state.pageModel = this.props.pageModel;
@@ -28,18 +28,11 @@ export default class CmsPage extends React.Component {
     }
   }
 
-  parseUrl(url, isServersideRendered) {
-    const parsedUrl = parseUrlPath(url);
-    if (!isServersideRendered) {
-      this.setState({
-        path: parsedUrl.path,
-        preview: parsedUrl.preview
-      });
-    } else {
-      this.state.path = parsedUrl.path;
-      this.state.preview = parsedUrl.preview;
-    }
-    return parsedUrl;
+  parseRequest(request) {
+    const parsedRequest = parseRequest(request);
+    this.state.path = parsedRequest.path;
+    this.state.preview = parsedRequest.preview;
+    return parsedRequest;
   }
 
   fetchPageModel(path, preview) {
@@ -105,8 +98,8 @@ export default class CmsPage extends React.Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    if (this.props.urlPath !== prevProps.urlPath) {
-      const parsedUrl = this.parseUrl(this.props.urlPath);
+    if (this.props.request !== prevProps.request) {
+      const parsedUrl = this.parseRequest(this.props.request);
       this.fetchPageModel(parsedUrl.path, parsedUrl.preview);
     }
   }

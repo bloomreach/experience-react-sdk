@@ -27,9 +27,9 @@ const componentDefinitions = {
 
 class MyApp extends React.Component {
   render() {
-    const currentUrl = window.location.href.pathname
+    const request = { hostName: window.location.hostname, path: window.location.pathname };
     return (
-      <CmsPage componentDefinitions={componentDefinitions} url={currentUrl}>
+      <CmsPage componentDefinitions={componentDefinitions} request={request}>
         { () =>
           <RenderCmsComponent />
         }
@@ -48,9 +48,9 @@ updates on component changes in the CMS; and it initializes and manages state, a
 `<RenderCmsComponent>` renders components based on the Page Model API response.
 
 The `<CmsPage>` component can be put anywhere within a React App. It functions as a higher-order component (HOC). 
-`<RenderCmsComponent>` consumes the state from `<CmsPage>` and renders the components and any content refereced from the 
-components as contained in the Page Model API response. The `<RenderCmsComponent>` should be placed in the React app at 
-the exact location where you want BloomReach Experience to render its components.
+`<RenderCmsComponent>` consumes the state from `<CmsPage>` and renders the components and any content referenced from 
+the components as contained in the Page Model API response. The `<RenderCmsComponent>` should be placed in the React app 
+at the exact location where you want BloomReach Experience to render its components.
 
 Please note that `<CmsPage>` takes children as a function instead of as a prop, because it is otherwise not possible to 
 provide state through context providers due to a bug in React currently. So make sure to wrap any children of 
@@ -63,9 +63,9 @@ provide state through context providers due to a bug in React currently. So make
 }
  ```
 
-`<CmsPage>` takes two props: `componentDefinitions` and `urlPath`.
+`<CmsPage>` takes two props: `componentDefinitions` and `request`.
 
-The `urlPath` prop is used to fetch the Page Model for the page that is active; and to detect whether preview is active 
+The `request` prop is used to fetch the Page Model for the page that is active; and to detect whether preview is active 
 so that meta-data for Channel Manager functionality (e.g. in-context editing) is included in the HTML, and consequently 
 Channel Manager functionality is enabled.
 
@@ -77,7 +77,7 @@ Finally, component definitions are supplied through the `componentDefinitions` p
 For server-side rendering (e.g. using [Next.js](https://github.com/zeit/next.js)) you need to fetch the Page Model API 
 server-side and supply it as a prop to `<CmsPage>`. Apart from this the usage is the same as with client-side rendering.
 
-The helper function `getApiUrl()` can be used to generate the Page Model API URL using the current URL.
+The helper function `getApiUrl()` can be used to generate the Page Model API URL using the current request.
 
 It is important to pass cookies from the initial request and supply these with the request header of the Page 
 Model API request. Otherwise you will get a 403 error in preview mode.
@@ -94,7 +94,8 @@ import { getApiUrl, CmsPage, RenderCmsComponent } from 'bloomreach-experience-re
 // as otherwise the API will be fetched client-side again after server-side fetch errors
 let pageModel = {}
 
-const url = getApiUrl(asPath, {})
+const request = { hostname: req.headers.host, path: asPath }
+const url = getApiUrl(request, {})
 // pass cookies of initial request for CMS preview
 const response = await fetch(url, {headers: {'Cookie': req.headers.cookie}})
 
@@ -128,7 +129,7 @@ The following props are passed to a component that is rendered by `<RenderCmsCom
  a separate content object, and a JSON Pointer reference is used to link to the actual content object. This is done to 
  prevent content from being included multiple times in the API response when referenced multiple times. 
 - `pageModel` - `Object` full Page Model API response.
-- `preview` - `Boolean` is *true* if preview is active based on current URL supplied through `urlPath` prop of 
+- `preview` - `Boolean` is *true* if preview is active based on current URL supplied through `request` prop of 
 `<CmsPage>`.
 
 For more information on the Page Model API response, see the [Swagger documentation](https://www.onehippo.org/library/concepts/spa-plus/page-model-api/swagger-api-documentation.html).
@@ -188,7 +189,7 @@ prop. See `componentDefinitions` in the API section for more details.
 - `manageContentButton` - `React.Component` for placement and rendering of the [Manage Content Button](https://www.onehippo.org/library/concepts/component-development/render-manage-content-button.html)
  in preview mode in CMS.
 - `pageModel` - `Object` full Page Model API response.
-- `preview` - `Boolean` is *true* if preview is active based on current URL supplied through `urlPath` prop of 
+- `preview` - `Boolean` is *true* if preview is active based on current URL supplied through `request` prop of 
 `<CmsPage>`.
 
 #### Example
@@ -223,9 +224,9 @@ see the API section.
 import { createLink, getImageUrl, getNestedObject, parseAndRewriteLinks, parseDate } from 'bloomreach-experience-react-sdk'
 
 const link = createLink('ref', link, linkText, className)
-const image = getImageUrl(content.image, this.props.pageModel)
+const image = getImageUrl(content.image, this.props.pageModel, this.props.preview)
 const list = getNestedObject(configuration, ['models', 'pageable', 'items', 0])
-const contentHtml = parseAndRewriteLinks(content.content.value)
+const contentHtml = parseAndRewriteLinks(content.content.value, this.props.preview)
 const date = parseDate(content.date)
 ```
 
@@ -248,22 +249,22 @@ library of the React app. (Optional)
 - `pageModel` - `Object` Supply Page Model as prop. Used for server-side-rendering where Page Model API is fetched 
 server-side. When supplied, `CmsPage` will not fetch Page Model API on mount, only on component updates in CMS.
 (Optional)
-- `urlPath` - `String` Current URL-path for determining if preview mode is active, and for fetching the Page Model for 
+- `request` - `String` Current URL-path for determining if preview mode is active, and for fetching the Page Model for 
 the page that is active. (Required)
 
 ###### `cmsUrls` property
 
 Property that allows you to override the default URL's for fetching the Page Model API. Typically you will only have to 
-define `cmsScheme`, `cmsHostname`, `cmsPort`, and `cmsContextPath`. Input object takes the following properties (all are 
+define `scheme`, `hostname`, `port`, and `contextPath`. Input object takes the following properties (all are 
 optional):
-- `cmsScheme` - `String` scheme (default: *http*)
-- `cmsHostName` - `String` hostname (default: *localhost*)
-- `cmsPort` - `number` port number (default: *8080*)
-- `cmsContextPath` - `String` site context-path (default: *site*)
-- `cmsChannelPath` - `String` path to the used channel, if channel is accessed through a subpath
-- `cmsPreviewPrefix` - `String` preview-prefix used by CMS (default: *_cmsinternal*)
-- `cmsApiPath` - `String` path to Page Model API as subpath (default: *resourceapi*)
-- `cmsApiComponentRenderingUrlSuffix` - `String` (default: *?_hn:type=component-rendering&_hn:ref=*)
+- `scheme` - `String` scheme (default: *http*)
+- `hostname` - `String` hostname (default: *localhost*)
+- `port` - `number` port number (default: *8080*)
+- `contextPath` - `String` site context-path (default: *site*)
+- `channelPath` - `String` path to the used channel, if channel is accessed through a subpath
+- `previewPrefix` - `String` preview-prefix used by CMS (default: *_cmsinternal*)
+- `apiPath` - `String` path to Page Model API as subpath (default: *resourceapi*)
+- `apiComponentRenderingUrlSuffix` - `String` (default: *?_hn:type=component-rendering&_hn:ref=*)
 
 ###### `componentDefinitions` property
 
@@ -304,9 +305,11 @@ const createLink = (href, linkText, className) => {
 Page Model can be supplied as a prop when using a server-side rendered / isomorphic React framework. When supplied, 
 `<CmsPage>` will not fetch the Page Model API client-side. 
 
-##### `urlPath` property
+##### `request` property
 
-Takes `String` as input. Should only contain the URL-path (everything that comes after the hostname or domain name).
+Takes `Object` as input with properties `hostname` and `path`, both of type `String`. The property 
+`hostname` should contain the hostname for the current request (client-side this is window.location.hostname). The 
+property `path` should contain the URL-path for the current request (client-side this is window.location.pathname);
 
 ### `<RenderCmsComponent>`
 
@@ -324,13 +327,14 @@ only that component and its children. If no path is supplied, entire Page Model 
 <RenderCmsComponent path={'main/container/banner'}/>
 ```
 
-### `getApiUrl(urlPath, [newCmsUrls])`
+### `getApiUrl(request, [newCmsUrls])`
 
 Helper function for generating URL to the Page Model API for server-side fetching of the Page Model. 
 
 #### Arguments
 
-- `urlPath` - `String` URL-path (everything that comes after the hostname or domain name).
+- `request` - `Object` containing hostname and URL-path as properties `hostname` and `path` respectively. See the 
+`request` property section above.
 - `newCmsUrls` - `Object` takes `cmsUrls` property as input to override default CMS URL's
 
 #### Return types
@@ -358,7 +362,7 @@ content-item.
 `JSX` returns link as JSX object that can be included as a variable anywhere within the return section of a React 
 component's render method.
 
-### `getImageUrl(imageRef, pageModel)`
+### `getImageUrl(imageRef, pageModel, preview)`
 
 Creates link to URL of image in case BloomReach Experience is used for serving images.
 
@@ -367,6 +371,8 @@ Creates link to URL of image in case BloomReach Experience is used for serving i
 - `imageRef` - `String` JSON Pointer that references the image.
 - `pageModel` - `Object` since this function is a pure JavaScript function it can't get Page Model from context, so it 
 has to be provided as function parameter. The Page Model is used to retrieve the image.
+- `preview` - `Boolean` toggle for whether preview mode is active. Components rendered by `<RenderCmsComponent>` can 
+pass the prop `this.props.preview`.
 
 #### Return types
 
@@ -386,7 +392,7 @@ having to string null checks together.
 
 `Object|null` returns the nested object if found, otherwise returns null. 
 
-### `parseAndRewriteLinks(html)`
+### `parseAndRewriteLinks(html, preview)`
 
 Parses HTML of a rich-text field of a content-item for rewriting links in HTML to internal links. Uses the `createLink` 
 function passed to `<CmsPage>` for constructing internal links.
@@ -394,6 +400,8 @@ function passed to `<CmsPage>` for constructing internal links.
 #### Arguments
 
 - `html` - `String` value of rich-text field of a content-item. Should contain HTML only.
+- `preview` - `Boolean` toggle for whether preview mode is active. Components rendered by `<RenderCmsComponent>` can 
+pass the prop `this.props.preview`.
 
 #### Return types
 
@@ -410,6 +418,44 @@ Parses date-field of a content item and returns date as a string.
 #### Return types
 
 `String` returns date in full date format.
+
+## Release notes
+
+### Version 0.2.0
+
+This version includes significant changes. Please make sure to update your components using the upgrade steps further 
+down.
+- Changed `cmsUrls` property to support different live and preview URLs.
+- Changed `urlPath` property to `request` property which no longer takes URL-path as string, but an object with hostname 
+and URL-path. This property should be passed to `<CmsPage>`.
+- Changed helper method `getApiUrl()` to take `request` property as parameter instead of `urlPath`.
+- Changed helper method `parseAndRewriteLinks()` to take an extra parameter: `preview`.
+- Changed helper method `getImageUrl()` to take an extra parameter: `preview`.
+
+Upgrade steps:
+- Modify `cmsUrls` property to include URLs for live and preview using the properties `live` and `preview` respectively.
+Please note that the `cms` prefix has been removed from all URL properties. So `cmsHostname` has become `hostname`. 
+Preview URLs are optional. For example:
+  ```js
+  const cmsUrls = {
+    live: {
+      hostname: bloomreach.com
+    },
+    preview: {
+      hostname: cms.bloomreach.com
+    }
+  }
+  ```
+- Pass current request details through `request` property to `<CmsPage>`. This was previously done through the `urlPath` 
+property. The `request` property should be an object that contains the hostname and path as properties `hostname` and 
+`path` respectively. For example:
+  ```js
+  const request = { hostname: window.location.hostname, path: window.location.path };
+  <CmsPage componentDefinitions={componentDefinitions} request={request}>
+  ```
+- Update usage of `getApiUrl` to pass `request` property (see previous bullet) instead of URL-path.
+- Update usage of helper methods `getImageUrl()` and `parseAndRewriteLinks()` to include the preview parameter. 
+Components rendered by `<RenderCmsComponent>` have the preview value passed as prop `this.props.preview`.
 
 ## FAQ / Troubleshooting
 

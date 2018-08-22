@@ -5,3 +5,4 @@ webpack.prod.js
 .gitignore
 examples
 .idea
+demo

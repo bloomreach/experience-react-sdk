@@ -1,4 +1,4 @@
-import setCmsUrls from './cms-urls';
+import globalCmsUrls from './cms-urls';
 
 const requestConfigGet = {
   method: 'GET',
@@ -35,26 +35,32 @@ function toUrlEncodedFormData(json) {
 export function buildApiUrl(pathInfo, preview, componentId, cmsUrls) {
   // when using fetch outside of CmsPage for SSR, cmsUrls need to be supplied
   if (!cmsUrls) {
-    cmsUrls = setCmsUrls;
+    cmsUrls = globalCmsUrls;
   }
-  let url = cmsUrls.cmsBaseUrl;
+  // use either preview or live URLs
+  if (preview) {
+    cmsUrls = cmsUrls.preview;
+  } else {
+    cmsUrls = cmsUrls.live;
+  }
+  let url = cmsUrls.baseUrl;
   // add api path to URL, and prefix with contextPath and preview-prefix if used
-  if (cmsUrls.cmsContextPath !== '') {
-    url += '/' + cmsUrls.cmsContextPath;
+  if (cmsUrls.contextPath !== '') {
+    url += '/' + cmsUrls.contextPath;
   }
   if (preview) {
-    url += '/' + cmsUrls.cmsPreviewPrefix;
+    url += '/' + cmsUrls.previewPrefix;
   }
-  if (cmsUrls.cmsChannelPath  !== '') {
-    url += '/' + cmsUrls.cmsChannelPath;
+  if (cmsUrls.channelPath !== '') {
+    url += '/' + cmsUrls.channelPath;
   }
-  url += '/' + cmsUrls.cmsApiPath;
+  url += '/' + cmsUrls.apiPath;
   if (pathInfo) {
     url += '/' + pathInfo;
   }
   // if component ID is supplied, URL should be a component rendering URL
   if (componentId) {
-    url += cmsUrls.cmsApiComponentRenderingUrlSuffix + componentId;
+    url += cmsUrls.apiComponentRenderingUrlSuffix + componentId;
   }
   return url;
 }
