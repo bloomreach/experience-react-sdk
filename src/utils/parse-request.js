@@ -6,10 +6,10 @@ export default function parseRequest(request = {}, cmsUrls) {
   }
 
   const urlPath = request.path;
-  let hostName = request.hostName;
-  // remove port number from host name
-  if (hostName.indexOf(':') != -1) {
-    hostName = hostName.substring(0, hostName.indexOf(':'));
+  let hostname = request.hostname;
+  // remove port number from hostname
+  if (hostname.indexOf(':') != -1) {
+    hostname = hostname.substring(0, hostname.indexOf(':'));
   }
 
   // TODO: error handling
@@ -29,14 +29,14 @@ export default function parseRequest(request = {}, cmsUrls) {
     // if hostname is different for preview and live, 
     // then hostname can be used to detect if we're in preview mode
     let preview;
-    if (cmsUrls.live.baseUrl !== cmsUrls.preview.baseUrl) {
-      if (hostName === cmsUrls.live.hostName) {
+    if (cmsUrls.live.hostname !== cmsUrls.preview.hostname) {
+      if (hostname === cmsUrls.live.hostname) {
         preview = false;
-      } else if (hostName === cmsUrls.preview.hostName) {
+      } else if (hostname === cmsUrls.preview.hostname) {
         preview = true;
       } else {
         preview = false;
-        console.log(`Warning! Could not detect preview mode for ${hostName}. Check if cmsUrls have been properly set. Setting preview to false.`);
+        console.log(`Warning! Could not detect preview mode for ${hostname}. Check if cmsUrls have been properly set. Setting preview to false.`);
       }
     } else {
       // otherwise use preview-prefix in URL-path to detect preview mode

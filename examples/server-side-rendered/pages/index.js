@@ -33,7 +33,7 @@ export class Index extends React.Component {
     // hostname and URL-path are used for detecting if site is viewed in CMS preview
     // and for fetching Page Model for the viewed page
     const request = { 
-      hostName: req.headers.host,
+      hostname: req.headers.host,
       path: asPath
     }
     const url = getApiUrl(request, cmsUrls);
