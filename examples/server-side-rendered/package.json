@@ -1,6 +1,6 @@
 {
   "name": "bloomreach-experience-react-sdk-ssr-example",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Example server-side React App for the BloomReach Experience SDK for React",
   "private": true,
   "dependencies": {
