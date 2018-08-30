@@ -23,9 +23,12 @@ const createLink = (href, linkText, className) => {
 
 class App extends React.Component {
   render() {
-    const urlPath = this.props.match ? this.props.match.url : null;
+    // hostname and URL-path are used for detecting if site is viewed in CMS preview
+    // and for fetching Page Model for the viewed page
+    const request = { hostname: window.location.hostname, path: window.location.pathname };
+    
     return (
-      <CmsPage componentDefinitions={componentDefinitions} cmsUrls={cmsUrls} urlPath={urlPath} createLink={createLink}>
+      <CmsPage componentDefinitions={componentDefinitions} cmsUrls={cmsUrls} request={request} createLink={createLink}>
         { () =>
           <React.Fragment>
             <div id="header">

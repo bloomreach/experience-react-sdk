@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
-import cmsUrls from './cms-urls';
+import globalCmsUrls from './cms-urls';
 import createLink from './create-link';
 
-export default function parseAndRewriteLinks (html) {
+export default function parseAndRewriteLinks (html, preview) {
   return ReactHtmlParser(html, {
     transform: (node) => {
       if (node.type === 'tag' && node.name === 'a' && node.attribs['data-type']
@@ -16,7 +16,11 @@ export default function parseAndRewriteLinks (html) {
       else if (node.type === 'tag' && node.name === 'img' && node.attribs.src) {
         // transform image URLs in fully qualified URLs, so images are also loaded when requested from React app
         // which typically runs on a different port than CMS / HST
-        node.attribs.src = cmsUrls.cmsBaseUrl + node.attribs.src;
+        if (preview) {
+          node.attribs.src = globalCmsUrls.preview.baseUrl + node.attribs.src;
+        } else {
+          node.attribs.src = globalCmsUrls.live.baseUrl + node.attribs.src;
+        }
       }
     }
   });

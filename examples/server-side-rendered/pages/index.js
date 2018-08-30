@@ -30,7 +30,13 @@ export class Index extends React.Component {
     // as otherwise the API will be fetched client-side again after server-side fetch errors
     let pageModel = {};
 
-    const url = getApiUrl(asPath, cmsUrls);
+    // hostname and URL-path are used for detecting if site is viewed in CMS preview
+    // and for fetching Page Model for the viewed page
+    const request = { 
+      hostname: req.headers.host,
+      path: asPath
+    }
+    const url = getApiUrl(request, cmsUrls);
     const response = await fetch(url, {headers: {'Cookie': req.headers.cookie}});
 
     if (response.ok) {
@@ -46,12 +52,13 @@ export class Index extends React.Component {
 
     return {
       pageModel: pageModel,
+      request: request,
       errorCode: !response.ok ? response.status : null
     };
   }
 
   render () {
-    const { errorCode, router } = this.props;
+    const { errorCode, request, router } = this.props;
 
     if (errorCode) {
       return (<Error statusCode={errorCode} />);
@@ -59,7 +66,7 @@ export class Index extends React.Component {
 
     return (
       <CmsPage componentDefinitions={componentDefinitions} cmsUrls={cmsUrls} pageModel={this.props.pageModel}
-               urlPath={router.asPath} createLink={createLink}>
+               request={request} createLink={createLink}>
         { () =>
           <React.Fragment>
             <div id='header'>

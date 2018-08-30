@@ -5,11 +5,12 @@ export default class Banner extends React.Component {
   render() {
     const content = this.props.content;
     const manageContentButton = this.props.manageContentButton;
-    const image = getImageUrl(content.image, this.props.pageModel);
+    const preview = this.props.preview;
+    const image = getImageUrl(content.image, this.props.pageModel, preview);
 
     let contentHtml;
     if (content.content && content.content.value) {
-      contentHtml = parseAndRewriteLinks(content.content.value);
+      contentHtml = parseAndRewriteLinks(content.content.value, preview);
     }
 
     const link = content.link ? content.link['$ref'] : null;
