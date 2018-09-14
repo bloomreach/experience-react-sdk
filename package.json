@@ -1,6 +1,6 @@
 {
   "name": "bloomreach-experience-react-sdk",
-  "version": "0.2.1-rc1",
+  "version": "0.2.1",
   "description": "BloomReach Experience SDK for React",
   "keywords": [
     "react",
