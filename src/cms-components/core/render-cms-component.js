@@ -2,12 +2,11 @@ import React from 'react';
 import CmsComponent from './component';
 import CmsContainer from './container';
 import CmsContainerItem from './container-item';
-import CmsMenu from './menu';
-import { withPageModel } from '../../context';
+import { withPageModel, PreviewContext } from '../../context';
 import getConfigurationForPath from '../../utils/get-configuration-for-path';
 
 class RenderCmsComponent extends React.Component {
-  renderComponent(configuration) {
+  renderPageComponent(configuration) {
     switch (configuration.type) {
       case "CONTAINER_COMPONENT":
         return <CmsContainer configuration={configuration} />;
@@ -16,39 +15,45 @@ class RenderCmsComponent extends React.Component {
         return <CmsContainerItem configuration={configuration} />;
         break;
       default:
-        if (configuration.componentClass === "org.onehippo.cms7.essentials.components.EssentialsMenuComponent") {
-          return <CmsMenu configuration={configuration}/>;
-        } else {
-          return <CmsComponent configuration={configuration}/>;
-        }
+        return <CmsComponent configuration={configuration}/>;
     }
   }
 
-  render() {
-    let configuration;
+  renderStaticComponent(renderComponent, configuration, pageModel) {
+    return (
+      <PreviewContext.Consumer>
+        { preview =>
+          React.createElement(renderComponent, { configuration: configuration, pageModel: pageModel, preview: preview })
+        }
+      </PreviewContext.Consumer>
+    );
+}
 
+  render() {
+    const { path, pageModel, renderComponent } = this.props;
+    
+    let configuration;
     // render entire page if no path has been specified
-    if (!this.props.path) {
-      if (this.props.pageModel) {
-        configuration = this.props.pageModel.page;
+    if (!path) {
+      if (pageModel) {
+        configuration = pageModel.page;
       } else {
-        throw 'render-cms-component has no supplied page model';
+        console.log('<RenderCmsComponent> has no supplied page model');
         return null;
       }
     } else {
       // or lookup component configuration using supplied path
-      configuration = getConfigurationForPath(this.props.path, this.props.pageModel);
+      configuration = getConfigurationForPath(path, pageModel);
+      if (configuration && renderComponent) {
+        return this.renderStaticComponent(renderComponent, configuration, pageModel);
+      }
     }
 
     if (!configuration) {
       return null;
     }
 
-    return (
-      <React.Fragment>
-        { this.renderComponent(configuration) }
-      </React.Fragment>
-    );
+    return this.renderPageComponent(configuration, renderComponent);
   }
 }
 
