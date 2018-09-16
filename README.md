@@ -461,6 +461,21 @@ Parses date-field of a content item and returns date as a string.
 
 ## Release notes
 
+### Version 0.4.0
+
+Added support for rendering static CMS components.
+- Added new property `renderComponent` to `<RenderCmsComponent>` which allows you to render a static 
+ component. This only works in combination with the `path` property, which should contain the relative 
+ path to the component.
+- Renamed `<ManageContentButton>` to `<CmsEditButton>` and exported it so it can be used by apps. This 
+ component is now more generic so it can also be used to generate edit buttons in the CMS for site menus.
+- Moved `<CmsMenu>` component out of SDK and into the example apps.
+
+
+### Version 0.3.0
+
+Added extra checks so that `<div>` elements needed for CMS preview are only inserted in preview mode.
+
 ### Version 0.2.0
 
 This version includes significant changes. Please make sure to update your components using the upgrade 
