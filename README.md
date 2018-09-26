@@ -27,7 +27,7 @@ const componentDefinitions = {
 
 class MyApp extends React.Component {
   render() {
-    const request = { hostName: window.location.hostname, path: window.location.pathname };
+    const request = { hostname: window.location.hostname, path: window.location.pathname };
     return (
       <CmsPage componentDefinitions={componentDefinitions} request={request}>
         { () =>
