@@ -48,7 +48,7 @@ export function buildApiUrl(pathInfo, preview, componentId, cmsUrls) {
   if (cmsUrls.contextPath !== '') {
     url += '/' + cmsUrls.contextPath;
   }
-  if (preview) {
+  if (preview && cmsUrls.previewPrefix !== '') {
     url += '/' + cmsUrls.previewPrefix;
   }
   if (cmsUrls.channelPath !== '') {

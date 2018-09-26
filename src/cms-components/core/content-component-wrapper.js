@@ -52,7 +52,7 @@ export default class ContentComponentWrapper extends React.Component {
     }
 
     // create edit content button and pass as a prop
-    const manageContentButton = React.createElement(ManageContentButton, { content: content, preview: preview }, null);
+    const manageContentButton = preview ? React.createElement(ManageContentButton, { content: content, preview: preview }, null) : null;
 
     return (
       <ComponentDefinitionsContext.Consumer>

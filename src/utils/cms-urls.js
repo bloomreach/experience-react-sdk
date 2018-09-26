@@ -46,7 +46,7 @@ function setUrlsWithDefault(urls = {}, defaultUrls = {}) {
   }
   newUrls.contextPath = urls.contextPath !== undefined ? urls.contextPath : defaultUrls.contextPath;
   newUrls.channelPath = urls.channelPath ? urls.channelPath : defaultUrls.channelPath;
-  newUrls.previewPrefix = urls.previewPrefix ? urls.previewPrefix : defaultUrls.previewPrefix;
+  newUrls.previewPrefix = urls.previewPrefix !== undefined ? urls.previewPrefix : defaultUrls.previewPrefix;
   newUrls.apiPath = urls.apiPath ? urls.apiPath : defaultUrls.apiPath;
   newUrls.apiComponentRenderingUrlSuffix = urls.apiComponentRenderingUrlSuffix ? urls.apiComponentRenderingUrlSuffix : defaultUrls.apiComponentRenderingUrlSuffix;
   return newUrls;
