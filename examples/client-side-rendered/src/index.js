@@ -5,6 +5,7 @@ import { CmsPage, RenderCmsComponent } from 'bloomreach-experience-react-sdk';
 
 import Banner from './components/banner';
 import Content from './components/content';
+import CmsMenu from './components/menu';
 import NewsItem from './components/news-item';
 import NewsList from './components/news-list';
 
@@ -32,13 +33,13 @@ class App extends React.Component {
         { () =>
           <React.Fragment>
             <div id="header">
-              <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+              <nav className="navbar navbar-expand-md navbar-dark bg-dark">
                 <span className="navbar-brand" href="#">Client-side React Demo</span>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                   <span className="navbar-toggler-icon" />
                 </button>
                 <div className="collapse navbar-collapse" id="navbarCollapse">
-                  <RenderCmsComponent path="menu" />
+                  <RenderCmsComponent path="menu" renderComponent={CmsMenu} />
                 </div>
               </nav>
             </div>
