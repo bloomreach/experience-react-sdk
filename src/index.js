@@ -10,5 +10,6 @@ export { default as Placeholder } from './cms-components/core/placeholder';
 export { default as createLink } from './utils/create-link';
 export { default as parseDate } from './utils/date';
 export { default as getNestedObject } from './utils/get-nested-object';
-export { default as getImageUrl } from './utils/image-url';
+export { getImageUrl } from './utils/image-url';
+export { getImageUrlByPath } from './utils/image-url';
 export { default as parseAndRewriteLinks } from './utils/link-rewriter';
