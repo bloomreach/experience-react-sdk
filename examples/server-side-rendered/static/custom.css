@@ -2,12 +2,8 @@ body {
   padding-bottom: 0;
 }
 
-#header {
-  margin-bottom: 30px;
-}
-
 .container {
-  padding-top: 3rem;
+  padding-top: 2rem;
 }
 
 footer {
@@ -16,6 +12,10 @@ footer {
 
 .jumbotron img {
   width: 100%;
+}
+
+.navbar .navbar-brand {
+  margin-right: 3rem;
 }
 
 .navbar-nav .nav-link {
