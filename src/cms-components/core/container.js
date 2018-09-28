@@ -5,19 +5,22 @@ import { PreviewContext } from '../../context';
 
 export default class CmsContainer extends React.Component {
   renderContainerWrapper(configuration, preview) {
-    // based on the name of the container, render a different wrapper
-    switch (configuration.name) {
-      // add additional cases here if you need custom HTML for a container
-      default:
-        return (
-          // need to wrap container inside a div instead of React.Fragment because otherwise HTML comments are not removed
-          <div>
-            <div className="hst-container"
-                 ref={(containerElm) => { this.addMetaData(containerElm, configuration, preview); }}>
-              { this.renderContainer(configuration) }
-            </div>
+    if (preview) {
+      return (
+        // need to wrap container inside a div instead of React.Fragment because otherwise HTML comments are not removed
+        <div>
+          <div className="hst-container"
+               ref={(containerElm) => { this.addMetaData(containerElm, configuration, preview); }}>
+            { this.renderContainer(configuration) }
           </div>
-        );
+        </div>
+      );
+    } else {
+      return (
+        <React.Fragment>
+          { this.renderContainer(configuration) }
+        </React.Fragment>
+      );
     }
   }
 

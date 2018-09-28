@@ -46,13 +46,13 @@ export default class CmsPage extends React.Component {
     this.setState({
       pageModel: pageModel
     });
-    if (this.cms && typeof this.cms.createOverlay === 'function') {
+    if (this.state.preview && this.cms && typeof this.cms.createOverlay === 'function') {
       this.cms.createOverlay();
     }
   }
 
   initializeCmsIntegration() {
-    if (typeof window !== 'undefined') {
+    if (this.state.preview && typeof window !== 'undefined') {
       window.SPA = {
         renderComponent: (id, propertiesMap) => {
           this.updateComponent(id, propertiesMap);
@@ -123,17 +123,15 @@ export default class CmsPage extends React.Component {
     }
 
     return (
-      <React.Fragment>
-        <ComponentDefinitionsContext.Provider value={this.state.componentDefinitions}>
-          <PageModelContext.Provider value={pageModel}>
-            <PreviewContext.Provider value={this.state.preview}>
-              <CreateLinkContext.Provider value={this.state.createLink}>
-                { this.props.children() }
-              </CreateLinkContext.Provider>
-            </PreviewContext.Provider>
-          </PageModelContext.Provider>
-        </ComponentDefinitionsContext.Provider>
-      </React.Fragment>
+      <ComponentDefinitionsContext.Provider value={this.state.componentDefinitions}>
+        <PageModelContext.Provider value={pageModel}>
+          <PreviewContext.Provider value={this.state.preview}>
+            <CreateLinkContext.Provider value={this.state.createLink}>
+              { this.props.children() }
+            </CreateLinkContext.Provider>
+          </PreviewContext.Provider>
+        </PageModelContext.Provider>
+      </ComponentDefinitionsContext.Provider>
     );
   }
 }

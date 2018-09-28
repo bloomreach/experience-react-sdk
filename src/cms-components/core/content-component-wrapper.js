@@ -1,7 +1,7 @@
 import React from 'react';
 import PlaceholderComponent from './placeholder';
 import UndefinedComponent from './undefined';
-import ManageContentButton from './manage-content-button';
+import CmsEditButton from './cms-edit-button';
 import jsonpointer from 'jsonpointer';
 import { ComponentDefinitionsContext } from '../../context';
 import getNestedObject from '../../utils/get-nested-object';
@@ -23,16 +23,12 @@ export default class ContentComponentWrapper extends React.Component {
   }
 
   render() {
-    const configuration = this.props.configuration;
-    const pageModel = this.props.pageModel;
-    const preview = this.props.preview;
+    const { configuration, pageModel, preview } = this.props;
     let content;
 
     // get content from model
     let contentRef = getNestedObject(configuration, ['models', 'document', '$ref']);
-    if (contentRef) {
-      contentRef = configuration.models.document['$ref'];
-    } else if (this.props.contentRef) {
+    if (!contentRef) {
       // NewsList component passed document ID through property instead of via reference in attributes map
       contentRef = this.props.contentRef;
     }
@@ -52,7 +48,7 @@ export default class ContentComponentWrapper extends React.Component {
     }
 
     // create edit content button and pass as a prop
-    const manageContentButton = React.createElement(ManageContentButton, { content: content, preview: preview }, null);
+    const manageContentButton = preview ? <CmsEditButton configuration={content} preview={preview} /> : null;
 
     return (
       <ComponentDefinitionsContext.Consumer>
