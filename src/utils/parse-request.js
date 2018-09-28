@@ -17,7 +17,7 @@ export default function parseRequest(request = {}, cmsUrls) {
   if (!preview) {
     preview = isMatchingPreviewHostname(hostname, cmsUrls);
   }
-  
+
   // TODO: error handling
   const results = cmsUrls.regexp.exec(urlPath);
 
@@ -32,7 +32,7 @@ export default function parseRequest(request = {}, cmsUrls) {
     });
 
     path = results[pathIdx + 1] !== undefined ? results[pathIdx + 1] : '';
-    
+
     if (!preview) {
       // otherwise use preview-prefix in URL-path to detect preview mode
       preview = results[previewIdx + 1] !== undefined ? true : false;
@@ -53,14 +53,12 @@ function hasPreviewQueryParameter(urlPath) {
   return false;
 }
 
-// if hostname is different for preview and live, 
+// if hostname is different for preview and live,
 // then hostname can be used to detect if we're in preview mode
 function isMatchingPreviewHostname(hostname, cmsUrls) {
   if (cmsUrls.live.hostname !== cmsUrls.preview.hostname) {
     if (hostname === cmsUrls.preview.hostname) {
       return true;
-    } else if (hostname !== cmsUrls.live.hostname) {
-      console.log(`Warning! Could not detect preview mode for ${hostname}. Check if cmsUrls have been properly set. Setting preview to false.`);
     }
   }
   return false;
