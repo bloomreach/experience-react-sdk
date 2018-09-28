@@ -32,6 +32,8 @@ export default function parseRequest(request = {}, cmsUrls) {
     });
 
     path = results[pathIdx + 1] !== undefined ? results[pathIdx + 1] : '';
+    // query parameter is not needed for fetching API URL and can actually conflict with component rendering URLs
+    path = removeQueryParameter(path);
     
     if (!preview) {
       // otherwise use preview-prefix in URL-path to detect preview mode
@@ -51,6 +53,10 @@ function hasPreviewQueryParameter(urlPath) {
     }
   }
   return false;
+}
+
+function removeQueryParameter(urlPath) {
+  return urlPath.substring(0, urlPath.indexOf('?'));
 }
 
 // if hostname is different for preview and live, 
