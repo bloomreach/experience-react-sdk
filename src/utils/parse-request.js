@@ -56,7 +56,11 @@ function hasPreviewQueryParameter(urlPath) {
 }
 
 function removeQueryParameter(urlPath) {
-  return urlPath.substring(0, urlPath.indexOf('?'));
+  const queryStringIdx = urlPath.indexOf('?');
+  if (queryStringIdx !== -1) {
+    return urlPath.substring(0, urlPath.indexOf('?'));
+  }
+  return urlPath;
 }
 
 // if hostname is different for preview and live, 
