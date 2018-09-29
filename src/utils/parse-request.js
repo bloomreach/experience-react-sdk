@@ -69,8 +69,6 @@ function isMatchingPreviewHostname(hostname, cmsUrls) {
   if (cmsUrls.live.hostname !== cmsUrls.preview.hostname) {
     if (hostname === cmsUrls.preview.hostname) {
       return true;
-    } else if (hostname !== cmsUrls.live.hostname) {
-      console.log(`Warning! Could not detect preview mode for ${hostname}. Check if cmsUrls have been properly set. Setting preview to false.`);
     }
   }
   return false;
