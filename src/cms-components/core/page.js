@@ -32,10 +32,18 @@ export default class CmsPage extends React.Component {
     const parsedRequest = parseRequest(request);
     this.state.path = parsedRequest.path;
     this.state.preview = parsedRequest.preview;
+    if (this.props.debug) {
+      console.log(`### React SDK debugging ### parsing URL-path '%s'`, request.path);
+      console.log(`### React SDK debugging ### parsed path is '%s'`, parsedRequest.path);
+      console.log(`### React SDK debugging ### preview mode is %s`, parsedRequest.preview);
+    }
     return parsedRequest;
   }
 
   fetchPageModel(path, preview) {
+    if (this.props.debug) {
+      console.log(`### React SDK debugging ### fetching page model for URL-path '%s'`, path);
+    }
     fetchCmsPage(path, preview).then(data => {
       this.updatePageModel(data);
     });
@@ -47,6 +55,9 @@ export default class CmsPage extends React.Component {
       pageModel: pageModel
     });
     if (this.state.preview && this.cms && typeof this.cms.createOverlay === 'function') {
+      if (this.props.debug) {
+        console.log(`### React SDK debugging ### creating CMS overlay`);
+      }
       this.cms.createOverlay();
     }
   }
@@ -60,6 +71,9 @@ export default class CmsPage extends React.Component {
         init: (cms) => {
           this.cms = cms;
           if (this.state.pageModel) {
+            if (this.props.debug) {
+              console.log(`### React SDK debugging ### creating CMS overlay`);
+            }
             cms.createOverlay();
           }
         }
@@ -67,7 +81,11 @@ export default class CmsPage extends React.Component {
     }
   }
 
-  updateComponent (componentId, propertiesMap) {
+  updateComponent(componentId, propertiesMap) {
+    if (this.props.debug) {
+      console.log(`### React SDK debugging ### component update triggered for '%s' with properties:`, componentId);
+      console.dir(propertiesMap);
+    }
     // find the component that needs to be updated in the page structure object using its ID
     const componentToUpdate = findChildById(this.state.pageModel, componentId);
     if (componentToUpdate !== undefined) {
