@@ -1,40 +1,53 @@
 import pathToRegexp from 'path-to-regexp';
 
-const defaultCmsScheme = 'http';
-const defaultCmsHostName = 'localhost';
-const defaultCmsPort = '8080';
-const defaultCmsContextPath = 'site';
-const defaultCmsChannelPath = '';
-const defaultCmsPreviewPrefix = '_cmsinternal';
-const defaultCmsApiPath = 'resourceapi';
-const defaultCmsApiComponentRenderingUrlSuffix = '?_hn:type=component-rendering&_hn:ref=';
+const defaultCmsUrls = {
+  scheme: 'http',
+  hostname: 'localhost',
+  port: '8080',
+  contextPath: 'site',
+  channelPath: '',
+  previewPrefix: '_cmsinternal',
+  apiPath: 'resourceapi',
+  apiComponentRenderingUrlSuffix: '?_hn:type=component-rendering&_hn:ref='
+}
+
 const cmsUrls = {};
+updateCmsUrls();
 export default cmsUrls;
 
 export function updateCmsUrls(urls = {}) {
-  if (typeof urls === 'object') {
-    const cmsScheme = urls.cmsScheme ? urls.cmsScheme : defaultCmsScheme;
-    const cmsHostName = urls.cmsHostName ? urls.cmsHostName : defaultCmsHostName;
-    const cmsPort = urls.cmsPort ? urls.cmsPort : defaultCmsPort;
-    cmsUrls.cmsBaseUrl = `${ cmsScheme }://${ cmsHostName }${ cmsPort ? ':' + cmsPort : '' }`;
-    cmsUrls.cmsContextPath = urls.cmsContextPath ? urls.cmsContextPath : defaultCmsContextPath;
-    cmsUrls.cmsChannelPath = urls.cmsChannelPath ? urls.cmsChannelPath : defaultCmsChannelPath;
-    cmsUrls.cmsPreviewPrefix = urls.cmsPreviewPrefix ? urls.cmsPreviewPrefix : defaultCmsPreviewPrefix;
-    cmsUrls.cmsApiPath = urls.cmsApiPath ? urls.cmsApiPath : defaultCmsApiPath;
-    cmsUrls.cmsApiComponentRenderingUrlSuffix = urls.cmsApiComponentRenderingUrlSuffix ? urls.cmsApiComponentRenderingUrlSuffix : defaultCmsApiComponentRenderingUrlSuffix;
-
-    const pathregexp = (cmsUrls.cmsContextPath !== '' ? `/:contextPath(${cmsUrls.cmsContextPath})?` : '') +
-        `/:previewPrefix(${cmsUrls.cmsPreviewPrefix})?` +
-        (cmsUrls.cmsChannelPath !== '' ? `/:channelPath(${cmsUrls.cmsChannelPath})?` : '') +
-        '/:pathInfo*';
-
-    cmsUrls.regexpKeys = [];
-    cmsUrls.regexp = pathToRegexp(pathregexp, cmsUrls.regexpKeys);
-  } else {
-    throw 'Supplied CMS URLs not of type object';
+  if (typeof urls !== 'object') {
+    console.log('Warning! Supplied CMS URLs not of type object. Using default URLs.')
+    urls = {};
   }
+
+  cmsUrls.live = setUrlsWithDefault(urls.live, defaultCmsUrls);
+  cmsUrls.preview = setUrlsWithDefault(urls.preview, cmsUrls.live);
+
+  const pathregexp = (cmsUrls.live.contextPath !== '' ? `/:contextPath(${cmsUrls.live.contextPath})?` : '') +
+    `/:previewPrefix(${cmsUrls.live.previewPrefix})?` +
+    (cmsUrls.live.channelPath !== '' ? `/:channelPath(${cmsUrls.live.channelPath})?` : '') +
+    '/:pathInfo*';
+
+  cmsUrls.regexpKeys = [];
+  cmsUrls.regexp = pathToRegexp(pathregexp, cmsUrls.regexpKeys);
 
   return cmsUrls;
 }
 
-updateCmsUrls({});
+function setUrlsWithDefault(urls = {}, defaultUrls = {}) {
+  const newUrls = {};
+  newUrls.scheme = urls.scheme ? urls.scheme : defaultUrls.scheme;
+  newUrls.hostname = urls.hostname ? urls.hostname : defaultUrls.hostname;
+  newUrls.port = urls.port !== undefined ? urls.port : defaultUrls.port;
+  newUrls.baseUrl = `${newUrls.scheme}://${newUrls.hostname}`;
+  if (newUrls.port) {
+    newUrls.baseUrl = `${newUrls.baseUrl}:${newUrls.port}`;
+  }
+  newUrls.contextPath = urls.contextPath !== undefined ? urls.contextPath : defaultUrls.contextPath;
+  newUrls.channelPath = urls.channelPath ? urls.channelPath : defaultUrls.channelPath;
+  newUrls.previewPrefix = urls.previewPrefix !== undefined ? urls.previewPrefix : defaultUrls.previewPrefix;
+  newUrls.apiPath = urls.apiPath ? urls.apiPath : defaultUrls.apiPath;
+  newUrls.apiComponentRenderingUrlSuffix = urls.apiComponentRenderingUrlSuffix ? urls.apiComponentRenderingUrlSuffix : defaultUrls.apiComponentRenderingUrlSuffix;
+  return newUrls;
+}

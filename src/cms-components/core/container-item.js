@@ -5,7 +5,28 @@ import { addBeginComment, addEndComment } from '../../utils/add-html-comment';
 import { ComponentDefinitionsContext, PageModelContext, PreviewContext } from '../../context';
 
 export default class CmsContainerItem extends React.Component {
-  renderContainerItem(component, pageModel, preview, componentDefinitions) {
+  renderContainerItem(configuration, pageModel, preview, componentDefinitions) {
+    if (preview && configuration) {
+      return (
+        <div className="hst-container-item"
+             ref={(containerItemElm) => { this.addMetaData(containerItemElm, configuration, preview); }}>
+          <React.Fragment>
+            { this.renderContainerItemComponent(configuration, pageModel, preview, componentDefinitions) }
+          </React.Fragment>
+        </div>
+      );
+    } else if (configuration) {
+      return (
+        <React.Fragment>
+          { this.renderContainerItemComponent(configuration, pageModel, preview, componentDefinitions) }
+        </React.Fragment>
+      );
+    } else {
+      return null;
+    }
+  }
+
+  renderContainerItemComponent(component, pageModel, preview, componentDefinitions) {
     // based on the type of the component, render a different React component
     if (component.label in componentDefinitions) {
       if ('wrapInContentComponent' in componentDefinitions[component.label]
@@ -45,14 +66,7 @@ export default class CmsContainerItem extends React.Component {
             { preview =>
               <ComponentDefinitionsContext.Consumer>
                 { componentDefinitions =>
-                  <div className="hst-container-item"
-                       ref={(containerItemElm) => { this.addMetaData(containerItemElm, configuration, preview); }}>
-                    <React.Fragment>
-                      { configuration &&
-                        this.renderContainerItem(configuration, pageModel, preview, componentDefinitions)
-                      }
-                    </React.Fragment>
-                  </div>
+                  this.renderContainerItem(configuration, pageModel, preview, componentDefinitions)
                 }
               </ComponentDefinitionsContext.Consumer>
             }

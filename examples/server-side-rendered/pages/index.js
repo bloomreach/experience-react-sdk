@@ -8,6 +8,7 @@ import { getApiUrl, CmsPage, RenderCmsComponent } from 'bloomreach-experience-re
 
 import Banner from '../components/banner';
 import Content from '../components/content';
+import CmsMenu from '../components/menu';
 import NewsItem from '../components/news-item';
 import NewsList from '../components/news-list';
 
@@ -30,7 +31,13 @@ export class Index extends React.Component {
     // as otherwise the API will be fetched client-side again after server-side fetch errors
     let pageModel = {};
 
-    const url = getApiUrl(asPath, cmsUrls);
+    // hostname and URL-path are used for detecting if site is viewed in CMS preview
+    // and for fetching Page Model for the viewed page
+    const request = { 
+      hostname: req.headers.host,
+      path: asPath
+    }
+    const url = getApiUrl(request, cmsUrls);
     const response = await fetch(url, {headers: {'Cookie': req.headers.cookie}});
 
     if (response.ok) {
@@ -46,12 +53,13 @@ export class Index extends React.Component {
 
     return {
       pageModel: pageModel,
+      request: request,
       errorCode: !response.ok ? response.status : null
     };
   }
 
   render () {
-    const { errorCode, router } = this.props;
+    const { errorCode, request, router } = this.props;
 
     if (errorCode) {
       return (<Error statusCode={errorCode} />);
@@ -59,18 +67,18 @@ export class Index extends React.Component {
 
     return (
       <CmsPage componentDefinitions={componentDefinitions} cmsUrls={cmsUrls} pageModel={this.props.pageModel}
-               urlPath={router.asPath} createLink={createLink}>
+               request={request} createLink={createLink}>
         { () =>
           <React.Fragment>
             <div id='header'>
-              <nav className='navbar navbar-expand-md navbar-dark fixed-top bg-dark'>
+              <nav className='navbar navbar-expand-md navbar-dark bg-dark'>
                 <span className='navbar-brand'>Server-side React Demo</span>
                 <button className='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarCollapse'
                         aria-controls='navbarCollapse' aria-expanded='false' aria-label='Toggle navigation'>
                   <span className='navbar-toggler-icon' />
                 </button>
                 <div className='collapse navbar-collapse' id='navbarCollapse'>
-                  <RenderCmsComponent path='menu' />
+                  <RenderCmsComponent path='menu' renderComponent={CmsMenu} />
                 </div>
               </nav>
             </div>
