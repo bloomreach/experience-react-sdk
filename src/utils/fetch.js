@@ -1,13 +1,14 @@
 import globalCmsUrls from './cms-urls';
+import axios from 'axios';
 
 const requestConfigGet = {
   method: 'GET',
-  credentials: 'include'
+  withCredentials: true
 };
 
 const requestConfigPost = {
   method: 'POST',
-  credentials: 'include',
+  credentials: true,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded'
   }
@@ -66,21 +67,25 @@ export function buildApiUrl(pathInfo, preview, componentId, cmsUrls) {
 }
 
 function fetchUrl(url, requestConfig) {
-  return window.fetch(url, requestConfig)
+  return axios(url, requestConfig)
     .then(response => {
-      if (response.ok) {
-        try {
-          return response.json();
-        } catch (err) {
-          console.log(`Error! Could not convert response to JSON for URL: ${url}`);
-          console.log(err);
-          return null;
-        }
-      } else {
-        console.log(`Error! Status code ${response.status} while fetching CMS page data for URL: ${url}`)
-      }
+			return response.data;
     }).catch(error => {
-      console.log('Error while fetching CMS page data for URL:', url);
-      console.log(error);
+			if (error.response) {
+				// The request was made and the server responded with a status code
+				// that falls out of the range of 2xx
+				console.log(`Error! Status code ${response.status} while fetching CMS page data for URL: ${url}`);
+				console.log(error.response.data);
+				console.log(error.response.headers);
+			} else if (error.request) {
+				// The request was made but no response was received
+				// `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+				// http.ClientRequest in node.js
+				console.log(error.request);
+			} else {
+				// Something happened in setting up the request that triggered an Error
+				console.log('Error while fetching CMS page data for URL:' + url, error.message);
+			}
+			console.log(error.config);
     });
 }
