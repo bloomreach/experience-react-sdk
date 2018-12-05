@@ -1,13 +1,14 @@
 import globalCmsUrls from './cms-urls';
+import axios from 'axios';
 
 const requestConfigGet = {
   method: 'GET',
-  credentials: 'include'
+  withCredentials: true
 };
 
 const requestConfigPost = {
   method: 'POST',
-  credentials: 'include',
+  credentials: true,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded'
   }
@@ -66,7 +67,7 @@ export function buildApiUrl(pathInfo, preview, componentId, cmsUrls) {
 }
 
 function fetchUrl(url, requestConfig) {
-  return window.fetch(url, requestConfig)
+  return axios(url, requestConfig)
     .then(response => {
       if (response.ok) {
         try {

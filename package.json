@@ -10,6 +10,7 @@
   "bugs": "https://github.com/bloomreach/experience-react-sdk/issues",
   "homepage": "https://github.com/bloomreach/experience-react-sdk",
   "dependencies": {
+    "axios": "^0.18.0",
     "jsonpointer": "^4.0.1",
     "path-to-regexp": "^2.2.1",
     "react-html-parser": "^2.0.2"
