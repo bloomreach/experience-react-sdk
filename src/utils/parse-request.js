@@ -1,4 +1,5 @@
 import globalCmsUrls from './cms-urls';
+import 'core-js/fn/array/find-index';
 
 export default function parseRequest(request = {}, cmsUrls) {
   if (!cmsUrls) {
@@ -32,6 +33,8 @@ export default function parseRequest(request = {}, cmsUrls) {
     });
 
     path = results[pathIdx + 1] !== undefined ? results[pathIdx + 1] : '';
+    // query parameter is not needed for fetching API URL and can actually conflict with component rendering URLs
+    path = removeQueryParameter(path);
     
     if (!preview) {
       // otherwise use preview-prefix in URL-path to detect preview mode
@@ -53,14 +56,20 @@ function hasPreviewQueryParameter(urlPath) {
   return false;
 }
 
+function removeQueryParameter(urlPath) {
+  const queryStringIdx = urlPath.indexOf('?');
+  if (queryStringIdx !== -1) {
+    return urlPath.substring(0, urlPath.indexOf('?'));
+  }
+  return urlPath;
+}
+
 // if hostname is different for preview and live, 
 // then hostname can be used to detect if we're in preview mode
 function isMatchingPreviewHostname(hostname, cmsUrls) {
   if (cmsUrls.live.hostname !== cmsUrls.preview.hostname) {
     if (hostname === cmsUrls.preview.hostname) {
       return true;
-    } else if (hostname !== cmsUrls.live.hostname) {
-      console.log(`Warning! Could not detect preview mode for ${hostname}. Check if cmsUrls have been properly set. Setting preview to false.`);
     }
   }
   return false;
