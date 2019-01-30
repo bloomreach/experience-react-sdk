@@ -5,7 +5,7 @@ import getNestedObject from './get-nested-object';
 export function getImageUrl(imageRef, pageModel, preview) {
   // get image reference
   let imageUuid;
-  if (imageRef || imageRef.$ref) {
+  if (imageRef && imageRef.$ref) {
     imageUuid = imageRef.$ref
   }
 
