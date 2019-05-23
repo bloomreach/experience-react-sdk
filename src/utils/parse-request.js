@@ -42,7 +42,11 @@ export default function parseRequest(request = {}, cmsUrls) {
     }
   }
 
-  return { path: path, preview: preview };
+  return {
+    path: path,
+    preview: preview,
+    query: urlPath.split('?', 2)[1] || '',
+  };
 }
 
 function hasPreviewQueryParameter(urlPath) {

@@ -31,20 +31,22 @@ export default class CmsPage extends React.Component {
   parseRequest(request) {
     const parsedRequest = parseRequest(request);
     this.state.path = parsedRequest.path;
+    this.state.query = parsedRequest.query;
     this.state.preview = parsedRequest.preview;
     if (this.props.debug) {
       console.log(`### React SDK debugging ### parsing URL-path '%s'`, request.path);
       console.log(`### React SDK debugging ### parsed path is '%s'`, parsedRequest.path);
+      console.log(`### React SDK debugging ### parsed query is '%s'`, parsedRequest.query);
       console.log(`### React SDK debugging ### preview mode is %s`, parsedRequest.preview);
     }
     return parsedRequest;
   }
 
-  fetchPageModel(path, preview) {
+  fetchPageModel(path, query, preview) {
     if (this.props.debug) {
       console.log(`### React SDK debugging ### fetching page model for URL-path '%s'`, path);
     }
-    fetchCmsPage(path, preview).then(data => {
+    fetchCmsPage(path, query, preview).then(data => {
       this.updatePageModel(data);
     });
   }
@@ -89,7 +91,7 @@ export default class CmsPage extends React.Component {
     // find the component that needs to be updated in the page structure object using its ID
     const componentToUpdate = findChildById(this.state.pageModel, componentId);
     if (componentToUpdate !== undefined) {
-      fetchComponentUpdate(this.state.path, this.state.preview, componentId, propertiesMap).then(response => {
+      fetchComponentUpdate(this.state.path, this.state.query, this.state.preview, componentId, propertiesMap).then(response => {
         // API can return empty response when component is deleted
         if (response) {
           if (response.page) {
@@ -118,7 +120,7 @@ export default class CmsPage extends React.Component {
   componentDidUpdate (prevProps, prevState) {
     if (this.props.request.path !== prevProps.request.path) {
       const parsedUrl = this.parseRequest(this.props.request);
-      this.fetchPageModel(parsedUrl.path, parsedUrl.preview);
+      this.fetchPageModel(parsedUrl.path, parsedUrl.query, parsedUrl.preview);
     }
   }
 
@@ -126,7 +128,7 @@ export default class CmsPage extends React.Component {
     this.initializeCmsIntegration();
     // fetch page model if not supplied
     if (!this.state.pageModel) {
-      this.fetchPageModel(this.state.path, this.state.preview);
+      this.fetchPageModel(this.state.path, this.state.query, this.state.preview);
     } else {
       // add body comments client-side as document variable is undefined server-side
       addBodyComments(this.state.pageModel.page, this.state.preview);

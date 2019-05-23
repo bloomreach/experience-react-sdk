@@ -5,5 +5,6 @@ import { buildApiUrl } from './fetch';
 export default function getApiUrl(request, newCmsUrls = {}) {
   const cmsUrls = updateCmsUrls(newCmsUrls);
   const parsedRequest = parseRequest(request, cmsUrls);
-  return buildApiUrl(parsedRequest.path, parsedRequest.preview, null, cmsUrls);
+
+  return buildApiUrl(parsedRequest.path, parsedRequest.query, parsedRequest.preview, null, cmsUrls);
 }

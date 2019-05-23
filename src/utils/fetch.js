@@ -1,6 +1,8 @@
 import globalCmsUrls from './cms-urls';
 import axios from 'axios';
 
+const SSO_HANDSHAKE = /(?:^|&)(org.hippoecm.hst.container.render_host=.+?)(?:&|$)/;
+
 const requestConfigGet = {
   method: 'GET',
   withCredentials: true
@@ -14,15 +16,15 @@ const requestConfigPost = {
   }
 };
 
-export function fetchCmsPage(pathInfo, preview, cmsUrls) {
-  const url = buildApiUrl(pathInfo, preview, null, cmsUrls);
+export function fetchCmsPage(pathInfo, query, preview, cmsUrls) {
+  const url = buildApiUrl(pathInfo, query, preview, null, cmsUrls);
   return fetchUrl(url, requestConfigGet);
 }
 
-export function fetchComponentUpdate(pathInfo, preview, componentId, body) {
+export function fetchComponentUpdate(pathInfo, query, preview, componentId, body) {
   let requestConfig = Object.assign({}, requestConfigPost);
   requestConfig.body = toUrlEncodedFormData(body);
-  const url = buildApiUrl(pathInfo, preview, componentId);
+  const url = buildApiUrl(pathInfo, query, preview, componentId);
   return fetchUrl(url, requestConfig);
 }
 
@@ -33,7 +35,7 @@ function toUrlEncodedFormData(json) {
     .join('&');
 }
 
-export function buildApiUrl(pathInfo, preview, componentId, cmsUrls) {
+export function buildApiUrl(pathInfo, query, preview, componentId, cmsUrls) {
   // when using fetch outside of CmsPage for SSR, cmsUrls need to be supplied
   if (!cmsUrls) {
     cmsUrls = globalCmsUrls;
@@ -63,6 +65,11 @@ export function buildApiUrl(pathInfo, preview, componentId, cmsUrls) {
   if (componentId) {
     url += cmsUrls.apiComponentRenderingUrlSuffix + componentId;
   }
+  const [, ssoHandshake] = (query && query.match(SSO_HANDSHAKE)) || [];
+  if (ssoHandshake) {
+    url += (url.indexOf('?') === -1 ? '?' : '') + ssoHandshake;
+  }
+
   return url;
 }
 
