@@ -27,7 +27,7 @@ const componentDefinitions = {
 
 class MyApp extends React.Component {
   render() {
-    const request = { hostname: window.location.hostname, path: window.location.pathname };
+    const request = { hostname: window.location.hostname, path: window.location.pathname + window.location.search };
     return (
       <CmsPage componentDefinitions={componentDefinitions} request={request}>
         { () =>
@@ -460,6 +460,16 @@ Parses date-field of a content item and returns date as a string.
 `String` returns date in full date format.
 
 ## Release notes
+
+### Version 0.5.0
+- Fixed bug with SSO handshake in client-side rendered applications.
+
+Upgrade steps:
+- Pass query string parameters along with other request details to `<CmsPage>`:
+  ```jsx
+  const request = { hostname: window.location.hostname, path: window.location.path + window.location.search };
+  <CmsPage componentDefinitions={componentDefinitions} request={request}>
+  ```
 
 ### Version 0.4.0
 
