@@ -1,4 +1,5 @@
 import globalCmsUrls from './cms-urls';
+import 'core-js/fn/array/find-index';
 
 export default function parseRequest(request = {}, cmsUrls) {
   if (!cmsUrls) {

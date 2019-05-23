@@ -2,7 +2,7 @@ import globalCmsUrls from './cms-urls';
 import jsonpointer from 'jsonpointer';
 import getNestedObject from './get-nested-object';
 
-export function getImageUrl(imageRef, pageModel, preview) {
+export function getImageUrl(imageRef, pageModel, preview, variant) {
   // get image reference
   let imageUuid;
   if (imageRef && imageRef.$ref) {
@@ -17,11 +17,16 @@ export function getImageUrl(imageRef, pageModel, preview) {
 
   // build URL
   let imageUrl = null;
-  if (getNestedObject(image, ['_links', 'site', 'href'])) {
+  if (variant && getNestedObject(image, [variant])) {
+    imageUrl = getNestedObject(image, [variant, '_links', 'site', 'href']);
+  } else {
+    imageUrl = getNestedObject(image, ['_links', 'site', 'href']);
+  }
+  if (imageUrl) {
     if (preview) {
-      imageUrl = globalCmsUrls.preview.baseUrl + image._links.site.href;
+      imageUrl = globalCmsUrls.preview.baseUrl + imageUrl;
     } else {
-      imageUrl = globalCmsUrls.live.baseUrl + image._links.site.href;
+      imageUrl = globalCmsUrls.live.baseUrl + imageUrl;
     }
   }
 

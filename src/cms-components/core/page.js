@@ -50,7 +50,7 @@ export default class CmsPage extends React.Component {
   }
 
   updatePageModel(pageModel) {
-    addBodyComments(pageModel, this.state.preview);
+    addBodyComments(pageModel.page, this.state.preview);
     this.setState({
       pageModel: pageModel
     });
