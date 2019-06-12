@@ -12,7 +12,18 @@ import CmsMenu from '../components/menu';
 import NewsItem from '../components/news-item';
 import NewsList from '../components/news-list';
 
-const cmsUrls = {};
+const cmsUrls = {
+  preview: {
+    hostname: '127.0.0.1',
+    port: 9080,
+    channelPath: 'spa-hap',
+  },
+  live: {
+    hostname: 'localhost',
+    port: 9080,
+    channelPath: 'spa-hap',
+  },
+};
 
 const componentDefinitions = {
   "Banner": { component: Banner, wrapInContentComponent: true },
