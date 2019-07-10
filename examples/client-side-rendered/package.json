@@ -4,7 +4,7 @@
   "description": "Example client-side React App for the BloomReach Experience SDK for React",
   "private": true,
   "dependencies": {
-    "bloomreach-experience-react-sdk": "^0.4.4",
+    "bloomreach-experience-react-sdk": "file:../..",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
@@ -16,8 +16,9 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "author": "Robbert Kauffman",
+  "author": "BloomReach B.V.",
   "license": "Apache-2.0",
+  "homepage": ".",
   "browserslist": {
     "production": [
       ">0.2%",
