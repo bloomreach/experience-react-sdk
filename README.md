@@ -526,6 +526,6 @@ Upgrade steps:
 
 Nothing here yet :)
 
-## Author
+## License
 
-Robbert Kauffman - BloomReach
+Apache 2.0
