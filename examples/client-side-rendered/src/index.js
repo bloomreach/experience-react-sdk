@@ -33,6 +33,11 @@ const cmsUrls = {
     port: 9080,
     channelPath: 'spa-csr',
   },
+  live: {
+    hostname: 'localhost',
+    port: 9080,
+    channelPath: 'spa-csr',
+  },
 };
 
 const componentDefinitions = {
