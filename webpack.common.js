@@ -15,7 +15,7 @@
  */
 
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -27,7 +27,7 @@ module.exports = {
     libraryTarget: 'umd'
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin(),
   ],
   externals: {
     'react': {
