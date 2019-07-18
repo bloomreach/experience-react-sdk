@@ -17,36 +17,60 @@
 import React from 'react';
 import CmsContainerItem from './container-item';
 import { addBeginComment, addEndComment } from '../../utils/add-html-comment';
-import { PreviewContext } from '../../context';
+import { ComponentDefinitionsContext, PageModelContext, PreviewContext } from '../../context';
 
 export default class CmsContainer extends React.Component {
-  renderContainerWrapper(configuration, preview) {
+  renderContainerWrapper(configuration, pageModel, preview, componentDefinitions) {
     if (preview) {
       return (
         // need to wrap container inside a div instead of React.Fragment because otherwise HTML comments are not removed
         <div>
           <div className="hst-container"
                ref={(containerElm) => { this.addMetaData(containerElm, configuration, preview); }}>
-            { this.renderContainer(configuration) }
+            { this.renderContainer(configuration, pageModel, preview, componentDefinitions) }
           </div>
         </div>
       );
     }
 
-    return this.renderContainer(configuration);
+    return this.renderContainer(configuration, pageModel, preview, componentDefinitions);
   }
 
-  renderContainer(configuration = { components: [] }) {
-    if (!configuration.components || !configuration.components.length) {
+  renderContainer(configuration = { components: [] }, pageModel, preview, componentDefinitions) {
+    const { components, label } = configuration;
+
+    // don't render anything when there're no components found
+    if (!components || components.length === 0) {
       return null;
     }
 
-    // render all of the container-item-components
+    // get component item components
+    const containerItemComponents = components.map(component => {
+      return <CmsContainerItem configuration={component} key={component.id} />;
+    });
+
+    // check if component container is found in component definitions
+    const ContainerComponent = componentDefinitions[label] && componentDefinitions[label].component;
+
+    // if found then wrap container items with this component
+    if (!!ContainerComponent) {
+      const props = {
+        configuration: configuration,
+        pageModel: pageModel,
+        preview: preview,
+        componentDefinitions: componentDefinitions,
+      };
+
+      return React.createElement(
+        ContainerComponent,
+        { configuration, pageModel, preview, componentDefinitions },
+        containerItemComponents
+      );
+    }
+
     return (
       <React.Fragment>
-        { configuration.components.map(component => (
-          <CmsContainerItem configuration={component} key={component.id} />
-        )) }
+        { containerItemComponents }
       </React.Fragment>
     );
   }
@@ -62,9 +86,22 @@ export default class CmsContainer extends React.Component {
     }
 
     return (
-      <PreviewContext.Consumer>
-        { preview => this.renderContainerWrapper(this.props.configuration, preview) }
-      </PreviewContext.Consumer>
+      <PageModelContext.Consumer>
+        {pageModel => (
+          <PreviewContext.Consumer>
+            {preview => (
+              <ComponentDefinitionsContext.Consumer>
+                {componentDefinitions => this.renderContainerWrapper(
+                  this.props.configuration,
+                  pageModel,
+                  preview,
+                  componentDefinitions,
+                )}
+              </ComponentDefinitionsContext.Consumer>
+            )}
+          </PreviewContext.Consumer>
+        )}
+      </PageModelContext.Consumer>
     );
   }
 }
