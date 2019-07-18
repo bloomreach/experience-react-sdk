@@ -54,13 +54,6 @@ export default class CmsContainer extends React.Component {
 
     // if found then wrap container items with this component
     if (!!ContainerComponent) {
-      const props = {
-        configuration: configuration,
-        pageModel: pageModel,
-        preview: preview,
-        componentDefinitions: componentDefinitions,
-      };
-
       return React.createElement(
         ContainerComponent,
         { configuration, pageModel, preview, componentDefinitions },
