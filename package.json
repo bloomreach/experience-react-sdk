@@ -25,6 +25,7 @@
     "@bloomreach/frontend-build": "^10.0",
     "babel-loader": "8.0.5",
     "clean-webpack-plugin": "^3.0",
+    "eslint-plugin-react": "^7.14",
     "react": "^16.8",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3",
