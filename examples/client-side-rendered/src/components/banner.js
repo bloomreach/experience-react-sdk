@@ -19,9 +19,7 @@ import { createLink, getImageUrl, parseAndRewriteLinks } from 'bloomreach-experi
 
 export default class Banner extends React.Component {
   render() {
-    const content = this.props.content;
-    const manageContentButton = this.props.manageContentButton;
-    const preview = this.props.preview;
+    const { content, manageContentButton, preview } = this.props;
     const image = getImageUrl(content.image, this.props.pageModel, preview);
 
     let contentHtml;
@@ -29,19 +27,19 @@ export default class Banner extends React.Component {
       contentHtml = parseAndRewriteLinks(content.content.value, preview);
     }
 
-    const link = content.link ? content.link['$ref'] : null;
+    const link = content.link ? content.link.$ref : null;
     // createLink takes linkText as a function so that it can contain HTML elements
-    const linkText = () => { return ('Learn more') };
+    const linkText = () => 'Learn more';
     const className = 'btn btn-primary btn-lg';
 
     return (
       <div className="jumbotron has-edit-button">
         { manageContentButton && manageContentButton }
-        { content.title &&
-          <h1>{content.title}</h1>
+        { content.title
+          && <h1>{content.title}</h1>
         }
-        { image &&
-          <figure>
+        { image
+          && <figure>
             <img src={image} alt={content.title}/>
           </figure>
         }
