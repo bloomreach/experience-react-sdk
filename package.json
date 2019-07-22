@@ -33,7 +33,7 @@
   },
   "main": "dist/bloomreach-experience-react-sdk.js",
   "scripts": {
-    "lint": "febuild lint:js",
+    "lint": "febuild lint:js examples/*/src examples/*/components examples/*/pages examples/*/server",
     "build": "webpack --config webpack.prod.js",
     "build-dev": "webpack --config webpack.dev.js --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
