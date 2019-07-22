@@ -24,12 +24,10 @@ import getConfigurationForPath from '../../utils/get-configuration-for-path';
 class RenderCmsComponent extends React.Component {
   renderPageComponent(configuration) {
     switch (configuration.type) {
-      case "CONTAINER_COMPONENT":
+      case 'CONTAINER_COMPONENT':
         return <CmsContainer configuration={configuration} />;
-        break;
-      case "CONTAINER_ITEM_COMPONENT":
+      case 'CONTAINER_ITEM_COMPONENT':
         return <CmsContainerItem configuration={configuration} />;
-        break;
       default:
         return <CmsComponent configuration={configuration}/>;
     }
@@ -38,16 +36,15 @@ class RenderCmsComponent extends React.Component {
   renderStaticComponent(renderComponent, configuration, pageModel) {
     return (
       <PreviewContext.Consumer>
-        { preview =>
-          React.createElement(renderComponent, { configuration: configuration, pageModel: pageModel, preview: preview })
+        { preview => React.createElement(renderComponent, { configuration, pageModel, preview })
         }
       </PreviewContext.Consumer>
     );
-}
+  }
 
   render() {
     const { path, pageModel, renderComponent } = this.props;
-    
+
     let configuration;
     // render entire page if no path has been specified
     if (!path) {

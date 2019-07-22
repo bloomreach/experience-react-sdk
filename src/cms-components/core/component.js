@@ -32,22 +32,23 @@ export default class CmsComponent extends React.Component {
   }
 
   renderComponent(configuration = { components: [] }) {
-    // render all of the nested components
-    if (configuration.components && configuration.components.length > 0) {
-      return configuration.components.map((component) => {
-        if (component.type === 'CONTAINER_COMPONENT') {
-          // render container
-          return (
-            <CmsContainer configuration={component} key={component.id}/>
-          );
-        } else {
-          // render regular component
-          return (
-            <CmsComponent configuration={component} key={component.id}/>
-          );
-        }
-      });
+    if (!configuration.components || !configuration.components.length) {
+      return null;
     }
+
+    // render all of the nested components
+    return configuration.components.map((component) => {
+      if (component.type === 'CONTAINER_COMPONENT') {
+        // render container
+        return (
+          <CmsContainer configuration={component} key={component.id}/>
+        );
+      }
+      // render regular component
+      return (
+          <CmsComponent configuration={component} key={component.id}/>
+      );
+    });
   }
 
   render() {

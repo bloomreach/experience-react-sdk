@@ -31,40 +31,47 @@ export default class CmsContainerItem extends React.Component {
           </React.Fragment>
         </div>
       );
-    } else if (configuration) {
+    }
+    if (configuration) {
       return (
         <React.Fragment>
           { this.renderContainerItemComponent(configuration, pageModel, preview, componentDefinitions) }
         </React.Fragment>
       );
-    } else {
-      return null;
     }
+
+    return null;
   }
 
   renderContainerItemComponent(component, pageModel, preview, componentDefinitions) {
+    // component not defined in component-definitions
+    if (!(component.label in componentDefinitions)) {
+      return (<UndefinedComponent name={component.label} />);
+    }
+
     // based on the type of the component, render a different React component
-    if (component.label in componentDefinitions) {
-      if ('wrapInContentComponent' in componentDefinitions[component.label]
-        && componentDefinitions[component.label]['wrapInContentComponent']) {
-        // wrap component in ContentComponentWrapper class
-        return (
-          <ContentComponentWrapper configuration={component} pageModel={pageModel} preview={preview}
-                                   componentDefinitions={componentDefinitions} />
-        );
-      } else if (componentDefinitions[component.label].component) {
-        // component is defined and does not have to be wrapped in ContentComponent, so render the actual component
-        const componentEl = React.createElement(componentDefinitions[component.label].component,
-          { configuration: component, pageModel: pageModel, preview: preview,
-            componentDefinitions: componentDefinitions}, null);
-        return (componentEl);
-      }
-    } else {
-      // component not defined in component-definitions
+    if ('wrapInContentComponent' in componentDefinitions[component.label]
+      && componentDefinitions[component.label].wrapInContentComponent) {
+      // wrap component in ContentComponentWrapper class
       return (
-        <UndefinedComponent name={component.label} />
+        <ContentComponentWrapper configuration={component} pageModel={pageModel} preview={preview}
+                                componentDefinitions={componentDefinitions} />
       );
     }
+
+    if (componentDefinitions[component.label].component) {
+      // component is defined and does not have to be wrapped in ContentComponent, so render the actual component
+      const componentEl = React.createElement(componentDefinitions[component.label].component,
+        {
+          configuration: component,
+          pageModel,
+          preview,
+          componentDefinitions,
+        }, null);
+      return (componentEl);
+    }
+
+    return null;
   }
 
   addMetaData(htmlElm, configuration, preview) {
@@ -73,17 +80,18 @@ export default class CmsContainerItem extends React.Component {
   }
 
   render() {
-    const configuration = this.props.configuration;
+    const { configuration } = this.props;
 
     return (
       <PageModelContext.Consumer>
-        { pageModel =>
-          <PreviewContext.Consumer>
-            { preview =>
-              <ComponentDefinitionsContext.Consumer>
-                { componentDefinitions =>
-                  this.renderContainerItem(configuration, pageModel, preview, componentDefinitions)
-                }
+        { pageModel => <PreviewContext.Consumer>
+            { preview => <ComponentDefinitionsContext.Consumer>
+                { componentDefinitions => this.renderContainerItem(
+                  configuration,
+                  pageModel,
+                  preview,
+                  componentDefinitions,
+                ) }
               </ComponentDefinitionsContext.Consumer>
             }
           </PreviewContext.Consumer>

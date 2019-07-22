@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import globalCmsUrls from './cms-urls';
 import jsonpointer from 'jsonpointer';
+import globalCmsUrls from './cms-urls';
 import getNestedObject from './get-nested-object';
 
 export function getImageUrl(imageRef, pageModel, preview, variant) {
   // get image reference
   let imageUuid;
   if (imageRef && imageRef.$ref) {
-    imageUuid = imageRef.$ref
+    imageUuid = imageRef.$ref;
   }
 
   // get serialized image via reference
@@ -51,17 +51,17 @@ export function getImageUrl(imageRef, pageModel, preview, variant) {
 
 export function getImageUrlByPath(imagePath, variant, preview) {
   const cmsUrls = preview ? globalCmsUrls.preview : globalCmsUrls.live;
-  
+
   let imageUrl = cmsUrls.baseUrl;
 
   if (cmsUrls.contextPath) {
-    imageUrl += '/' + cmsUrls.contextPath;
+    imageUrl += `/${cmsUrls.contextPath}`;
   }
 
   imageUrl += '/binaries';
-  
+
   if (variant) {
-    imageUrl += '/' + variant
+    imageUrl += `/${variant}`;
   }
 
   imageUrl += imagePath;

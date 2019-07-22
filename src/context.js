@@ -17,7 +17,7 @@
 import React from 'react';
 
 export const PageModelContext = React.createContext({});
-export const PreviewContext = React.createContext("");
+export const PreviewContext = React.createContext('');
 export const ComponentDefinitionsContext = React.createContext({});
 export const CreateLinkContext = React.createContext();
 

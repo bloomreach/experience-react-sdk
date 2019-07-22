@@ -16,22 +16,36 @@
 
 export default function parseDate(date) {
   const parsedDate = parseFloat(date);
-  if(isNaN(parsedDate)) {
+  // eslint-disable-next-line no-restricted-globals
+  if (isNaN(parsedDate)) {
     return null;
   }
 
   const dateObj = new Date(parsedDate);
 
   return (
-    dateObj.getMonthName() + ' ' +
-    dateObj.getDate() + ', ' +
-    dateObj.getFullYear()
+    `${dateObj.getMonthName()} ${
+      dateObj.getDate()}, ${
+      dateObj.getFullYear()}`
   );
 }
 
 // extend JavaScript Date object to return full month names
 // eslint-disable-next-line
 Date.prototype.getMonthName = function() {
-  const months = ["January", "Feburary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const months = [
+    'January',
+    'Feburary',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
   return months[this.getMonth()];
 };
