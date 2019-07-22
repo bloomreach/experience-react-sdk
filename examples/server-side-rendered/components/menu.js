@@ -19,9 +19,9 @@ import { CmsEditButton, createLink, getNestedObject } from 'bloomreach-experienc
 
 export default class CmsMenu extends React.Component {
   renderMenu(configuration) {
-    return configuration.models.menu.siteMenuItems.map((menuItem) => {
-      return <CmsMenuItem configuration={menuItem} key={menuItem.name} />;
-    });
+    return configuration.models.menu.siteMenuItems.map(
+      menuItem => <CmsMenuItem configuration={menuItem} key={menuItem.name} />,
+    );
   }
 
   render() {
@@ -53,7 +53,7 @@ class CmsMenuItem extends React.Component {
 
     const activeElm = configuration.selected ? <span className="sr-only">(current)</span> : null;
     // createLink takes linkText as a function so that it can contain HTML elements
-    const linkText = () => { return <React.Fragment>{configuration.name}{activeElm}</React.Fragment> };
+    const linkText = () => <React.Fragment>{configuration.name}{activeElm}</React.Fragment>;
     const className = 'nav-link';
 
     return (

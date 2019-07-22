@@ -18,11 +18,11 @@ import React from 'react';
 import { createLink, parseDate } from 'bloomreach-experience-react-sdk';
 
 export default class NewsItem extends React.Component {
-  render () {
-    const content = this.props.content;
-    const manageContentButton = this.props.manageContentButton;
+  render() {
+    const { content } = this.props;
+    const { manageContentButton } = this.props;
     // createLink takes linkText as a function so that it can contain HTML elements
-    const linkText = () => { return content.title };
+    const linkText = () => content.title;
 
     return (
       <div className="blog-post has-edit-button">
@@ -31,15 +31,15 @@ export default class NewsItem extends React.Component {
           { createLink('self', content, linkText, null) }
         </h2>
         <p className="blog-post-meta">
-          { content.date &&
-            <span className="blog-post-date">{parseDate(content.date)}</span>
+          { content.date
+            && <span className="blog-post-date">{parseDate(content.date)}</span>
           }
-          { content.author &&
-            <span className="author">{content.author}</span>
+          { content.author
+            && <span className="author">{content.author}</span>
           }
         </p>
-        { content.introduction &&
-          <p>{content.introduction}</p>
+        { content.introduction
+          && <p>{content.introduction}</p>
         }
       </div>
     );

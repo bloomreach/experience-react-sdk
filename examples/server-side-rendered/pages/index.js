@@ -42,30 +42,28 @@ const cmsUrls = {
 };
 
 const componentDefinitions = {
-  "Banner": { component: Banner, wrapInContentComponent: true },
-  "Content": { component: Content, wrapInContentComponent: true },
-  "News List": { component: NewsList },
-  "News Item": { component: NewsItem, wrapInContentComponent: true }
+  Banner: { component: Banner, wrapInContentComponent: true },
+  Content: { component: Content, wrapInContentComponent: true },
+  'News List': { component: NewsList },
+  'News Item': { component: NewsItem, wrapInContentComponent: true },
 };
 
-const createLink = (href, linkText, className) => {
-  return (<Link href={href}><a className={className}>{linkText()}</a></Link>)
-};
+const createLink = (href, linkText, className) => <Link href={href}><a className={className}>{linkText()}</a></Link>;
 
 export class Index extends React.Component {
-  static async getInitialProps ({ req, asPath }) {
+  static async getInitialProps({ req, asPath }) {
     // setting pageModel to empty list instead of null value,
     // as otherwise the API will be fetched client-side again after server-side fetch errors
     let pageModel = {};
 
     // hostname and URL-path are used for detecting if site is viewed in CMS preview
     // and for fetching Page Model for the viewed page
-    const request = { 
+    const request = {
       hostname: req.headers.host,
-      path: asPath
-    }
+      path: asPath,
+    };
     const url = getApiUrl(request, cmsUrls);
-    const response = await fetch(url, {headers: {'Cookie': req.headers.cookie}});
+    const response = await fetch(url, { headers: { Cookie: req.headers.cookie } });
 
     if (response.ok) {
       try {
@@ -79,14 +77,14 @@ export class Index extends React.Component {
     }
 
     return {
-      pageModel: pageModel,
-      request: request,
-      errorCode: !response.ok ? response.status : null
+      pageModel,
+      request,
+      errorCode: !response.ok ? response.status : null,
     };
   }
 
-  render () {
-    const { errorCode, request, router } = this.props;
+  render() {
+    const { errorCode, request } = this.props;
 
     if (errorCode) {
       return (<Error statusCode={errorCode} />);
@@ -95,8 +93,7 @@ export class Index extends React.Component {
     return (
       <CmsPage componentDefinitions={componentDefinitions} cmsUrls={cmsUrls} pageModel={this.props.pageModel}
                request={request} createLink={createLink}>
-        { () =>
-          <React.Fragment>
+        { () => <React.Fragment>
             <div id='header'>
               <nav className='navbar navbar-expand-md navbar-dark bg-dark'>
                 <span className='navbar-brand'>Server-side React Demo</span>
