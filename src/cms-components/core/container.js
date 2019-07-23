@@ -33,11 +33,7 @@ export default class CmsContainer extends React.Component {
       );
     }
 
-    return (
-        <React.Fragment>
-          { this.renderContainer(configuration) }
-        </React.Fragment>
-    );
+    return this.renderContainer(configuration);
   }
 
   renderContainer(configuration = { components: [] }) {
@@ -46,9 +42,13 @@ export default class CmsContainer extends React.Component {
     }
 
     // render all of the container-item-components
-    return configuration.components.map(component => (
-      <CmsContainerItem configuration={component} key={component.id} />
-    ));
+    return (
+      <React.Fragment>
+        { configuration.components.map(component => (
+          <CmsContainerItem configuration={component} key={component.id} />
+        )) }
+      </React.Fragment>
+    );
   }
 
   addMetaData(htmlElm, configuration, preview) {
@@ -63,10 +63,7 @@ export default class CmsContainer extends React.Component {
 
     return (
       <PreviewContext.Consumer>
-        { preview => <React.Fragment>
-            { this.renderContainerWrapper(this.props.configuration, preview) }
-          </React.Fragment>
-        }
+        { preview => this.renderContainerWrapper(this.props.configuration, preview) }
       </PreviewContext.Consumer>
     );
   }

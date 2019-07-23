@@ -26,25 +26,20 @@ export default class ContentComponentWrapper extends React.Component {
   renderContentComponentWrapper(component, pageModel, content, preview, componentDefinitions, manageContentButton) {
     // based on the type of the component, render a different React component
     if (component.label in componentDefinitions && componentDefinitions[component.label].component) {
-      // component is defined, so render the component
-      const componentEl = React.createElement(componentDefinitions[component.label].component,
-        {
-          content, pageModel, preview, manageContentButton,
-        }, null);
-      return (componentEl);
+      return React.createElement(componentDefinitions[component.label].component, {
+        content, pageModel, preview, manageContentButton,
+      }, null);
     }
-    // component not defined in component-definitions
-    return (
-        <UndefinedComponent name={component.label}/>
-    );
+
+    return <UndefinedComponent name={component.label}/>;
   }
 
   render() {
     const { configuration, pageModel, preview } = this.props;
-    let content;
 
     // get content from model
     let contentRef = getNestedObject(configuration, ['models', 'document', '$ref']);
+    let content;
     if (!contentRef) {
       // NewsList component passed document ID through property instead of via reference in attributes map
       ({ contentRef } = this.props);
@@ -56,9 +51,7 @@ export default class ContentComponentWrapper extends React.Component {
 
     if (!content && preview) {
       // return placeholder if no document is set on component
-      return (
-        <PlaceholderComponent name={configuration.label} />
-      );
+      return <PlaceholderComponent name={configuration.label} />;
     }
 
     if (!content) {

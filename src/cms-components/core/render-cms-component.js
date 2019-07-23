@@ -36,8 +36,7 @@ class RenderCmsComponent extends React.Component {
   renderStaticComponent(renderComponent, configuration, pageModel) {
     return (
       <PreviewContext.Consumer>
-        { preview => React.createElement(renderComponent, { configuration, pageModel, preview })
-        }
+        { preview => React.createElement(renderComponent, { configuration, pageModel, preview }) }
       </PreviewContext.Consumer>
     );
   }
@@ -48,12 +47,12 @@ class RenderCmsComponent extends React.Component {
     let configuration;
     // render entire page if no path has been specified
     if (!path) {
-      if (pageModel) {
-        configuration = pageModel.page;
-      } else {
+      if (!pageModel) {
         console.log('<RenderCmsComponent> has no supplied page model');
         return null;
       }
+
+      configuration = pageModel.page;
     } else {
       // or lookup component configuration using supplied path
       configuration = getConfigurationForPath(path, pageModel);

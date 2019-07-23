@@ -19,6 +19,10 @@ import jsonpointer from 'jsonpointer';
 import getNestedObject from './get-nested-object';
 import { CreateLinkContext, PageModelContext } from '../context';
 
+function isString(value) {
+  return typeof value === 'string' || value instanceof String;
+}
+
 function _createLink(linkType, link, linkText, className, externalCreateLinkFunction, pageModel) {
   let href = null;
   let internalLink = null;
@@ -29,15 +33,19 @@ function _createLink(linkType, link, linkText, className, externalCreateLinkFunc
       href = getNestedObject(link, ['_links', 'site', 'href']);
       internalLink = getNestedObject(link, ['_links', 'site', 'type']);
       break;
+
     case 'ref':
-      if (link && (typeof link === 'string' || link instanceof String)) {
-        const linkedContent = jsonpointer.get(pageModel, link);
-        if (linkedContent) {
-          href = getNestedObject(linkedContent, ['_links', 'site', 'href']);
-          internalLink = getNestedObject(linkedContent, ['_links', 'site', 'type']);
-        }
+      if (!link || !isString(link)) {
+        break;
+      }
+      // eslint-disable-next-line no-case-declarations
+      const linkedContent = jsonpointer.get(pageModel, link);
+      if (linkedContent) {
+        href = getNestedObject(linkedContent, ['_links', 'site', 'href']);
+        internalLink = getNestedObject(linkedContent, ['_links', 'site', 'type']);
       }
       break;
+
     case 'href':
       href = link;
       internalLink = 'internal';
@@ -46,11 +54,11 @@ function _createLink(linkType, link, linkText, className, externalCreateLinkFunc
 
   // linkText is a function insteaf of a string, so that additional HTML can be included inside the anchor tag
   if (href && internalLink && typeof linkText === 'function') {
-    if (internalLink === 'internal' && typeof externalCreateLinkFunction === 'function') {
-      return externalCreateLinkFunction(href, linkText, className);
-    }
-    return (<a className={className} href={href}>{linkText()}</a>);
+    return internalLink === 'internal' && typeof externalCreateLinkFunction === 'function'
+      ? externalCreateLinkFunction(href, linkText, className)
+      : <a className={className} href={href}>{linkText()}</a>;
   }
+
   return null;
 }
 
@@ -58,10 +66,15 @@ export default function createLink(linkType, link, linkText, className) {
   return (
     <PageModelContext.Consumer>
       { pageModel => <CreateLinkContext.Consumer>
-          { externalCreateLinkFunction => _createLink(linkType, link, linkText, className, externalCreateLinkFunction,
-            pageModel) }
-        </CreateLinkContext.Consumer>
-      }
+          { externalCreateLinkFunction => _createLink(
+            linkType,
+            link,
+            linkText,
+            className,
+            externalCreateLinkFunction,
+            pageModel,
+          ) }
+      </CreateLinkContext.Consumer> }
     </PageModelContext.Consumer>
   );
 }
