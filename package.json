@@ -22,8 +22,10 @@
     "@babel/core": "^7.5",
     "@babel/preset-env": "^7.5",
     "@babel/preset-react": "^7.0",
+    "@bloomreach/frontend-build": "^10.0",
     "babel-loader": "8.0.5",
     "clean-webpack-plugin": "^3.0",
+    "eslint-plugin-react": "^7.14",
     "react": "^16.8",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3",
@@ -31,6 +33,7 @@
   },
   "main": "dist/bloomreach-experience-react-sdk.js",
   "scripts": {
+    "lint": "febuild lint:js examples/*/src examples/*/components examples/*/pages examples/*/server",
     "build": "webpack --config webpack.prod.js",
     "build-dev": "webpack --config webpack.dev.js --watch",
     "test": "echo \"Error: no test specified\" && exit 1"

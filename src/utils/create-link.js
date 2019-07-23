@@ -22,6 +22,8 @@ import { CreateLinkContext, PageModelContext } from '../context';
 function _createLink(linkType, link, linkText, className, externalCreateLinkFunction, pageModel) {
   let href = null;
   let internalLink = null;
+
+  // eslint-disable-next-line default-case
   switch (linkType) {
     case 'self':
       href = getNestedObject(link, ['_links', 'site', 'href']);
@@ -46,9 +48,8 @@ function _createLink(linkType, link, linkText, className, externalCreateLinkFunc
   if (href && internalLink && typeof linkText === 'function') {
     if (internalLink === 'internal' && typeof externalCreateLinkFunction === 'function') {
       return externalCreateLinkFunction(href, linkText, className);
-    } else {
-      return (<a className={className} href={href}>{linkText()}</a>)
     }
+    return (<a className={className} href={href}>{linkText()}</a>);
   }
   return null;
 }
@@ -56,8 +57,7 @@ function _createLink(linkType, link, linkText, className, externalCreateLinkFunc
 export default function createLink(linkType, link, linkText, className) {
   return (
     <PageModelContext.Consumer>
-      { pageModel =>
-        <CreateLinkContext.Consumer>
+      { pageModel => <CreateLinkContext.Consumer>
           { externalCreateLinkFunction => _createLink(linkType, link, linkText, className, externalCreateLinkFunction,
             pageModel) }
         </CreateLinkContext.Consumer>

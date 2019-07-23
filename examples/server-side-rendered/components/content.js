@@ -19,9 +19,7 @@ import { getImageUrl, parseAndRewriteLinks, parseDate } from 'bloomreach-experie
 
 export default class Content extends React.Component {
   render() {
-    const content = this.props.content;
-    const manageContentButton = this.props.manageContentButton;
-    const preview = this.props.preview;
+    const { content, manageContentButton, preview } = this.props;
     const image = getImageUrl(content.image, this.props.pageModel, preview);
 
     let contentHtml;
@@ -34,18 +32,18 @@ export default class Content extends React.Component {
         { manageContentButton && manageContentButton }
         <h2 className="blog-post-title">{content.title}</h2>
         <p className="blog-post-meta">
-          { content.date &&
-            <span className="blog-post-date">{parseDate(content.date)}</span>
+          { content.date
+            && <span className="blog-post-date">{parseDate(content.date)}</span>
           }
-          { content.author &&
-            <span className="author">{content.author}</span>
+          { content.author
+            && <span className="author">{content.author}</span>
           }
         </p>
-        { content.introduction &&
-          <p>{content.introduction}</p>
+        { content.introduction
+          && <p>{content.introduction}</p>
         }
-        { image &&
-          <figure>
+        { image
+          && <figure>
             <img src={image} alt={content.title}/>
           </figure>
         }

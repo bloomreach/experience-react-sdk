@@ -19,9 +19,7 @@ import { ContentComponentWrapper, getNestedObject, Placeholder } from 'bloomreac
 
 export default class NewsList extends React.Component {
   render() {
-    const preview = this.props.preview;
-    const pageModel = this.props.pageModel;
-    const configuration = this.props.configuration;
+    const { preview, pageModel, configuration } = this.props;
 
     // return placeholder if no list is set on component
     let list = getNestedObject(configuration, ['models', 'pageable', 'items', 0]);
@@ -40,7 +38,7 @@ export default class NewsList extends React.Component {
     const listItems = list.map((listItem, index) => {
       if (configuration && typeof configuration === 'object' && configuration.constructor === Object) {
         // change type as we want to render the NewsItem component
-        const newsItemConfig = {label: 'News Item'};
+        const newsItemConfig = { label: 'News Item' };
         if ('$ref' in listItem) {
           return (
             <ContentComponentWrapper contentRef={listItem.$ref} configuration={newsItemConfig} pageModel={pageModel}

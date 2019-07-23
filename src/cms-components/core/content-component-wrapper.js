@@ -15,10 +15,10 @@
  */
 
 import React from 'react';
+import jsonpointer from 'jsonpointer';
 import PlaceholderComponent from './placeholder';
 import UndefinedComponent from './undefined';
 import CmsEditButton from './cms-edit-button';
-import jsonpointer from 'jsonpointer';
 import { ComponentDefinitionsContext } from '../../context';
 import getNestedObject from '../../utils/get-nested-object';
 
@@ -28,14 +28,15 @@ export default class ContentComponentWrapper extends React.Component {
     if (component.label in componentDefinitions && componentDefinitions[component.label].component) {
       // component is defined, so render the component
       const componentEl = React.createElement(componentDefinitions[component.label].component,
-        { content: content, pageModel: pageModel, preview: preview, manageContentButton: manageContentButton }, null);
+        {
+          content, pageModel, preview, manageContentButton,
+        }, null);
       return (componentEl);
-    } else {
-      // component not defined in component-definitions
-      return (
-        <UndefinedComponent name={component.label}/>
-      );
     }
+    // component not defined in component-definitions
+    return (
+        <UndefinedComponent name={component.label}/>
+    );
   }
 
   render() {
@@ -46,7 +47,7 @@ export default class ContentComponentWrapper extends React.Component {
     let contentRef = getNestedObject(configuration, ['models', 'document', '$ref']);
     if (!contentRef) {
       // NewsList component passed document ID through property instead of via reference in attributes map
-      contentRef = this.props.contentRef;
+      ({ contentRef } = this.props);
     }
 
     if (contentRef && (typeof contentRef === 'string' || contentRef instanceof String)) {
@@ -58,7 +59,9 @@ export default class ContentComponentWrapper extends React.Component {
       return (
         <PlaceholderComponent name={configuration.label} />
       );
-    } else if (!content) {
+    }
+
+    if (!content) {
       // don't render placeholder outside of preview mode
       return null;
     }
@@ -68,10 +71,14 @@ export default class ContentComponentWrapper extends React.Component {
 
     return (
       <ComponentDefinitionsContext.Consumer>
-        { componentDefinitions =>
-          this.renderContentComponentWrapper(configuration, pageModel, content, preview, componentDefinitions,
-            manageContentButton)
-        }
+        { componentDefinitions => this.renderContentComponentWrapper(
+          configuration,
+          pageModel,
+          content,
+          preview,
+          componentDefinitions,
+          manageContentButton,
+        ) }
       </ComponentDefinitionsContext.Consumer>
     );
   }

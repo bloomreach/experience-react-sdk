@@ -1,0 +1,12 @@
+{
+  "root": true,
+  "extends": [
+    "./node_modules/@bloomreach/frontend-build/.eslintrc",
+    "plugin:react/recommended"
+  ],
+  "rules": {
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+    "no-console": "off"
+  }
+}

@@ -24,32 +24,8 @@ const defaultCmsUrls = {
   channelPath: '',
   previewPrefix: '_cmsinternal',
   apiPath: 'resourceapi',
-  apiComponentRenderingUrlSuffix: '?_hn:type=component-rendering&_hn:ref='
-}
-
-const cmsUrls = {};
-updateCmsUrls();
-export default cmsUrls;
-
-export function updateCmsUrls(urls = {}) {
-  if (typeof urls !== 'object') {
-    console.log('Warning! Supplied CMS URLs not of type object. Using default URLs.')
-    urls = {};
-  }
-
-  cmsUrls.live = setUrlsWithDefault(urls.live, defaultCmsUrls);
-  cmsUrls.preview = setUrlsWithDefault(urls.preview, cmsUrls.live);
-
-  const pathregexp = (cmsUrls.live.contextPath !== '' ? `/:contextPath(${cmsUrls.live.contextPath})?` : '') +
-    `/:previewPrefix(${cmsUrls.live.previewPrefix})?` +
-    (cmsUrls.live.channelPath !== '' ? `/:channelPath(${cmsUrls.live.channelPath})?` : '') +
-    '/:pathInfo*';
-
-  cmsUrls.regexpKeys = [];
-  cmsUrls.regexp = pathToRegexp(pathregexp, cmsUrls.regexpKeys);
-
-  return cmsUrls;
-}
+  apiComponentRenderingUrlSuffix: '?_hn:type=component-rendering&_hn:ref=',
+};
 
 function setUrlsWithDefault(urls = {}, defaultUrls = {}) {
   const newUrls = {};
@@ -64,6 +40,33 @@ function setUrlsWithDefault(urls = {}, defaultUrls = {}) {
   newUrls.channelPath = urls.channelPath ? urls.channelPath : defaultUrls.channelPath;
   newUrls.previewPrefix = urls.previewPrefix !== undefined ? urls.previewPrefix : defaultUrls.previewPrefix;
   newUrls.apiPath = urls.apiPath ? urls.apiPath : defaultUrls.apiPath;
-  newUrls.apiComponentRenderingUrlSuffix = urls.apiComponentRenderingUrlSuffix ? urls.apiComponentRenderingUrlSuffix : defaultUrls.apiComponentRenderingUrlSuffix;
+  newUrls.apiComponentRenderingUrlSuffix = urls.apiComponentRenderingUrlSuffix
+    ? urls.apiComponentRenderingUrlSuffix
+    : defaultUrls.apiComponentRenderingUrlSuffix;
   return newUrls;
 }
+
+const cmsUrls = {};
+
+export function updateCmsUrls(urls = {}) {
+  if (typeof urls !== 'object') {
+    console.log('Warning! Supplied CMS URLs not of type object. Using default URLs.');
+    urls = {};
+  }
+
+  cmsUrls.live = setUrlsWithDefault(urls.live, defaultCmsUrls);
+  cmsUrls.preview = setUrlsWithDefault(urls.preview, cmsUrls.live);
+
+  const pathregexp = `${cmsUrls.live.contextPath !== '' ? `/:contextPath(${cmsUrls.live.contextPath})?` : ''
+  }/:previewPrefix(${cmsUrls.live.previewPrefix})?${
+    cmsUrls.live.channelPath !== '' ? `/:channelPath(${cmsUrls.live.channelPath})?` : ''
+  }/:pathInfo*`;
+
+  cmsUrls.regexpKeys = [];
+  cmsUrls.regexp = pathToRegexp(pathregexp, cmsUrls.regexpKeys);
+
+  return cmsUrls;
+}
+
+updateCmsUrls();
+export default cmsUrls;

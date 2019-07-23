@@ -16,7 +16,7 @@
 
 import getNestedObject from './get-nested-object';
 
-export function addBeginComment (htmlElm, position, configuration, preview) {
+export function addBeginComment(htmlElm, position, configuration, preview) {
   const beginNodeSpan = getNestedObject(configuration, ['_meta', 'beginNodeSpan', 0, 'data']);
   if (preview && htmlElm && beginNodeSpan && !htmlElm.classList.contains('cms-begin-comment-added')) {
     htmlElm.insertAdjacentHTML(position, configuration._meta.beginNodeSpan[0].data);
@@ -27,7 +27,7 @@ export function addBeginComment (htmlElm, position, configuration, preview) {
   }
 }
 
-export function addEndComment (htmlElm, position, configuration, preview) {
+export function addEndComment(htmlElm, position, configuration, preview) {
   const endNodeSpan = getNestedObject(configuration, ['_meta', 'endNodeSpan', 0, 'data']);
   if (preview && htmlElm && endNodeSpan && !htmlElm.classList.contains('cms-end-comment-added')) {
     htmlElm.insertAdjacentHTML(position, configuration._meta.endNodeSpan[0].data);
@@ -36,7 +36,7 @@ export function addEndComment (htmlElm, position, configuration, preview) {
   }
 }
 
-export function addBodyComments (configuration, preview) {
+export function addBodyComments(configuration, preview) {
   const endNodeSpan = getNestedObject(configuration, ['_meta', 'endNodeSpan', 0, 'data']);
   if (preview && endNodeSpan) {
     // remove comments from page meta-data element, if existing
@@ -51,8 +51,6 @@ export function addBodyComments (configuration, preview) {
       document.body.appendChild(pageMetaDataElm);
     }
 
-    for (let i = 0; i < configuration._meta.endNodeSpan.length; i++) {
-      pageMetaDataElm.insertAdjacentHTML('beforeend', configuration._meta.endNodeSpan[i].data);
-    }
+    configuration._meta.endNodeSpan.forEach(({ data }) => pageMetaDataElm.insertAdjacentHTML('beforeend', data));
   }
 }
