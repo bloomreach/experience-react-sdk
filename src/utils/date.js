@@ -22,11 +22,8 @@ export default function parseDate(date) {
   }
 
   const dateObj = new Date(parsedDate);
-
   return (
-    `${dateObj.getMonthName()} ${
-      dateObj.getDate()}, ${
-      dateObj.getFullYear()}`
+    `${dateObj.getMonthName()} ${dateObj.getDate()}, ${dateObj.getFullYear()}`
   );
 }
 
@@ -35,7 +32,7 @@ export default function parseDate(date) {
 Date.prototype.getMonthName = function() {
   const months = [
     'January',
-    'Feburary',
+    'February',
     'March',
     'April',
     'May',

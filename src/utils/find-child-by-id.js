@@ -20,16 +20,14 @@ export default function findChildById(object, id, parent, idx) {
   let result;
 
   // eslint-disable-next-line no-restricted-syntax
-  for (const prop in object) {
-    if (object.hasOwnProperty(prop)) {
-      if (typeof object[prop] === 'object') {
-        result = findChildById(object[prop], id, object, prop);
-        if (typeof result !== 'undefined') {
-          return result;
-        }
-      } else if (prop === 'id' && object.id === id) {
-        return { parent, idx };
+  for (const [key, value] of Object.entries(object)) {
+    if (typeof value === 'object') {
+      result = findChildById(value, id, object, key);
+      if (typeof result !== 'undefined') {
+        return result;
       }
+    } else if (key === 'id' && object.id === id) {
+      return { parent, idx };
     }
   }
 

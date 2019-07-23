@@ -32,6 +32,7 @@ export default class CmsContainer extends React.Component {
         </div>
       );
     }
+
     return (
         <React.Fragment>
           { this.renderContainer(configuration) }

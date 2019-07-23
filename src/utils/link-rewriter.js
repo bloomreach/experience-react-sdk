@@ -45,7 +45,8 @@ export default function parseAndRewriteLinks(html, preview) {
       if (node.type === 'tag' && node.name === 'img' && node.attribs.src) {
         // transform image URLs in fully qualified URLs, so images are also loaded when requested from React app
         // which typically runs on a different port than CMS / HST
-        node.attribs.src = globalCmsUrls[preview ? 'preview' : 'live'].baseUrl + node.attribs.src;
+        const baseCmsUrl = globalCmsUrls[preview ? 'preview' : 'live'].baseUrl;
+        node.attribs.src = baseCmsUrl + node.attribs.src;
       }
     },
   });

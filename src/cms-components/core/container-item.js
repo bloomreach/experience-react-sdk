@@ -32,6 +32,7 @@ export default class CmsContainerItem extends React.Component {
         </div>
       );
     }
+
     if (configuration) {
       return (
         <React.Fragment>
@@ -49,19 +50,23 @@ export default class CmsContainerItem extends React.Component {
       return (<UndefinedComponent name={component.label} />);
     }
 
+    const componentDefinition = componentDefinitions[component.label];
     // based on the type of the component, render a different React component
-    if ('wrapInContentComponent' in componentDefinitions[component.label]
-      && componentDefinitions[component.label].wrapInContentComponent) {
+    if ('wrapInContentComponent' in componentDefinition
+      && componentDefinition.wrapInContentComponent) {
       // wrap component in ContentComponentWrapper class
       return (
-        <ContentComponentWrapper configuration={component} pageModel={pageModel} preview={preview}
-                                componentDefinitions={componentDefinitions} />
+        <ContentComponentWrapper
+          configuration={component}
+          pageModel={pageModel}
+          preview={preview}
+          componentDefinitions={componentDefinitions} />
       );
     }
 
-    if (componentDefinitions[component.label].component) {
+    if (componentDefinition.component) {
       // component is defined and does not have to be wrapped in ContentComponent, so render the actual component
-      const componentEl = React.createElement(componentDefinitions[component.label].component,
+      const componentEl = React.createElement(componentDefinition.component,
         {
           configuration: component,
           pageModel,

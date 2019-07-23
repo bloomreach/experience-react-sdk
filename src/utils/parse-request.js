@@ -24,14 +24,14 @@ function hasPreviewQueryParameter(urlPath) {
 
   const queryString = urlPath.substring(queryStringIdx);
 
-  return queryString.indexOf('?bloomreach-preview=true') !== -1
-    || queryString.indexOf('&bloomreach-preview=true') !== -1;
+  return queryString.includes('?bloomreach-preview=true')
+    || queryString.includes('&bloomreach-preview=true');
 }
 
 function removeQueryParameter(urlPath) {
   const queryStringIdx = urlPath.indexOf('?');
   if (queryStringIdx !== -1) {
-    return urlPath.substring(0, urlPath.indexOf('?'));
+    return urlPath.substring(0, queryStringIdx);
   }
   return urlPath;
 }
@@ -55,8 +55,10 @@ export default function parseRequest(request = {}, cmsUrls) {
   const urlPath = request.path;
   let { hostname } = request;
   // remove port number from hostname
-  if (hostname.indexOf(':') !== -1) {
-    hostname = hostname.substring(0, hostname.indexOf(':'));
+
+  const idxOfColon = hostname.indexOf(':');
+  if (idxOfColon !== -1) {
+    hostname = hostname.substring(0, idxOfColon);
   }
 
   // detect if in CMS/preview mode
