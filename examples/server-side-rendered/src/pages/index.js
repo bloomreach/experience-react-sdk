@@ -32,12 +32,12 @@ const cmsUrls = {
   preview: {
     hostname: '127.0.0.1',
     port: 9080,
-    channelPath: 'spa-hap',
+    channelPath: 'spa-csr',
   },
   live: {
     hostname: 'localhost',
     port: 9080,
-    channelPath: 'spa-hap',
+    channelPath: 'spa-csr',
   },
 };
 

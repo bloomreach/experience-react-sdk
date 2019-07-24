@@ -28,8 +28,11 @@ export default class DefaultDocument extends Document {
 
           <title>React App</title>
 
-          <link rel='stylesheet' href='http://localhost:3000/static/bootstrap.min.css' media='screen' />
-          <link rel='stylesheet' href='http://localhost:3000/static/custom.css' media='screen' />
+          <link rel="stylesheet" media="screen"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+            crossOrigin="anonymous" />
+          <link rel='stylesheet' href='./static/custom.css' media='screen' />
 
           <Head />
         </head>
@@ -37,9 +40,6 @@ export default class DefaultDocument extends Document {
           <div id='root'>
             <Main />
           </div>
-          <footer>
-            <p>&copy; 2018 BloomReach, Inc.</p>
-          </footer>
           <NextScript />
         </body>
       </html>
