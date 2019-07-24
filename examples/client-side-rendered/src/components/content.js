@@ -29,7 +29,7 @@ export default class Content extends React.Component {
 
     return (
       <div className="blog-post has-edit-button">
-        { manageContentButton && manageContentButton }
+        { manageContentButton }
         <h2 className="blog-post-title">{content.title}</h2>
         <p className="blog-post-meta">
           { content.date

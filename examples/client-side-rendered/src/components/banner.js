@@ -34,19 +34,13 @@ export default class Banner extends React.Component {
 
     return (
       <div className="jumbotron has-edit-button">
-        { manageContentButton && manageContentButton }
-        { content.title
-          && <h1>{content.title}</h1>
-        }
-        { image
-          && <figure>
-            <img src={image} alt={content.title}/>
-          </figure>
-        }
-        { contentHtml && contentHtml }
-        <p>
-          { link && createLink('ref', link, linkText, className) }
-        </p>
+        { manageContentButton }
+        { content.title && <h1>{content.title}</h1> }
+        { image && <figure>
+          <img src={image} alt={content.title}/>
+        </figure> }
+        { contentHtml }
+        <p>{ link && createLink('ref', link, linkText, className) }</p>
       </div>
     );
   }
