@@ -118,8 +118,19 @@
             <configuration>
               <excludes combine.children="append">
                 <!-- Generated or pulled-in files which are not cleaned up -->
-                <exclude>node_modules/**/*</exclude>
-                <exclude>target/**/*</exclude>
+                <exclude>node_modules/**</exclude>
+                <exclude>target/**</exclude>
+                <exclude>.babelrc</exclude>
+                <exclude>.eslintrc</exclude>
+                <exclude>.editorconfig</exclude>
+                <exclude>.npmignore</exclude>
+                <eclude>examples/client-side-rendered/.env</eclude>
+                <eclude>examples/client-side-rendered/node_modules/**</eclude>
+                <eclude>examples/client-side-rendered/public/static/bootstrap.min.css</eclude>
+                <eclude>examples/server-side-rendered/.babelrc</eclude>
+                <eclude>examples/server-side-rendered/node_modules/**</eclude>
+                <eclude>examples/server-side-rendered/.next/**</eclude>
+                <eclude>examples/server-side-rendered/static/bootstrap.min.css</eclude>
               </excludes>
             </configuration>
           </plugin>
