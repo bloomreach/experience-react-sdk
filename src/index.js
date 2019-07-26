@@ -15,7 +15,7 @@
  */
 
 // exports for fetching API and rendering
-export { default as getApiUrl } from './utils/get-api-url';
+export { getApiUrl } from './utils/cms-urls';
 export { default as CmsPage } from './cms-components/core/page';
 export { default as RenderCmsComponent } from './cms-components/core/render-cms-component';
 

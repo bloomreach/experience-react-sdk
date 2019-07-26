@@ -25,20 +25,14 @@ export default class CmsContainerItem extends React.Component {
     if (preview && configuration) {
       return (
         <div className="hst-container-item"
-             ref={(containerItemElm) => { this.addMetaData(containerItemElm, configuration, preview); }}>
-          <React.Fragment>
-            { this.renderContainerItemComponent(configuration, pageModel, preview, componentDefinitions) }
-          </React.Fragment>
+          ref={(containerItemElm) => { this.addMetaData(containerItemElm, configuration, preview); }}>
+          { this.renderContainerItemComponent(configuration, pageModel, preview, componentDefinitions) }
         </div>
       );
     }
 
     if (configuration) {
-      return (
-        <React.Fragment>
-          { this.renderContainerItemComponent(configuration, pageModel, preview, componentDefinitions) }
-        </React.Fragment>
-      );
+      return this.renderContainerItemComponent(configuration, pageModel, preview, componentDefinitions);
     }
 
     return null;
@@ -47,7 +41,7 @@ export default class CmsContainerItem extends React.Component {
   renderContainerItemComponent(component, pageModel, preview, componentDefinitions) {
     // component not defined in component-definitions
     if (!(component.label in componentDefinitions)) {
-      return (<UndefinedComponent name={component.label} />);
+      return <UndefinedComponent name={component.label} />;
     }
 
     const componentDefinition = componentDefinitions[component.label];
@@ -55,25 +49,22 @@ export default class CmsContainerItem extends React.Component {
     if ('wrapInContentComponent' in componentDefinition
       && componentDefinition.wrapInContentComponent) {
       // wrap component in ContentComponentWrapper class
-      return (
-        <ContentComponentWrapper
-          configuration={component}
-          pageModel={pageModel}
-          preview={preview}
-          componentDefinitions={componentDefinitions} />
-      );
+      return <ContentComponentWrapper
+        configuration={component}
+        pageModel={pageModel}
+        preview={preview}
+        componentDefinitions={componentDefinitions}
+      />;
     }
 
     if (componentDefinition.component) {
       // component is defined and does not have to be wrapped in ContentComponent, so render the actual component
-      const componentEl = React.createElement(componentDefinition.component,
-        {
-          configuration: component,
-          pageModel,
-          preview,
-          componentDefinitions,
-        }, null);
-      return (componentEl);
+      return React.createElement(componentDefinition.component, {
+        configuration: component,
+        pageModel,
+        preview,
+        componentDefinitions,
+      }, null);
     }
 
     return null;
@@ -97,11 +88,9 @@ export default class CmsContainerItem extends React.Component {
                   preview,
                   componentDefinitions,
                 ) }
-              </ComponentDefinitionsContext.Consumer>
-            }
-          </PreviewContext.Consumer>
-        }
-      </PageModelContext.Consumer>
+          </ComponentDefinitionsContext.Consumer> }
+      </PreviewContext.Consumer> }
+    </PageModelContext.Consumer>
     );
   }
 }

@@ -23,31 +23,33 @@ export default class NewsList extends React.Component {
 
     // return placeholder if no list is set on component
     let list = getNestedObject(configuration, ['models', 'pageable', 'items', 0]);
-    if (list) {
-      list = configuration.models.pageable.items;
-    } else if (preview) {
-      return (
-        <Placeholder name={configuration.label} />
-      );
-    } else {
-      // don't render placeholder outside of preview mode
-      return null;
+    if (!list) {
+      return preview
+        ? <Placeholder name={configuration.label} />
+        : null;
     }
+
+    list = configuration.models.pageable.items;
 
     // build list of news articles
     const listItems = list.map((listItem, index) => {
-      if (configuration && typeof configuration === 'object' && configuration.constructor === Object) {
-        // change type as we want to render the NewsItem component
-        const newsItemConfig = { label: 'News Item' };
-        if ('$ref' in listItem) {
-          return (
-            <ContentComponentWrapper contentRef={listItem.$ref} configuration={newsItemConfig} pageModel={pageModel}
-                                     preview={preview} key={index}/>
-          );
-        }
+      if (!configuration
+        || typeof configuration !== 'object'
+        || configuration.constructor !== Object
+        || !('$ref' in listItem)) {
+        console.log('NewsList component configuration is not a map, unexpected format of configuration');
+        return null;
       }
-      console.log('NewsList component configuration is not a map, unexpected format of configuration');
-      return null;
+
+      const newsItemConfig = { label: 'News Item' };
+
+      return <ContentComponentWrapper
+        contentRef={listItem.$ref}
+        configuration={newsItemConfig}
+        pageModel={pageModel}
+        preview={preview}
+        key={index}
+      />;
     });
 
     return (

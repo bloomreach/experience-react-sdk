@@ -26,7 +26,7 @@ export default class NewsItem extends React.Component {
 
     return (
       <div className="blog-post has-edit-button">
-        { manageContentButton && manageContentButton }
+        { manageContentButton }
         <h2 className="blog-post-title">
           { createLink('self', content, linkText, null) }
         </h2>
@@ -38,9 +38,7 @@ export default class NewsItem extends React.Component {
             && <span className="author">{content.author}</span>
           }
         </p>
-        { content.introduction
-          && <p>{content.introduction}</p>
-        }
+        { content.introduction && <p>{content.introduction}</p> }
       </div>
     );
   }

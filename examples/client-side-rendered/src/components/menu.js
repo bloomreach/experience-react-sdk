@@ -36,7 +36,7 @@ export default class CmsMenu extends React.Component {
 
     return (
       <ul className="navbar-nav mr-auto">
-        { editButton && editButton }
+        { editButton }
         { this.renderMenu(configuration) }
       </ul>
     );

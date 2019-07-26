@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { updateCmsUrls } from './cms-urls';
-import parseRequest from './parse-request';
-import { buildApiUrl } from './fetch';
-
-export default function getApiUrl(request, newCmsUrls = {}) {
-  const cmsUrls = updateCmsUrls(newCmsUrls);
-  const parsedRequest = parseRequest(request, cmsUrls);
-
-  return buildApiUrl(parsedRequest.path, parsedRequest.query, parsedRequest.preview, null, cmsUrls);
-}
+module.exports = {
+  presets: [
+    '@babel/preset-env',
+    '@babel/preset-react',
+  ],
+  plugins: [
+    '@babel/plugin-proposal-object-rest-spread',
+    ['babel-plugin-transform-async-to-promises', { inlineHelpers: true }],
+  ],
+};

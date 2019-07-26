@@ -17,7 +17,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  BrowserRouter, Link, Switch, Route, Redirect,
+  BrowserRouter,
+  Link,
+  Redirect,
+  Route,
+  Switch,
 } from 'react-router-dom';
 import { CmsPage, RenderCmsComponent } from 'bloomreach-experience-react-sdk';
 

@@ -17,16 +17,16 @@
 // returns parent and index of child referenced by ID,
 // so that we can easily replace the child
 export default function findChildById(object, id, parent, idx) {
-  let result;
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (const [key, value] of Object.entries(object)) {
-    if (typeof value === 'object') {
-      result = findChildById(value, id, object, key);
-      if (typeof result !== 'undefined') {
+  const props = Object.keys(object);
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < props.length; i++) {
+    const prop = props[i];
+    if (typeof object[prop] === 'object') {
+      const result = findChildById(object[prop], id, object, prop);
+      if (result) {
         return result;
       }
-    } else if (key === 'id' && object.id === id) {
+    } else if (prop === 'id' && object.id === id) {
       return { parent, idx };
     }
   }

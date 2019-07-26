@@ -23,8 +23,8 @@ function getConfigurationForPathSegment(pathSegment, configuration) {
 export default function getConfigurationForPath(path, pageModel) {
   const pathSegments = path.split('/');
   let currPath;
-
   let configuration = pageModel.page;
+
   while (getNestedObject(configuration, ['components', 0])) {
     // match the next path segment
     currPath = pathSegments.shift();
@@ -36,5 +36,6 @@ export default function getConfigurationForPath(path, pageModel) {
       return configuration;
     }
   }
+
   return null;
 }

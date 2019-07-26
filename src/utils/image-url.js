@@ -32,25 +32,19 @@ export function getImageUrl(imageRef, pageModel, preview, variant) {
   }
 
   // build URL
-  let imageUrl = null;
-  if (variant && getNestedObject(image, [variant])) {
-    imageUrl = getNestedObject(image, [variant, '_links', 'site', 'href']);
-  } else {
-    imageUrl = getNestedObject(image, ['_links', 'site', 'href']);
-  }
+  let imageUrl = variant && getNestedObject(image, [variant])
+    ? getNestedObject(image, [variant, '_links', 'site', 'href'])
+    : getNestedObject(image, ['_links', 'site', 'href']);
+
   if (imageUrl) {
-    if (preview) {
-      imageUrl = globalCmsUrls.preview.baseUrl + imageUrl;
-    } else {
-      imageUrl = globalCmsUrls.live.baseUrl + imageUrl;
-    }
+    imageUrl = globalCmsUrls[preview ? 'preview' : 'live'].baseUrl + imageUrl;
   }
 
   return imageUrl;
 }
 
 export function getImageUrlByPath(imagePath, variant, preview) {
-  const cmsUrls = preview ? globalCmsUrls.preview : globalCmsUrls.live;
+  const cmsUrls = globalCmsUrls[preview ? 'preview' : 'live'];
 
   let imageUrl = cmsUrls.baseUrl;
 

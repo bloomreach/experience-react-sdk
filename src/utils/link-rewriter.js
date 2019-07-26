@@ -37,9 +37,9 @@ export default function parseAndRewriteLinks(html, preview) {
     transform: (node) => {
       if (node.type === 'tag' && node.name === 'a' && node.attribs['data-type']
         && node.attribs['data-type'] === 'internal') {
-        const className = node.attribs.class;
-        const { href } = node.attribs;
+        const { class: className, href } = node.attribs;
         const linkText = () => getChildren(node);
+
         return createLink('href', href, linkText, className);
       }
       if (node.type === 'tag' && node.name === 'img' && node.attribs.src) {

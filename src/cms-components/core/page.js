@@ -16,13 +16,15 @@
 
 import React from 'react';
 import {
-  ComponentDefinitionsContext, CreateLinkContext, PageModelContext, PreviewContext,
+  ComponentDefinitionsContext,
+  CreateLinkContext,
+  PageModelContext,
+  PreviewContext,
 } from '../../context';
 import { addBodyComments } from '../../utils/add-html-comment';
-import { updateCmsUrls } from '../../utils/cms-urls';
+import { updateCmsUrls, parseRequest } from '../../utils/cms-urls';
 import { fetchCmsPage, fetchComponentUpdate } from '../../utils/fetch';
 import findChildById from '../../utils/find-child-by-id';
-import parseRequest from '../../utils/parse-request';
 
 export default class CmsPage extends React.Component {
   constructor(props) {
@@ -40,13 +42,12 @@ export default class CmsPage extends React.Component {
     }
   }
 
-  fetchPageModel(path, query, preview) {
+  async fetchPageModel(path, query, preview) {
     if (this.props.debug) {
       console.log('### React SDK debugging ### fetching page model for URL-path \'%s\'', path);
     }
-    fetchCmsPage(path, query, preview).then((data) => {
-      this.updatePageModel(data);
-    });
+    const data = await fetchCmsPage(path, query, preview);
+    this.updatePageModel(data);
   }
 
   updatePageModel(pageModel) {
@@ -63,55 +64,62 @@ export default class CmsPage extends React.Component {
   }
 
   initializeCmsIntegration() {
-    if (this.state.preview && typeof window !== 'undefined') {
-      window.SPA = {
-        renderComponent: (id, propertiesMap) => {
-          this.updateComponent(id, propertiesMap);
-        },
-        init: (cms) => {
-          this.cms = cms;
-          if (this.state.pageModel) {
-            if (this.props.debug) {
-              console.log('### React SDK debugging ### creating CMS overlay');
-            }
-            cms.createOverlay();
-          }
-        },
-      };
+    if (!this.state.preview || typeof window === 'undefined') {
+      return;
     }
+
+    window.SPA = {
+      renderComponent: this.updateComponent.bind(this),
+      init: (cms) => {
+        this.cms = cms;
+        if (this.state.pageModel) {
+          if (this.props.debug) {
+            console.log('### React SDK debugging ### creating CMS overlay');
+          }
+          cms.createOverlay();
+        }
+      },
+    };
   }
 
-  updateComponent(componentId, propertiesMap) {
+  async updateComponent(componentId, propertiesMap) {
     if (this.props.debug) {
       console.log('### React SDK debugging ### component update triggered for \'%s\' with properties:', componentId);
       console.dir(propertiesMap);
     }
     // find the component that needs to be updated in the page structure object using its ID
     const componentToUpdate = findChildById(this.state.pageModel, componentId);
-    if (componentToUpdate !== undefined) {
-      fetchComponentUpdate(this.state.path, this.state.query, this.state.preview, componentId, propertiesMap)
-        .then((response) => {
-          // API can return empty response when component is deleted
-          if (response) {
-            if (response.page) {
-              componentToUpdate.parent[componentToUpdate.idx] = response.page;
-            }
-            // update content by merging with original content map
-            if (response.content) {
-              // if page had no associated content (e.g. empty/new page) then there is no content map, so create it
-              if (!this.state.pageModel.content) {
-                // eslint-disable-next-line react/no-direct-mutation-state
-                this.state.pageModel.content = {};
-              }
-              Object.assign(this.state.pageModel.content, response.content);
-            }
-            // update the page model after the component/container has been updated
-            this.setState({
-              pageModel: this.state.pageModel,
-            });
-          }
-        });
+    if (componentToUpdate == null) {
+      return;
     }
+
+    const response = await fetchComponentUpdate(
+      this.state.path,
+      this.state.query,
+      this.state.preview,
+      componentId,
+      propertiesMap,
+    );
+    // API can return empty response when component is deleted
+    if (!response) {
+      return;
+    }
+
+    if (response.page) {
+      componentToUpdate.parent[componentToUpdate.idx] = response.page;
+    }
+
+    // if page had no associated content (e.g. empty/new page) then there is no content map, so create it
+    if (response.content && !this.state.pageModel.content) {
+      // eslint-disable-next-line react/no-direct-mutation-state
+      this.state.pageModel.content = {};
+    }
+    if (response.content) {
+      Object.assign(this.state.pageModel.content, response.content);
+    }
+
+    // update the page model after the component/container has been updated
+    this.setState({ pageModel: this.state.pageModel });
   }
 
   componentDidUpdate(prevProps) {

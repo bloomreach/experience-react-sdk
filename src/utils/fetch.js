@@ -15,9 +15,7 @@
  */
 
 import axios from 'axios';
-import globalCmsUrls from './cms-urls';
-
-const SSO_HANDSHAKE = /(?:^|&)(org.hippoecm.hst.container.render_host=.+?)(?:&|$)/;
+import { buildApiUrl } from './cms-urls';
 
 const requestConfigGet = {
   method: 'GET',
@@ -32,64 +30,32 @@ const requestConfigPost = {
   },
 };
 
-function fetchUrl(url, requestConfig) {
-  return axios(url, requestConfig)
-    .then(response => response.data).catch((error) => {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.log(`Error! Status code ${error.response.status} while fetching CMS page data for URL: ${url}`);
-        console.log(error.response.data);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-        console.log(error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log(`Error while fetching CMS page data for URL:${url}`, error.message);
-      }
-      console.log(error.config);
-    });
-}
+async function fetchUrl(url, requestConfig) {
+  try {
+    const { data } = await axios(url, requestConfig);
 
-export function buildApiUrl(pathInfo, query, preview, componentId, cmsUrls) {
-  // when using fetch outside of CmsPage for SSR, cmsUrls need to be supplied
-  if (!cmsUrls) {
-    cmsUrls = globalCmsUrls;
-  }
-  // use either preview or live URLs
-  if (preview) {
-    cmsUrls = cmsUrls.preview;
-  } else {
-    cmsUrls = cmsUrls.live;
-  }
-  let url = cmsUrls.baseUrl;
-  // add api path to URL, and prefix with contextPath and preview-prefix if used
-  if (cmsUrls.contextPath !== '') {
-    url += `/${cmsUrls.contextPath}`;
-  }
-  if (preview && cmsUrls.previewPrefix !== '') {
-    url += `/${cmsUrls.previewPrefix}`;
-  }
-  if (cmsUrls.channelPath !== '') {
-    url += `/${cmsUrls.channelPath}`;
-  }
-  url += `/${cmsUrls.apiPath}`;
-  if (pathInfo) {
-    url += `/${pathInfo}`;
-  }
-  // if component ID is supplied, URL should be a component rendering URL
-  if (componentId) {
-    url += cmsUrls.apiComponentRenderingUrlSuffix + componentId;
-  }
-  const [, ssoHandshake] = (query && query.match(SSO_HANDSHAKE)) || [];
-  if (ssoHandshake) {
-    url += (url.indexOf('?') === -1 ? '?' : '') + ssoHandshake;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log(`Error! Status code ${error.response.status} while fetching CMS page data for URL: ${url}`);
+      console.log(error.response.data);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      console.log(error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log(`Error while fetching CMS page data for URL:${url}`, error.message);
+    }
+
+    console.log(error.config);
   }
 
-  return url;
+  return null;
 }
 
 export function fetchCmsPage(pathInfo, query, preview, cmsUrls) {
