@@ -29,7 +29,7 @@
   <artifactId>bloomreach-react-sdk</artifactId>
   <name>BloomReach React SDK</name>
   <version>13.4.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
 
   <inceptionYear>2019</inceptionYear>
 
@@ -39,13 +39,35 @@
     <url>https://code.onehippo.org/cms-community-dev/bloomreach-react-sdk</url>
   </scm>
 
-  <modules>
-    <module>examples/client-side-rendered</module>
-  </modules>
-
   <build>
     <defaultGoal>validate</defaultGoal>
     <plugins>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/classes/sdk/src</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${basedir}</directory>
+                  <filtering>false</filtering>
+                  <excludes>
+                    <exclude>Jenkinsfile</exclude>
+                    <exclude>pom.xml</exclude>
+                  </excludes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
@@ -78,6 +100,25 @@
             <configuration>
               <arguments>run build</arguments>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-dist-to-target</id>
+            <phase>prepare-package</phase>
+            <configuration>
+              <target>
+                <copy todir="${project.build.directory}/classes/sdk/dist">
+                  <fileset dir="${project.basedir}/dist"/>
+                </copy>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
