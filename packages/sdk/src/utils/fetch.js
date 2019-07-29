@@ -24,7 +24,7 @@ const requestConfigGet = {
 
 const requestConfigPost = {
   method: 'POST',
-  credentials: true,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
   },
