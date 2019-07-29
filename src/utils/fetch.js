@@ -22,9 +22,9 @@ export function fetchCmsPage(pathInfo, query, preview, cmsUrls) {
 }
 
 export function fetchComponentUpdate(pathInfo, query, preview, componentId, body) {
-  let requestConfig = Object.assign({}, requestConfigPost);
-  requestConfig.body = toUrlEncodedFormData(body);
+  const requestConfig = Object.assign({ data: toUrlEncodedFormData(body) }, requestConfigPost);
   const url = buildApiUrl(pathInfo, query, preview, componentId);
+
   return fetchUrl(url, requestConfig);
 }
 
