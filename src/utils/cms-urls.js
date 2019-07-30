@@ -99,7 +99,7 @@ export function buildApiUrl(pathInfo, query, preview, componentId, urls) {
   }
   const [, ssoHandshake] = (query && query.match(SSO_HANDSHAKE)) || [];
   if (ssoHandshake) {
-    url += (url.indexOf('?') === -1 ? '?' : '') + ssoHandshake;
+    url += (url.indexOf('?') === -1 ? '?' : '&') + ssoHandshake;
   }
 
   return url;
