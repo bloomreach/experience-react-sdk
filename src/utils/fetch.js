@@ -67,7 +67,7 @@ export function buildApiUrl(pathInfo, query, preview, componentId, cmsUrls) {
   }
   const [, ssoHandshake] = (query && query.match(SSO_HANDSHAKE)) || [];
   if (ssoHandshake) {
-    url += (url.indexOf('?') === -1 ? '?' : '') + ssoHandshake;
+    url += (url.indexOf('?') === -1 ? '?' : '&') + ssoHandshake;
   }
 
   return url;
