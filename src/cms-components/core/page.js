@@ -90,37 +90,44 @@ export default class CmsPage extends React.Component {
     }
     // find the component that needs to be updated in the page structure object using its ID
     const componentToUpdate = findChildById(this.state.pageModel, componentId);
-    if (componentToUpdate !== undefined) {
-      fetchComponentUpdate(this.state.path, this.state.query, this.state.preview, componentId, propertiesMap).then(response => {
-        // API can return empty response when component is deleted
-        if (response) {
-          if (response.page) {
-            componentToUpdate.parent[componentToUpdate.idx] = response.page;
-          }
-          // update content by merging with original content map
-          if (response.content) {
-            // if page had no associated content (e.g. empty/new page) then there is no content map, so create it
-            if (!this.state.pageModel.content) {
-              this.state.pageModel.content = {};
-            }
-            let content = this.state.pageModel.content;
-            // ignore error on next line, as variable is a reference to a sub-object of pageModel
-            // and will be used when pageModel is updated/set
-            content = Object.assign(content, response.content); // eslint-disable-line
-          }
-          // update the page model after the component/container has been updated
-          this.setState({
-            pageModel: this.state.pageModel
-          });
-        }
-      });
+
+    if (componentToUpdate == null) {
+      return;
     }
+
+    fetchComponentUpdate(
+      this.state.path,
+      this.state.query,
+      this.state.preview,
+      componentId,
+      propertiesMap
+    ).then(response => {
+      // API can return empty response when component is deleted
+      if (!response) {
+        return;
+      }
+
+      if (response.page) {
+        componentToUpdate.parent[componentToUpdate.idx] = response.page;
+      }
+
+      const pageModel = Object.assign({}, this.state.pageModel);
+      if (response.content) {
+        pageModel.content = Object.assign({}, pageModel.content, response.content);
+      }
+
+      this.setState({ pageModel });
+    });
   }
 
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.request.path !== prevProps.request.path) {
       const parsedUrl = this.parseRequest(this.props.request);
       this.fetchPageModel(parsedUrl.path, parsedUrl.query, parsedUrl.preview);
+    }
+
+    if (this.state.pageModel !== prevState.pageModel && this.cms) {
+      this.cms.createOverlay();
     }
   }
 
