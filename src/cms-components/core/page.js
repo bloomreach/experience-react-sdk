@@ -109,24 +109,23 @@ export default class CmsPage extends React.Component {
       componentToUpdate.parent[componentToUpdate.idx] = response.page;
     }
 
-    // if page had no associated content (e.g. empty/new page) then there is no content map, so create it
-    if (response.content && !this.state.pageModel.content) {
-      // eslint-disable-next-line react/no-direct-mutation-state
-      this.state.pageModel.content = {};
-    }
+    const pageModel = Object.assign({}, this.state.pageModel);
     if (response.content) {
-      Object.assign(this.state.pageModel.content, response.content);
+      pageModel.content = { ...pageModel.content, ...response.content };
     }
 
-    // update the page model after the component/container has been updated
-    this.setState({ pageModel: this.state.pageModel });
+    this.setState({ pageModel });
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.request.path !== prevProps.request.path) {
       const parsedUrl = parseRequest(this.props.request);
       Object.assign(this.state, parsedUrl);
       this.fetchPageModel(parsedUrl.path, parsedUrl.query, parsedUrl.preview);
+    }
+
+    if (this.state.pageModel !== prevState.pageModel && this.cms) {
+      this.cms.createOverlay();
     }
   }
 
