@@ -43,32 +43,6 @@
     <defaultGoal>validate</defaultGoal>
     <plugins>
       <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>3.1.0</version>
-        <executions>
-          <execution>
-            <id>copy-resources</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${basedir}/target/classes/sdk/src</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${basedir}</directory>
-                  <filtering>false</filtering>
-                  <excludes>
-                    <exclude>Jenkinsfile</exclude>
-                    <exclude>pom.xml</exclude>
-                  </excludes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
         <inherited>false</inherited>
@@ -106,6 +80,28 @@
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
+          <execution>
+            <id>copy-src-to-target</id>
+            <phase>validate</phase>
+            <configuration>
+              <target>
+                <copy todir="${project.build.directory}/classes/sdk/src">
+                  <fileset dir="${project.basedir}">
+                    <exclude name="Jenkinsfile"/>
+                    <exclude name="pom.xml"/>
+                    <exclude name="dist/**"/>
+                    <exclude name="node/**"/>
+                    <exclude name="**/node_modules/**"/>
+                    <exclude name="target/**"/>
+                    <exclude name="**/build/**"/>
+                  </fileset>
+                </copy>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
           <execution>
             <id>copy-dist-to-target</id>
             <phase>prepare-package</phase>
