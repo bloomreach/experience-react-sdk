@@ -461,6 +461,11 @@ Parses date-field of a content item and returns date as a string.
 
 ## Release notes
 
+### Version 0.5.1
+- Fixed bug with preview update on the component properties dialog changes;
+- Fixed bug with preview update on save/discard changes from the component properties dialog;
+- Fixed bug with the manage content button keeps referring to the old content after saving changes in the dialog.
+
 ### Version 0.5.0
 - Fixed bug with SSO handshake in client-side rendered applications.
 
