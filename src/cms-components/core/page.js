@@ -152,7 +152,7 @@ export default class CmsPage extends React.Component {
         <PageModelContext.Provider value={pageModel}>
           <PreviewContext.Provider value={this.state.preview}>
             <CreateLinkContext.Provider value={this.state.createLink}>
-              { this.props.children() }
+              { typeof this.props.children === 'function' ? this.props.children() : this.props.children }
             </CreateLinkContext.Provider>
           </PreviewContext.Provider>
         </PageModelContext.Provider>
