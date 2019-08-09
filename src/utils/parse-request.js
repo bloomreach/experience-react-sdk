@@ -5,7 +5,7 @@ export default function parseRequest(request = {}, cmsUrls) {
     cmsUrls = globalCmsUrls;
   }
 
-  const urlPath = request.path;
+  const [urlPath, query = ''] = request.path.split('?', 2);
   let hostname = request.hostname;
   // remove port number from hostname
   if (hostname.indexOf(':') != -1) {
@@ -13,7 +13,7 @@ export default function parseRequest(request = {}, cmsUrls) {
   }
 
   // detect if in CMS/preview mode
-  let preview = hasPreviewQueryParameter(urlPath);
+  let preview = hasPreviewQueryParameter(query);
   if (!preview) {
     preview = isMatchingPreviewHostname(hostname, cmsUrls);
   }
@@ -32,20 +32,14 @@ export default function parseRequest(request = {}, cmsUrls) {
     });
 
     path = results[pathIdx + 1] !== undefined ? results[pathIdx + 1] : '';
-    // query parameter is not needed for fetching API URL and can actually conflict with component rendering URLs
-    path = removeQueryParameter(path);
-    
+
     if (!preview) {
       // otherwise use preview-prefix in URL-path to detect preview mode
       preview = results[previewIdx + 1] !== undefined ? true : false;
     }
   }
 
-  return {
-    path: path,
-    preview: preview,
-    query: urlPath.split('?', 2)[1] || '',
-  };
+  return { path, preview, query };
 }
 
 function hasPreviewQueryParameter(urlPath) {
@@ -57,14 +51,6 @@ function hasPreviewQueryParameter(urlPath) {
     }
   }
   return false;
-}
-
-function removeQueryParameter(urlPath) {
-  const queryStringIdx = urlPath.indexOf('?');
-  if (queryStringIdx !== -1) {
-    return urlPath.substring(0, urlPath.indexOf('?'));
-  }
-  return urlPath;
 }
 
 // if hostname is different for preview and live, 
