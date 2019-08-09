@@ -461,6 +461,9 @@ Parses date-field of a content item and returns date as a string.
 
 ## Release notes
 
+### Version 0.5.2
+- Fixed bug with query string affecting on the path parsing.
+
 ### Version 0.5.1
 - Fixed bug with preview update on the component properties dialog changes;
 - Fixed bug with preview update on save/discard changes from the component properties dialog;
