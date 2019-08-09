@@ -112,10 +112,6 @@ function hasPreviewQueryParameter(urlPath) {
     || queryString.indexOf('&bloomreach-preview=true') !== -1;
 }
 
-function removeQueryParameter(urlPath) {
-  return urlPath.split('?', 2)[0];
-}
-
 // if hostname is different for preview and live,
 // then hostname can be used to detect if we're in preview mode
 function isMatchingPreviewHostname(hostname, urls) {
@@ -128,11 +124,10 @@ export function parseRequest(request = {}, urls) {
     urls = cmsUrls;
   }
 
-  const urlPath = request.path;
+  const [urlPath, query = ''] = request.path.split('?', 2);
   const [hostname] = request.hostname.split(':', 2);
   const results = urls.regexp.exec(urlPath);
-
-  let preview = hasPreviewQueryParameter(urlPath) || isMatchingPreviewHostname(hostname, urls);
+  let preview = hasPreviewQueryParameter(query) || isMatchingPreviewHostname(hostname, urls);
   if (!preview && results) {
     const previewIdx = urls.regexpKeys.findIndex(obj => obj.name === 'previewPrefix');
     preview = results[previewIdx + 1] !== undefined;
@@ -142,14 +137,10 @@ export function parseRequest(request = {}, urls) {
   if (results) {
     const pathIdx = urls.regexpKeys.findIndex(obj => obj.name === 'pathInfo');
     // query parameter is not needed for fetching API URL and can actually conflict with component rendering URLs
-    path = removeQueryParameter(results[pathIdx + 1] || '');
+    path = results[pathIdx + 1] || '';
   }
 
-  return {
-    path,
-    preview,
-    query: urlPath.split('?', 2)[1] || '',
-  };
+  return { path, preview, query };
 }
 
 export function getApiUrl(request, newCmsUrls = {}) {
