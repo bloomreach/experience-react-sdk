@@ -105,11 +105,9 @@ export function buildApiUrl(pathInfo, query, preview, componentId, urls) {
   return url;
 }
 
-function hasPreviewQueryParameter(urlPath) {
-  const [, queryString = ''] = urlPath.split('?', 2);
-
-  return queryString.startsWith('bloomreach-preview=true')
-    || queryString.indexOf('&bloomreach-preview=true') !== -1;
+function hasPreviewQueryParameter(query) {
+  return query.startsWith('bloomreach-preview=true')
+    || query.indexOf('&bloomreach-preview=true') !== -1;
 }
 
 // if hostname is different for preview and live,
