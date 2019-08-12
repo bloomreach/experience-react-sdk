@@ -42,15 +42,9 @@ export default function parseRequest(request = {}, cmsUrls) {
   return { path, preview, query };
 }
 
-function hasPreviewQueryParameter(urlPath) {
-  const queryStringIdx = urlPath.indexOf('?');
-  if (queryStringIdx !== -1) {
-    const queryString = urlPath.substring(queryStringIdx);
-    if (queryString.indexOf('?bloomreach-preview=true') !== -1 || queryString.indexOf('&bloomreach-preview=true') !== -1) {
-      return true;
-    }
-  }
-  return false;
+function hasPreviewQueryParameter(query) {
+  return query.startsWith('bloomreach-preview=true')
+    || query.indexOf('&bloomreach-preview=true') !== -1;
 }
 
 // if hostname is different for preview and live, 
