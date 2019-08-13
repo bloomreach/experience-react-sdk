@@ -53,18 +53,18 @@ export default class CmsContainer extends React.Component {
     const ContainerComponent = componentDefinitions[label] && componentDefinitions[label].component;
 
     // if found then wrap container items with this component
-    if (!!ContainerComponent) {
-      return React.createElement(
-        ContainerComponent,
-        { configuration, pageModel, preview, componentDefinitions },
-        containerItemComponents
+    if (!ContainerComponent) {
+      return (
+        <React.Fragment>
+          { containerItemComponents }
+        </React.Fragment>
       );
     }
 
-    return (
-      <React.Fragment>
-        { containerItemComponents }
-      </React.Fragment>
+    return React.createElement(
+      ContainerComponent,
+      { configuration, pageModel, preview, componentDefinitions },
+      containerItemComponents
     );
   }
 
