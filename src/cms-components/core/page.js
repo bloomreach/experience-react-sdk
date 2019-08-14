@@ -128,7 +128,7 @@ export default class CmsPage extends React.Component {
       }
     } else {
       if(this.props.pageModel !== prevProps.pageModel) {
-        this.setState({pageModel: this.props.pageModel})
+        this.updatePageModel(this.props.pageModel)
       }
     }
 
