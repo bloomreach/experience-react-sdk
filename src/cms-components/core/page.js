@@ -121,9 +121,15 @@ export default class CmsPage extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.request.path !== prevProps.request.path) {
-      const parsedUrl = this.parseRequest(this.props.request);
-      this.fetchPageModel(parsedUrl.path, parsedUrl.query, parsedUrl.preview);
+    if(!this.props.noFetch) {
+      if (this.props.request.path !== prevProps.request.path) {
+        const parsedUrl = this.parseRequest(this.props.request);
+        this.fetchPageModel(parsedUrl.path, parsedUrl.query, parsedUrl.preview);
+      }
+    } else {
+      if(this.props.pageModel !== prevProps.pageModel) {
+        this.setState({pageModel: this.props.pageModel})
+      }
     }
 
     if (this.state.pageModel !== prevState.pageModel && this.cms) {
@@ -134,7 +140,7 @@ export default class CmsPage extends React.Component {
   componentDidMount() {
     this.initializeCmsIntegration();
     // fetch page model if not supplied
-    if (!this.state.pageModel) {
+    if (!this.props.noFetch && !this.state.pageModel) {
       this.fetchPageModel(this.state.path, this.state.query, this.state.preview);
     } else {
       // add body comments client-side as document variable is undefined server-side
