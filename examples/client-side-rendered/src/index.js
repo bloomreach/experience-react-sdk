@@ -61,29 +61,26 @@ class App extends React.Component {
 
     return (
       <CmsPage componentDefinitions={componentDefinitions} cmsUrls={cmsUrls} request={request} createLink={createLink}>
-        { () => <React.Fragment>
-            <div id="header">
-              <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-                <span className="navbar-brand" href="#">Client-side React Demo</span>
-                <button type="button"
-                  className="navbar-toggler"
-                  data-toggle="collapse"
-                  data-target="#navbarCollapse"
-                  aria-controls="navbarCollapse"
-                  aria-expanded="false"
-                  aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon" />
-                </button>
-                <div className="collapse navbar-collapse" id="navbarCollapse">
-                  <RenderCmsComponent path="menu" renderComponent={CmsMenu} />
-                </div>
-              </nav>
+        <div id="header">
+          <nav className="navbar navbar-expand-md navbar-dark bg-dark">
+            <span className="navbar-brand" href="#">Client-side React Demo</span>
+            <button type="button"
+              className="navbar-toggler"
+              data-toggle="collapse"
+              data-target="#navbarCollapse"
+              aria-controls="navbarCollapse"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon" />
+            </button>
+            <div className="collapse navbar-collapse" id="navbarCollapse">
+              <RenderCmsComponent path="menu" renderComponent={CmsMenu} />
             </div>
-            <div className="container marketing">
-              <RenderCmsComponent />
-            </div>
-          </React.Fragment>
-        }
+          </nav>
+        </div>
+        <div className="container marketing">
+          <RenderCmsComponent />
+        </div>
       </CmsPage>
     );
   }
