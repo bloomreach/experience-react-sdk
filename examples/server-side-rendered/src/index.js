@@ -24,8 +24,6 @@ const app = next({
 });
 const handler = routes.getRequestHandler(app);
 
-
 app.prepare().then(() => {
-  app.setAssetPrefix('http://localhost:3000');
   createServer(handler).listen(3000);
 });

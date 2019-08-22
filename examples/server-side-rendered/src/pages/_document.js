@@ -24,7 +24,6 @@ export default class DefaultDocument extends Document {
           <meta charset='utf-8' />
           <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no' />
           <meta name='description' content='Example Server-side React App for BloomReach Experience' />
-          <meta name='author' content='Robbert Kauffman, Solution Consultant, BloomReach' />
 
           <title>React App</title>
 
@@ -32,7 +31,7 @@ export default class DefaultDocument extends Document {
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
             crossOrigin="anonymous" />
-          <link rel='stylesheet' href='./static/custom.css' media='screen' />
+          <link rel='stylesheet' href={`${process.env.PUBLIC_URL}/static/custom.css`} media='screen' />
 
           <Head />
         </head>
