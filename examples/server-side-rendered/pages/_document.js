@@ -12,8 +12,8 @@ export default class DefaultDocument extends Document {
 
           <title>React App</title>
 
-          <link rel='stylesheet' href='/static/bootstrap.min.css' media='screen' />
-          <link rel='stylesheet' href='/static/custom.css' media='screen' />
+          <link rel='stylesheet' href={`${process.env.PUBLIC_URL}/static/bootstrap.min.css`} media='screen' />
+          <link rel='stylesheet' href={`${process.env.PUBLIC_URL}/static/custom.css`} media='screen' />
 
           <Head />
         </head>
