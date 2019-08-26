@@ -88,13 +88,15 @@
               <target>
                 <copy todir="${project.build.directory}/classes/sdk/src">
                   <fileset dir="${project.basedir}">
-                    <exclude name="Jenkinsfile"/>
-                    <exclude name="pom.xml"/>
-                    <exclude name="dist/**"/>
-                    <exclude name="node/**"/>
-                    <exclude name="**/node_modules/**"/>
-                    <exclude name="target/**"/>
-                    <exclude name="**/build/**"/>
+                    <include name="examples/**"/>
+                    <include name="src/**"/>
+                    <include name=".eslintrc"/>
+                    <include name="babel.config.js"/>
+                    <include name="LICENSE"/>
+                    <include name="NOTICE"/>
+                    <include name="package.json"/>
+                    <include name="package-lock.json"/>
+                    <include name="rollup.config.js"/>
                   </fileset>
                 </copy>
               </target>
@@ -138,6 +140,18 @@
             <fileset>
               <directory>node_modules</directory>
             </fileset>
+            <fileset>
+              <directory>examples/client-side-rendered/build</directory>
+            </fileset>
+            <fileset>
+              <directory>examples/client-side-rendered/node_modules</directory>
+            </fileset>
+            <fileset>
+              <directory>examples/server-side-rendered/build</directory>
+            </fileset>
+            <fileset>
+              <directory>examples/server-side-rendered/node_modules</directory>
+            </fileset>
           </filesets>
         </configuration>
       </plugin>
@@ -162,14 +176,14 @@
                 <exclude>.eslintrc</exclude>
                 <exclude>.editorconfig</exclude>
                 <exclude>.npmignore</exclude>
-                <eclude>examples/client-side-rendered/.env</eclude>
-                <eclude>examples/client-side-rendered/node_modules/**</eclude>
-                <eclude>examples/client-side-rendered/public/static/bootstrap.min.css</eclude>
-                <eclude>examples/server-side-rendered/.babelrc</eclude>
-                <eclude>examples/server-side-rendered/.env</eclude>
-                <eclude>examples/server-side-rendered/node_modules/**</eclude>
-                <eclude>examples/server-side-rendered/.next/**</eclude>
-                <eclude>examples/server-side-rendered/static/bootstrap.min.css</eclude>
+                <exclude>examples/client-side-rendered/.env</exclude>
+                <exclude>examples/client-side-rendered/node_modules/**</exclude>
+                <exclude>examples/client-side-rendered/public/static/bootstrap.min.css</exclude>
+                <exclude>examples/server-side-rendered/.babelrc</exclude>
+                <exclude>examples/server-side-rendered/.env</exclude>
+                <exclude>examples/server-side-rendered/node_modules/**</exclude>
+                <exclude>examples/server-side-rendered/.next/**</exclude>
+                <exclude>examples/server-side-rendered/static/bootstrap.min.css</exclude>
               </excludes>
             </configuration>
           </plugin>
