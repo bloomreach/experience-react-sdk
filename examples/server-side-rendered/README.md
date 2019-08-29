@@ -9,32 +9,19 @@ First, download and install the [BloomReach SPA demo project](https://github.com
 by following the instructions in the *Build Demo CMS project* section of the above link. Then run it by following the 
 instructions in *Run Demo CMS project*.
 
-Next, build and run the React app as followed:
+Next, install the [UrlRewriter](https://documentation.bloomreach.com/library/enterprise/enterprise-features/url-rewriter/installation.html).
+
+Then, customize `.env` file to contain a correct PUBLIC_URL path, for example:
+```
+PUBLIC_URL=http://localhost:3000
+```
+
+Finally, build and run the React app as followed:
 
 ```bash
 npm install
 npm run dev
 ```
 
-To have the React app render the CMS site preview you will need to setup a reverse proxy. A [reverse proxy script for 
-Node](https://github.com/woonsan/hippo7-rproxy-nodejs) is included with the example app. Install and run as followed:
-
-```bash
-cd rproxy
-npm install
-sudo node rproxy.js
-```
-
-After starting, make sure to enter your credentials as the reverse proxy needs superuser privileges to redirect the 
-requests.
-
-Finally, configure the CMS to point to the reverse proxy and update the CORS headers.
-
-* Go to <http://localhost:8080/cms/console/?1&path=/hst:hst/hst:hosts/dev-localhost>
-  * Change the property `hst:cmslocation` to `http://localhost/cms`
-  * Remove the property `hst:defaultport`
-* Go to <http://localhost:8080/cms/console/?1&path=/hst:hst/hst:hosts/dev-localhost/localhost/hst:root>
-  * Change the first value of property `hst:responseheaders` to `Access-Control-Allow-Origin: http://localhost`
-
-The CMS should now be accessible at <http://localhost/cms> and it should render the server-side React app in preview 
-mode in the Channel Manager.
+The CMS should now be accessible at <http://localhost:8080/cms>, and it should render the server-side React app in preview
+mode in the Channel Manager. The SPA itself can be accessed directly via <http://localhost:3000>.
