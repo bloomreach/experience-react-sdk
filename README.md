@@ -63,11 +63,13 @@ wrap any children of `<CmsPage>` in a function, as in the following example:
 }
  ```
 
-`<CmsPage>` takes two props: `componentDefinitions` and `request`.
+`<CmsPage>` takes three props: `componentDefinitions`, `request` and `noFetch`.
 
 The `request` prop is used to fetch the Page Model for the current page; and to detect whether 
 preview mode is active so that meta-data for Channel Manager functionality (e.g. in-context editing) is 
-included in the HTML, and consequently Channel Manager functionality is enabled.
+included in the HTML, and consequently Channel Manager functionality is enabled. When you application uses
+server-side rendering you might want to turn off the fetch functionality by setting the `noFetch` prop to
+true.
 
 Finally, component definitions are supplied through the `componentDefinitions` prop. The component 
 definitions tell `<RenderCmsComponent>` what React component to render by mapping these to the 
@@ -76,8 +78,9 @@ definitions tell `<RenderCmsComponent>` what React component to render by mappin
 ## Server-side rendering
 
 For server-side rendering (e.g. using [Next.js](https://github.com/zeit/next.js)) you need to fetch the 
-Page Model API server-side and supply it as a prop to `<CmsPage>`. Apart from this the usage is the same 
-as with client-side rendering.
+Page Model API server-side and supply it as a prop to `<CmsPage>`. If you want to have full control over the 
+request on every page load you have to set `noFetch` to true on the `<CmsPage>` component. Apart from this 
+the usage is the same as with client-side rendering.
 
 The helper function `getApiUrl()` can be used to generate the Page Model API URL using the current 
 request.
