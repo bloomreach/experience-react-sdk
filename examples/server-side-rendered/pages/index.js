@@ -1,7 +1,7 @@
 import React from 'react';
 import Error from 'next/error';
 import Link from 'next/link';
-import { withRouter } from 'next/router';
+import Router, { withRouter } from 'next/router';
 
 import fetch from 'isomorphic-unfetch';
 import { getApiUrl, CmsPage, RenderCmsComponent } from 'bloomreach-experience-react-sdk';
@@ -58,16 +58,35 @@ export class Index extends React.Component {
     };
   }
 
+  setLoading = () => {
+    this.setState({ loading: true })
+  }
+
+  unsetLoading = () => {
+    this.setState({ loading: false })
+  }
+
+  componentWillMount() {
+    Router.events.on('routeChangeStart', this.setLoading)
+    Router.events.on('routeChangeComplete', this.unsetLoading)
+  }
+
+  componentWillUnmount() {
+    Router.events.off('routeChangeStart', this.setLoading)
+    Router.events.off('routeChangeComplete', this.unsetLoading)
+  }
+
   render () {
     const { errorCode, request, router } = this.props;
-
+    cons
+    
     if (errorCode) {
       return (<Error statusCode={errorCode} />);
     }
 
     return (
       <CmsPage componentDefinitions={componentDefinitions} cmsUrls={cmsUrls} pageModel={this.props.pageModel}
-               request={request} createLink={createLink}>
+               request={request} createLink={createLink} noFetch>
         { () =>
           <React.Fragment>
             <div id='header'>
@@ -83,7 +102,8 @@ export class Index extends React.Component {
               </nav>
             </div>
             <div className='container marketing'>
-              <RenderCmsComponent />
+              {loading ? <p>...Loading</p>
+              : <RenderCmsComponent />}
             </div>
           </React.Fragment>
         }
