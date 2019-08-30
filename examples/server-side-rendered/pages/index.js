@@ -26,6 +26,10 @@ const createLink = (href, linkText, className) => {
 };
 
 export class Index extends React.Component {
+  state = {
+    loading: false
+  }
+
   static async getInitialProps ({ req, asPath }) {
     // setting pageModel to empty list instead of null value,
     // as otherwise the API will be fetched client-side again after server-side fetch errors
@@ -66,7 +70,7 @@ export class Index extends React.Component {
     this.setState({ loading: false })
   }
 
-  componentWillMount() {
+  componentDidMount() {
     Router.events.on('routeChangeStart', this.setLoading)
     Router.events.on('routeChangeComplete', this.unsetLoading)
   }
@@ -78,8 +82,8 @@ export class Index extends React.Component {
 
   render () {
     const { errorCode, request, router } = this.props;
-    cons
-    
+    const { loading } = this.state
+
     if (errorCode) {
       return (<Error statusCode={errorCode} />);
     }
