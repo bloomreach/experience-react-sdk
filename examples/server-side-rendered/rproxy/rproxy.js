@@ -63,7 +63,7 @@ var mappings = [
   },
   {
     host: '*',
-    pathregex: /^\/site(\/_cmsinternal)?\/resourceapi/,
+    pathregex: /^\/site(\/_cmsinternal)?\/resourceapi[\/\?$]/,
     route: {
       target: 'http://localhost:8080'
     }
