@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "node server",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "start": "NODE_ENV=production node server/index.js"
   },
   "author": "Robbert Kauffman",
   "license": "Apache-2.0"
