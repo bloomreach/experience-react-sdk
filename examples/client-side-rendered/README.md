@@ -17,7 +17,7 @@ PUBLIC_URL=http://localhost:3000
 
 Beware of [this issue](https://github.com/facebook/create-react-app/pull/7259). The PUBLIC_URL may not work in development mode.
 
-Finally, build and run the React app as followed:
+Finally, build and run the React app as follows:
 
 ```bash
 npm install
