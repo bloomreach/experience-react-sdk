@@ -12,9 +12,9 @@ import CmsMenu from '../components/menu';
 import NewsItem from '../components/news-item';
 import NewsList from '../components/news-list';
 
-const BR_ORIGIN = new URL(process.env.REACT_APP_BR_ORIGIN);
-const BR_CONTEXT_PATH = process.env.REACT_APP_BR_CONTEXT_PATH;
-const BR_CHANNEL_PATH = process.env.REACT_APP_BR_CHANNEL_PATH;
+const BR_ORIGIN = new URL(process.env.BR_ORIGIN);
+const BR_CONTEXT_PATH = process.env.BR_CONTEXT_PATH;
+const BR_CHANNEL_PATH = process.env.BR_CHANNEL_PATH;
 
 const urlConfig = {
   scheme: BR_ORIGIN.protocol.slice(0, -1),
