@@ -1,8 +1,4 @@
-webpack.common.js
-webpack.dev.js
-webpack.prod.js
 .babelrc
 .gitignore
 examples
 .idea
-demo

@@ -19,7 +19,8 @@ import { createLink, parseDate } from 'bloomreach-experience-react-sdk';
 
 export default class NewsItem extends React.Component {
   render() {
-    const { content, manageContentButton } = this.props;
+    const { content } = this.props;
+    const { manageContentButton } = this.props;
     // createLink takes linkText as a function so that it can contain HTML elements
     const linkText = () => content.title;
 

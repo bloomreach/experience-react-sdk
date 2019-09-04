@@ -15,20 +15,22 @@
  */
 
 import React from 'react';
-import { createLink, parseDate } from 'bloomreach-experience-react-sdk';
+import { getImageUrl, parseAndRewriteLinks, parseDate } from 'bloomreach-experience-react-sdk';
 
-export default class NewsItem extends React.Component {
+export default class Content extends React.Component {
   render() {
-    const { content, manageContentButton } = this.props;
-    // createLink takes linkText as a function so that it can contain HTML elements
-    const linkText = () => content.title;
+    const { content, manageContentButton, preview } = this.props;
+    const image = getImageUrl(content.image, this.props.pageModel, preview);
+
+    let contentHtml;
+    if (content.content && content.content.value) {
+      contentHtml = parseAndRewriteLinks(content.content.value, preview);
+    }
 
     return (
       <div className="blog-post has-edit-button">
         { manageContentButton }
-        <h2 className="blog-post-title">
-          { createLink('self', content, linkText, null) }
-        </h2>
+        <h2 className="blog-post-title">{content.title}</h2>
         <p className="blog-post-meta">
           { content.date
             && <span className="blog-post-date">{parseDate(content.date)}</span>
@@ -38,6 +40,10 @@ export default class NewsItem extends React.Component {
           }
         </p>
         { content.introduction && <p>{content.introduction}</p> }
+        { image && <figure>
+          <img src={image} alt={content.title}/>
+        </figure> }
+        { contentHtml }
       </div>
     );
   }

@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-import React from 'react';
+const next = require('next');
+const { createServer } = require('http');
+const routes = require('./routes');
 
-export default class Placeholder extends React.Component {
-  // placeholder component is used for when components data is not set
-  // this is the case when a new component is added to a container
-  render() {
-    return <p>Click to configure { this.props.name }</p>;
-  }
-}
+const app = next({
+  dev: process.env.NODE_ENV !== 'production',
+  dir: './src',
+});
+const handler = routes.getRequestHandler(app);
+
+app.prepare().then(() => {
+  createServer(handler).listen(3000);
+});

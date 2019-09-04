@@ -1,6 +1,5 @@
-*.log
-*.DS_Store
-node_modules
-package-lock.json
-.idea
-dist
+node/
+node_modules/
+target/
+/dist
+/examples/*/build/
