@@ -34,7 +34,7 @@
   },
   "main": "dist/bloomreach-experience-react-sdk.js",
   "scripts": {
-    "lint": "febuild lint:js examples/*/src",
+    "lint": "febuild lint:js",
     "build": "rollup -c rollup.config.js"
   },
   "author": "Bloomreach B.V.",
