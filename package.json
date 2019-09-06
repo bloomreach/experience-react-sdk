@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "repository": "https://github.com/bloomreach/experience-react-sdk",
+  "bugs": "https://issues.onehippo.com/projects/CMS",
+  "homepage": "https://github.com/bloomreach/experience-react-sdk",
+  "author": "Bloomreach B.V.",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "lerna": "^3.16.4"
+  },
+  "scripts": {
+    "build": "lerna run build",
+    "install": "lerna bootstrap",
+    "start:example-csr": "lerna run --scope bloomreach-experience-react-sdk-csr-example start --parallel",
+    "start:example-ssr": "lerna run --scope bloomreach-experience-react-sdk-ssr-example start --parallel"
+  }
+}

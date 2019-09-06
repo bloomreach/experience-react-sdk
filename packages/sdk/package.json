@@ -1,15 +1,19 @@
 {
   "name": "bloomreach-experience-react-sdk",
   "version": "0.5.2",
-  "description": "BloomReach Experience SDK for React",
+  "description": "Bloomreach Experience SDK for React",
   "keywords": [
     "bloomreach",
     "sdk",
     "react"
   ],
-  "repository": "https://code.onehippo.org/cms-community/bloomreach-react-sdk",
+  "repository": {
+    "url": "https://github.com/bloomreach/experience-react-sdk",
+    "type": "git",
+    "directory": "packages/sdk"
+  },
   "bugs": "https://issues.onehippo.com/projects/CMS",
-  "homepage": "https://code.onehippo.org/cms-community/bloomreach-react-sdk",
+  "homepage": "https://github.com/bloomreach/experience-react-sdk",
   "dependencies": {
     "axios": "^0.18.0",
     "jsonpointer": "^4.0.1",
