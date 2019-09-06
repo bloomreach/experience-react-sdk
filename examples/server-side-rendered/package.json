@@ -4,19 +4,19 @@
   "description": "Example server-side React App for the BloomReach Experience SDK for React",
   "private": true,
   "dependencies": {
-    "bloomreach-experience-react-sdk": "^0.5.2",
+    "bloomreach-experience-react-sdk": "file:../..",
     "dotenv": "^8.1.0",
-    "isomorphic-unfetch": "^2.0.0",
-    "next": "^6.1.1",
+    "isomorphic-unfetch": "^3.0.0",
+    "next": "^9.0.2",
     "next-routes": "^1.4.2",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   },
   "scripts": {
-    "dev": "node server",
-    "build": "next build",
-    "start": "NODE_ENV=production node server/index.js"
+    "dev": "node src/index.js",
+    "build": "next build src/",
+    "start": "NODE_ENV=production node src/index.js"
   },
-  "author": "Robbert Kauffman",
+  "author": "BloomReach B.V.",
   "license": "Apache-2.0"
 }

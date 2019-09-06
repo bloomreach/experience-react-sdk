@@ -52,17 +52,6 @@ contained in the Page Model API response. The `<RenderCmsComponent>` should be n
 and placed in the React app at the exact location where you want BloomReach Experience to control what 
 components and content is rendered.
 
-Please note that `<CmsPage>` takes children as a function instead of as a prop, because it is not 
-possible to provide state through context providers due to a bug in React currently. So make sure to 
-wrap any children of `<CmsPage>` in a function, as in the following example:
-
- ```jsx
-{ () =>
-  // any children go here
-  <h1>Blooming is what I do</h1>
-}
- ```
-
 `<CmsPage>` takes two props: `componentDefinitions` and `request`.
 
 The `request` prop is used to fetch the Page Model for the current page; and to detect whether 
@@ -534,6 +523,6 @@ Upgrade steps:
 
 Nothing here yet :)
 
-## Author
+## License
 
-Robbert Kauffman - BloomReach
+Apache 2.0

@@ -1,128 +1,126 @@
+/*
+ * Copyright 2019 Hippo B.V. (http://www.onehippo.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React from 'react';
-import { ComponentDefinitionsContext, CreateLinkContext, PageModelContext, PreviewContext } from '../../context';
+import {
+  ComponentDefinitionsContext,
+  CreateLinkContext,
+  PageModelContext,
+  PreviewContext,
+} from '../../context';
 import { addBodyComments } from '../../utils/add-html-comment';
-import { updateCmsUrls } from '../../utils/cms-urls';
+import { updateCmsUrls, parseRequest } from '../../utils/cms-urls';
 import { fetchCmsPage, fetchComponentUpdate } from '../../utils/fetch';
 import findChildById from '../../utils/find-child-by-id';
-import parseRequest from '../../utils/parse-request';
 
 export default class CmsPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
-
     updateCmsUrls(this.props.cmsUrls);
-    this.setComponentDefinitions(this.props.componentDefinitions);
+
+    this.state = parseRequest(this.props.request);
     this.state.createLink = this.props.createLink;
-    this.parseRequest(this.props.request);
+    if (typeof this.props.componentDefinitions === 'object') {
+      this.state.componentDefinitions = this.props.componentDefinitions;
+    }
 
     if (this.props.pageModel) {
       this.state.pageModel = this.props.pageModel;
     }
   }
 
-  setComponentDefinitions(componentDefinitions = {}) {
-    // TODO: further check/sanitize input
-    if (typeof componentDefinitions === 'object') {
-      this.state.componentDefinitions = componentDefinitions
-    }
-  }
-
-  parseRequest(request) {
-    const parsedRequest = parseRequest(request);
-    this.state.path = parsedRequest.path;
-    this.state.query = parsedRequest.query;
-    this.state.preview = parsedRequest.preview;
+  async fetchPageModel(path, query, preview) {
     if (this.props.debug) {
-      console.log(`### React SDK debugging ### parsing URL-path '%s'`, request.path);
-      console.log(`### React SDK debugging ### parsed path is '%s'`, parsedRequest.path);
-      console.log(`### React SDK debugging ### parsed query is '%s'`, parsedRequest.query);
-      console.log(`### React SDK debugging ### preview mode is %s`, parsedRequest.preview);
+      console.log('### React SDK debugging ### fetching page model for URL-path \'%s\'', path);
     }
-    return parsedRequest;
-  }
-
-  fetchPageModel(path, query, preview) {
-    if (this.props.debug) {
-      console.log(`### React SDK debugging ### fetching page model for URL-path '%s'`, path);
-    }
-    fetchCmsPage(path, query, preview).then(data => {
-      this.updatePageModel(data);
-    });
+    const data = await fetchCmsPage(path, query, preview);
+    this.updatePageModel(data);
   }
 
   updatePageModel(pageModel) {
     addBodyComments(pageModel.page, this.state.preview);
     this.setState({
-      pageModel: pageModel
+      pageModel,
     });
     if (this.state.preview && this.cms && typeof this.cms.createOverlay === 'function') {
       if (this.props.debug) {
-        console.log(`### React SDK debugging ### creating CMS overlay`);
+        console.log('### React SDK debugging ### creating CMS overlay');
       }
       this.cms.createOverlay();
     }
   }
 
   initializeCmsIntegration() {
-    if (this.state.preview && typeof window !== 'undefined') {
-      window.SPA = {
-        renderComponent: (id, propertiesMap) => {
-          this.updateComponent(id, propertiesMap);
-        },
-        init: (cms) => {
-          this.cms = cms;
-          if (this.state.pageModel) {
-            if (this.props.debug) {
-              console.log(`### React SDK debugging ### creating CMS overlay`);
-            }
-            cms.createOverlay();
-          }
-        }
-      };
+    if (!this.state.preview || typeof window === 'undefined') {
+      return;
     }
+
+    window.SPA = {
+      renderComponent: this.updateComponent.bind(this),
+      init: (cms) => {
+        this.cms = cms;
+        if (this.state.pageModel) {
+          if (this.props.debug) {
+            console.log('### React SDK debugging ### creating CMS overlay');
+          }
+          cms.createOverlay();
+        }
+      },
+    };
   }
 
-  updateComponent(componentId, propertiesMap) {
+  async updateComponent(componentId, propertiesMap) {
     if (this.props.debug) {
-      console.log(`### React SDK debugging ### component update triggered for '%s' with properties:`, componentId);
+      console.log('### React SDK debugging ### component update triggered for \'%s\' with properties:', componentId);
       console.dir(propertiesMap);
     }
     // find the component that needs to be updated in the page structure object using its ID
     const componentToUpdate = findChildById(this.state.pageModel, componentId);
-
     if (componentToUpdate == null) {
       return;
     }
 
-    fetchComponentUpdate(
+    const response = await fetchComponentUpdate(
       this.state.path,
       this.state.query,
       this.state.preview,
       componentId,
-      propertiesMap
-    ).then(response => {
-      // API can return empty response when component is deleted
-      if (!response) {
-        return;
-      }
+      propertiesMap,
+    );
+    // API can return empty response when component is deleted
+    if (!response) {
+      return;
+    }
 
-      if (response.page) {
-        componentToUpdate.parent[componentToUpdate.idx] = response.page;
-      }
+    if (response.page) {
+      componentToUpdate.parent[componentToUpdate.idx] = response.page;
+    }
 
-      const pageModel = Object.assign({}, this.state.pageModel);
-      if (response.content) {
-        pageModel.content = Object.assign({}, pageModel.content, response.content);
-      }
+    const pageModel = Object.assign({}, this.state.pageModel);
+    if (response.content) {
+      pageModel.content = { ...pageModel.content, ...response.content };
+    }
 
-      this.setState({ pageModel });
-    });
+    this.setState({ pageModel });
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.request.path !== prevProps.request.path) {
-      const parsedUrl = this.parseRequest(this.props.request);
+      const parsedUrl = parseRequest(this.props.request);
+      Object.assign(this.state, parsedUrl);
       this.fetchPageModel(parsedUrl.path, parsedUrl.query, parsedUrl.preview);
     }
 
@@ -143,7 +141,7 @@ export default class CmsPage extends React.Component {
   }
 
   render() {
-    const pageModel = this.state.pageModel;
+    const { pageModel } = this.state;
 
     if (!pageModel || !pageModel.page) {
       return null;
@@ -154,7 +152,7 @@ export default class CmsPage extends React.Component {
         <PageModelContext.Provider value={pageModel}>
           <PreviewContext.Provider value={this.state.preview}>
             <CreateLinkContext.Provider value={this.state.createLink}>
-              { this.props.children() }
+              { typeof this.props.children === 'function' ? this.props.children() : this.props.children }
             </CreateLinkContext.Provider>
           </PreviewContext.Provider>
         </PageModelContext.Provider>
