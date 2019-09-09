@@ -4,7 +4,7 @@
   "description": "Example client-side React App for the Bloomreach Experience SDK for React",
   "private": true,
   "dependencies": {
-    "bloomreach-experience-react-sdk": "0.5.2",
+    "bloomreach-experience-react-sdk": "^0.5.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
