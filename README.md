@@ -30,9 +30,7 @@ class MyApp extends React.Component {
     const request = { hostname: window.location.hostname, path: window.location.pathname + window.location.search };
     return (
       <CmsPage componentDefinitions={componentDefinitions} request={request}>
-        { () =>
-          <RenderCmsComponent />
-        }
+        <RenderCmsComponent />
       </CmsPage>
     )
   }
@@ -218,6 +216,42 @@ component to use for rendering the component. See the example below.
 
 ```jsx
 <RenderCmsComponent path={'menu'} renderComponent={CmsMenu} />
+```
+
+### Container components
+
+Container components are being used to hold container items, which will be rendered by the SDK. Whenever it needs to customize a layout of those container items, it is possible also to pass a custom container component in `componentDefinitions`.
+
+#### Example
+```jsx
+import React from 'react'
+import { CmsPage, RenderCmsComponent } from 'bloomreach-experience-react-sdk'
+
+function MyCustomFooter(props) {
+  return (
+    <footer>
+      <div class="logo">...</div>
+      { props.children }
+      <div class="copyright">...</div>
+    </footer>
+  );
+}
+
+const componentDefinitions = {
+  "Footer Container": { component: MyCustomFooter }
+}
+
+// ...
+
+class MyApp extends React.Component {
+  render() {
+    return (
+      <CmsPage componentDefinitions={componentDefinitions}>
+        <RenderCmsComponent />
+      </CmsPage>
+    )
+  }
+}
 ```
 
 ### More component examples
