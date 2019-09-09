@@ -17,11 +17,20 @@ PUBLIC_URL=http://localhost:3000
 
 Beware of [this issue](https://github.com/facebook/create-react-app/pull/7259). The PUBLIC_URL may not work in development mode.
 
+In the same `.env` file, also specify the brXM instance to fetch the page model from. The default configuration 
+connects to `http://localhost:8080/site/`:
+
+```
+REACT_APP_BR_ORIGIN=http://localhost:8080
+REACT_APP_BR_CONTEXT_PATH=site
+REACT_APP_BR_CHANNEL_PATH=
+```
+
 Finally, build and run the React app as follows:
 
 ```bash
-npm install
-npm run start
+yarn
+yarn run dev
 ```
 
 The CMS should now be accessible at <http://localhost:8080/cms>, and it should render the client-side React app in preview
