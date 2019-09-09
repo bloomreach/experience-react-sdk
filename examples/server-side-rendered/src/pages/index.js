@@ -28,17 +28,21 @@ import CmsMenu from '../components/menu';
 import NewsItem from '../components/news-item';
 import NewsList from '../components/news-list';
 
+const BR_ORIGIN = new URL(process.env.BR_ORIGIN);
+const BR_CONTEXT_PATH = process.env.BR_CONTEXT_PATH;
+const BR_CHANNEL_PATH = process.env.BR_CHANNEL_PATH;
+
+const urlConfig = {
+  scheme: BR_ORIGIN.protocol.slice(0, -1),
+  hostname: BR_ORIGIN.hostname,
+  port: BR_ORIGIN.port,
+  contextPath: BR_CONTEXT_PATH,
+  channelPath: BR_CHANNEL_PATH
+};
+
 const cmsUrls = {
-  preview: {
-    hostname: '127.0.0.1',
-    port: 9080,
-    channelPath: 'spa-ssr',
-  },
-  live: {
-    hostname: 'localhost',
-    port: 9080,
-    channelPath: 'spa-ssr',
-  },
+  preview: urlConfig,
+  live: urlConfig
 };
 
 const componentDefinitions = {

@@ -1,42 +1,17 @@
 {
-  "name": "bloomreach-experience-react-sdk",
-  "version": "0.5.2",
-  "description": "BloomReach Experience SDK for React",
-  "keywords": [
-    "bloomreach",
-    "sdk",
-    "react"
-  ],
-  "repository": "https://code.onehippo.org/cms-community/bloomreach-react-sdk",
+  "private": true,
+  "repository": "https://github.com/bloomreach/experience-react-sdk",
   "bugs": "https://issues.onehippo.com/projects/CMS",
-  "homepage": "https://code.onehippo.org/cms-community/bloomreach-react-sdk",
-  "dependencies": {
-    "axios": "^0.18.0",
-    "jsonpointer": "^4.0.1",
-    "path-to-regexp": "^2.2.1",
-    "react-html-parser": "^2.0.2"
-  },
-  "peerDependencies": {
-    "react": "^16.2.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.5",
-    "@babel/plugin-proposal-object-rest-spread": "^7.5",
-    "@babel/preset-env": "^7.5",
-    "@babel/preset-react": "^7.0",
-    "@bloomreach/frontend-build": "^11.0",
-    "babel-plugin-transform-async-to-promises": "^0.8",
-    "eslint-plugin-react": "^7.14",
-    "react": "^16.8",
-    "rollup": "^1.17",
-    "rollup-plugin-babel": "^4.3",
-    "rollup-plugin-terser": "^5.1"
-  },
-  "main": "dist/bloomreach-experience-react-sdk.js",
-  "scripts": {
-    "lint": "febuild lint:js",
-    "build": "rollup -c rollup.config.js"
-  },
+  "homepage": "https://github.com/bloomreach/experience-react-sdk",
   "author": "Bloomreach B.V.",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "build": "yarn workspaces run build",
+    "start:example-csr": "yarn --cwd examples/client-side-rendered start",
+    "start:example-ssr": "yarn --cwd examples/server-side-rendered start"
+  }
 }

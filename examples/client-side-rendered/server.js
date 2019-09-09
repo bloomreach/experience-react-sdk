@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-const next = require('next');
-const { createServer } = require('http');
-const routes = require('./routes');
+const express = require('express');
+const path = require('path');
+const port = process.env.PORT || 3000;
+const app = express();
 
-const app = next({
-  dev: process.env.NODE_ENV !== 'production',
-  dir: './src',
-});
-const handler = routes.getRequestHandler(app);
+app.use(express.static(path.join(__dirname, 'build')));
 
-app.prepare().then(() => {
-  createServer(handler).listen(process.env.PORT || 3000);
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
+app.listen(port);

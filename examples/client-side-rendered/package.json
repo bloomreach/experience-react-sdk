@@ -1,22 +1,23 @@
 {
-  "name": "bloomreach-react-sdk-csr-example",
+  "name": "bloomreach-experience-react-sdk-csr-example",
   "version": "0.5.2",
-  "description": "Example client-side React App for the BloomReach Experience SDK for React",
+  "description": "Example client-side React App for the Bloomreach Experience SDK for React",
   "private": true,
   "dependencies": {
-    "bloomreach-experience-react-sdk": "file:../..",
+    "bloomreach-experience-react-sdk": "^0.5.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
     "react-scripts": "^3.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
+    "start": "node server.js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "author": "BloomReach B.V.",
+  "author": "Bloomreach B.V.",
   "license": "Apache-2.0",
   "homepage": ".",
   "browserslist": {
@@ -30,5 +31,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "express": "^4.17.1"
   }
 }

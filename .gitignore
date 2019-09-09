@@ -1,5 +1,4 @@
-node/
 node_modules/
-target/
-/dist
+/packages/*/dist/
 /examples/*/build/
+/examples/server-side-rendered/src/.next/
