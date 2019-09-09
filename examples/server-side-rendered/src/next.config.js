@@ -15,7 +15,6 @@
  */
 
 const dotenv = require('dotenv').config();
-const webpack = require('webpack');
 
 if (dotenv.error) {
   throw dotenv.error;
@@ -23,9 +22,9 @@ if (dotenv.error) {
 
 module.exports = {
   assetPrefix: process.env.PUBLIC_URL || '/',
-  webpack(config) {
-    const { parsed: localEnv } = dotenv;
-    config.plugins.push(new webpack.EnvironmentPlugin(localEnv));
-    return config
-  }
+  publicRuntimeConfig: {
+    brOrigin: process.env.BR_ORIGIN,
+    brContextPath: process.env.BR_CONTEXT_PATH,
+    brChannelPath: process.env.BR_CHANNEL_PATH,
+  },
 };

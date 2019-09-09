@@ -15,6 +15,7 @@
  */
 
 import React from 'react';
+import getConfig from 'next/config';
 import Error from 'next/error';
 import Link from 'next/link';
 import { withRouter } from 'next/router';
@@ -28,21 +29,20 @@ import CmsMenu from '../components/menu';
 import NewsItem from '../components/news-item';
 import NewsList from '../components/news-list';
 
-const BR_ORIGIN = new URL(process.env.BR_ORIGIN);
-const BR_CONTEXT_PATH = process.env.BR_CONTEXT_PATH;
-const BR_CHANNEL_PATH = process.env.BR_CHANNEL_PATH;
+const { publicRuntimeConfig } = getConfig();
+const brOrigin = new URL(publicRuntimeConfig.brOrigin);
 
 const urlConfig = {
-  scheme: BR_ORIGIN.protocol.slice(0, -1),
-  hostname: BR_ORIGIN.hostname,
-  port: BR_ORIGIN.port,
-  contextPath: BR_CONTEXT_PATH,
-  channelPath: BR_CHANNEL_PATH
+  scheme: brOrigin.protocol.slice(0, -1),
+  hostname: brOrigin.hostname,
+  port: brOrigin.port,
+  contextPath: publicRuntimeConfig.brContextPath,
+  channelPath: publicRuntimeConfig.brChannelPath,
 };
 
 const cmsUrls = {
   preview: urlConfig,
-  live: urlConfig
+  live: urlConfig,
 };
 
 const componentDefinitions = {
