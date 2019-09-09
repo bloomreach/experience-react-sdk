@@ -40,14 +40,14 @@ export default class CmsContainer extends React.Component {
     const { components, label } = configuration;
 
     // don't render anything when there're no components found
-    if (!components || components.length === 0) {
+    if (!components || !components.length) {
       return null;
     }
 
     // get component item components
-    const containerItemComponents = components.map(component => {
-      return <CmsContainerItem configuration={component} key={component.id} />;
-    });
+    const containerItemComponents = components.map(component => (
+      <CmsContainerItem configuration={component} key={component.id} />
+    ));
 
     // check if component container is found in component definitions
     const ContainerComponent = componentDefinitions[label] && componentDefinitions[label].component;
@@ -63,8 +63,13 @@ export default class CmsContainer extends React.Component {
 
     return React.createElement(
       ContainerComponent,
-      { configuration, pageModel, preview, componentDefinitions },
-      containerItemComponents
+      {
+        configuration,
+        pageModel,
+        preview,
+        componentDefinitions,
+      },
+      containerItemComponents,
     );
   }
 
