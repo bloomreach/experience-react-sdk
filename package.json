@@ -5,13 +5,26 @@
   "homepage": "https://github.com/bloomreach/experience-react-sdk",
   "author": "Bloomreach B.V.",
   "license": "Apache-2.0",
-  "workspaces": [
-    "packages/*",
-    "examples/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "examples/*"
+    ],
+    "nohoist": [
+      "**/eslint-formatter-friendly"
+    ]
+  },
   "scripts": {
     "build": "yarn workspaces run build",
     "start:example-csr": "yarn --cwd examples/client-side-rendered start",
     "start:example-ssr": "yarn --cwd examples/server-side-rendered start"
+  },
+  "devDependencies": {
+    "eslint": "^6.3.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-formatter-friendly": "^7.0.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-react": "^7.14"
   }
 }
