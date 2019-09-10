@@ -218,9 +218,9 @@ component to use for rendering the component. See the example below.
 <RenderCmsComponent path={'menu'} renderComponent={CmsMenu} />
 ```
 
-### Container components
+### Containers
 
-Container components are being used to hold container items, which will be rendered by the SDK. Whenever it needs to customize a layout of those container items, it is possible also to pass a custom container component in `componentDefinitions`.
+Containers are being used to hold container items, which will be rendered by the SDK. Whenever it needs to customize a layout of those container items, it is possible also to pass a custom container component in `componentDefinitions`.
 
 #### Example
 ```jsx
