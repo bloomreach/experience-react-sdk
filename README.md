@@ -484,6 +484,13 @@ Parses date-field of a content item and returns date as a string.
 
 ## Release notes
 
+### Version 0.6.0
+- Added eslint.
+- Migrated to rollup.
+- Migrated to yarn.
+- Fixed CmsPage children to not be wrapped around a function.
+- Added support of custom React components for container components.
+
 ### Version 0.5.2
 - Fixed bug with query string affecting on the path parsing.
 
