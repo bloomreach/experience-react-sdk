@@ -65,8 +65,8 @@ function _createLink(linkType, link, linkText, className, externalCreateLinkFunc
 export default function createLink(linkType, link, linkText, className) {
   return (
     <PageModelContext.Consumer>
-      { pageModel => <CreateLinkContext.Consumer>
-          { externalCreateLinkFunction => _createLink(
+      { (pageModel) => <CreateLinkContext.Consumer>
+          { (externalCreateLinkFunction) => _createLink(
             linkType,
             link,
             linkText,

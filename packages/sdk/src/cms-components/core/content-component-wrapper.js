@@ -64,7 +64,7 @@ export default class ContentComponentWrapper extends React.Component {
 
     return (
       <ComponentDefinitionsContext.Consumer>
-        { componentDefinitions => this.renderContentComponentWrapper(
+        { (componentDefinitions) => this.renderContentComponentWrapper(
           configuration,
           pageModel,
           content,

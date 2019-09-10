@@ -36,7 +36,7 @@ class RenderCmsComponent extends React.Component {
   renderStaticComponent(renderComponent, configuration, pageModel) {
     return (
       <PreviewContext.Consumer>
-        { preview => React.createElement(renderComponent, { configuration, pageModel, preview }) }
+        { (preview) => React.createElement(renderComponent, { configuration, pageModel, preview }) }
       </PreviewContext.Consumer>
     );
   }

@@ -51,7 +51,7 @@ export default class CmsEditButton extends React.Component {
     }
 
     Array.from(placeholder.childNodes)
-      .forEach(node => node.remove());
+      .forEach((node) => node.remove());
     placeholder.removeAttribute('class');
     this.addButton(placeholder);
   }

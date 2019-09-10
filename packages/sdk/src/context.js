@@ -25,7 +25,7 @@ export function withPageModel(Component) {
   return function PageModelComponent(props) {
     return (
       <PageModelContext.Consumer>
-        {pageModel => <Component {...props} pageModel={pageModel} />}
+        {(pageModel) => <Component {...props} pageModel={pageModel} />}
       </PageModelContext.Consumer>
     );
   };

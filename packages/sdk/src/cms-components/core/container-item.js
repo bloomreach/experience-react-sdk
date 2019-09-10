@@ -80,9 +80,9 @@ export default class CmsContainerItem extends React.Component {
 
     return (
       <PageModelContext.Consumer>
-        { pageModel => <PreviewContext.Consumer>
-            { preview => <ComponentDefinitionsContext.Consumer>
-                { componentDefinitions => this.renderContainerItem(
+        { (pageModel) => <PreviewContext.Consumer>
+            { (preview) => <ComponentDefinitionsContext.Consumer>
+                { (componentDefinitions) => this.renderContainerItem(
                   configuration,
                   pageModel,
                   preview,
