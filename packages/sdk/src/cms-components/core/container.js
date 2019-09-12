@@ -45,7 +45,7 @@ export default class CmsContainer extends React.Component {
     }
 
     // get component item components
-    const containerItemComponents = components.map(component => (
+    const containerItemComponents = components.map((component) => (
       <CmsContainerItem configuration={component} key={component.id} />
     ));
 
@@ -85,11 +85,11 @@ export default class CmsContainer extends React.Component {
 
     return (
       <PageModelContext.Consumer>
-        {pageModel => (
+        {(pageModel) => (
           <PreviewContext.Consumer>
-            {preview => (
+            {(preview) => (
               <ComponentDefinitionsContext.Consumer>
-                {componentDefinitions => this.renderContainerWrapper(
+                {(componentDefinitions) => this.renderContainerWrapper(
                   this.props.configuration,
                   pageModel,
                   preview,

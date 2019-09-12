@@ -28,8 +28,12 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.5",
     "@babel/preset-env": "^7.5",
     "@babel/preset-react": "^7.0",
-    "@bloomreach/frontend-build": "^11.0",
     "babel-plugin-transform-async-to-promises": "^0.8",
+    "eslint": "^6.3.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-formatter-friendly": "^7.0.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-react": "^7.14",
     "react": "^16.8",
     "rollup": "^1.17",
@@ -38,7 +42,7 @@
   },
   "main": "dist/bloomreach-experience-react-sdk.js",
   "scripts": {
-    "lint": "febuild lint:js",
+    "lint": "eslint src/ --format node_modules/eslint-formatter-friendly",
     "build": "rollup -c rollup.config.js"
   },
   "author": "Bloomreach B.V.",

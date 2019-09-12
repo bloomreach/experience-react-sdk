@@ -15,18 +15,25 @@
  */
 
 import React from 'react';
+import { createLink } from 'bloomreach-experience-react-sdk';
 
-export const PageModelContext = React.createContext({});
-export const PreviewContext = React.createContext('');
-export const ComponentDefinitionsContext = React.createContext({});
-export const CreateLinkContext = React.createContext();
+export default class CmsMenuItem extends React.Component {
+  render() {
+    const { configuration } = this.props;
 
-export function withPageModel(Component) {
-  return function PageModelComponent(props) {
+    if (!configuration) {
+      return null;
+    }
+
+    const activeElm = configuration.selected ? <span className="sr-only">(current)</span> : null;
+    // createLink takes linkText as a function so that it can contain HTML elements
+    const linkText = () => <React.Fragment>{configuration.name}{activeElm}</React.Fragment>;
+    const className = 'nav-link';
+
     return (
-      <PageModelContext.Consumer>
-        {(pageModel) => <Component {...props} pageModel={pageModel} />}
-      </PageModelContext.Consumer>
+      <li className="nav-item">
+        { createLink('self', configuration, linkText, className) }
+      </li>
     );
-  };
+  }
 }

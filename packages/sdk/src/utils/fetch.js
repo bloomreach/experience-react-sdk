@@ -66,12 +66,12 @@ export function fetchCmsPage(pathInfo, query, preview, cmsUrls) {
 // from rendering.service.js
 function toUrlEncodedFormData(json) {
   return Object.keys(json)
-    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(json[key])}`)
+    .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(json[key])}`)
     .join('&');
 }
 
 export function fetchComponentUpdate(pathInfo, query, preview, componentId, body) {
-  const requestConfig = Object.assign({ data: toUrlEncodedFormData(body) }, requestConfigPost);
+  const requestConfig = { data: toUrlEncodedFormData(body), ...requestConfigPost };
   const url = buildApiUrl(pathInfo, query, preview, componentId);
 
   return fetchUrl(url, requestConfig);

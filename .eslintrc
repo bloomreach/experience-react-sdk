@@ -1,0 +1,25 @@
+{
+  "root": true,
+  "extends": [
+    "airbnb-base",
+    "plugin:react/recommended"
+  ],
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "class-methods-use-this": "off",
+    "global-require": "off",
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.spec.js"]}],
+    "import/prefer-default-export": "off",
+    "linebreak-style": "off",
+    "max-len": ["error", { "code": 120 }],
+    "no-console": "off",
+    "no-param-reassign": "off",
+    "no-prototype-builtins": "off",
+    "no-restricted-properties": "off",
+    "no-underscore-dangle": "off",
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off"
+  }
+}

@@ -17,7 +17,7 @@
 import getNestedObject from './get-nested-object';
 
 function getConfigurationForPathSegment(pathSegment, configuration) {
-  return configuration.components.find(component => pathSegment === component.name || pathSegment === '*') || null;
+  return configuration.components.find((component) => pathSegment === component.name || pathSegment === '*') || null;
 }
 
 export default function getConfigurationForPath(path, pageModel) {

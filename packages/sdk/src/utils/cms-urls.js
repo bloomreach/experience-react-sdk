@@ -127,13 +127,13 @@ export function parseRequest(request = {}, urls) {
   const results = urls.regexp.exec(urlPath);
   let preview = hasPreviewQueryParameter(query) || isMatchingPreviewHostname(hostname, urls);
   if (!preview && results) {
-    const previewIdx = urls.regexpKeys.findIndex(obj => obj.name === 'previewPrefix');
+    const previewIdx = urls.regexpKeys.findIndex((obj) => obj.name === 'previewPrefix');
     preview = results[previewIdx + 1] !== undefined;
   }
 
   let path = '';
   if (results) {
-    const pathIdx = urls.regexpKeys.findIndex(obj => obj.name === 'pathInfo');
+    const pathIdx = urls.regexpKeys.findIndex((obj) => obj.name === 'pathInfo');
     // query parameter is not needed for fetching API URL and can actually conflict with component rendering URLs
     path = results[pathIdx + 1] || '';
   }

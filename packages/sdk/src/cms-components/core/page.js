@@ -109,7 +109,7 @@ export default class CmsPage extends React.Component {
       componentToUpdate.parent[componentToUpdate.idx] = response.page;
     }
 
-    const pageModel = Object.assign({}, this.state.pageModel);
+    const pageModel = { ...this.state.pageModel };
     if (response.content) {
       pageModel.content = { ...pageModel.content, ...response.content };
     }
