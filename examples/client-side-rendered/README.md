@@ -31,7 +31,8 @@ Finally, build and run the React app as follows:
 
 ```bash
 yarn
-yarn run dev
+yarn run build
+yarn run start
 ```
 
 The CMS should now be accessible at <http://localhost:8080/cms>, and it should render the client-side React app in preview
