@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import globalCmsUrls from './cms-urls';
 import createLink from './create-link';
@@ -39,8 +40,9 @@ export default function parseAndRewriteLinks(html, preview) {
         && node.attribs['data-type'] === 'internal') {
         const { class: className, href } = node.attribs;
         const linkText = () => getChildren(node);
+        const link = createLink('href', href, linkText, className);
 
-        return createLink('href', href, linkText, className);
+        return React.cloneElement(link, { key: node.parent ? node.parent.children.indexOf(node) : 0 });
       }
       if (node.type === 'tag' && node.name === 'img' && node.attribs.src) {
         // transform image URLs in fully qualified URLs, so images are also loaded when requested from React app
