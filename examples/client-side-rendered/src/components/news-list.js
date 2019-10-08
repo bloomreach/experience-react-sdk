@@ -17,6 +17,36 @@
 import React from 'react';
 import { ContentComponentWrapper, getNestedObject, Placeholder } from 'bloomreach-experience-react-sdk';
 
+export function NewsListPagination(props) {
+  if (!props.showPagination) {
+    return null;
+  }
+
+  return (
+    <nav aria-label="News List Pagination">
+      <ul className="pagination">
+        <li className={`page-item ${props.previous ? '' : 'disabled'}`}>
+          <a className="page-link" href={props.previous ? `?page=${props.previousPage}` : '#'} aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span className="sr-only">Previous</span>
+          </a>
+        </li>
+        { props.pageNumbersArray.map((page, key) => (
+          <li key={key} className={`page-item ${page === props.currentPage ? 'active' : ''}`}>
+            <a className="page-link" href={`?page=${page}`}>{page}</a>
+          </li>
+        )) }
+        <li className={`page-item ${props.next ? '' : 'disabled'}`}>
+          <a className="page-link" href={props.next ? `?page=${props.nextPage}` : '#'} aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span className="sr-only">Next</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  );
+}
+
 export default class NewsList extends React.Component {
   render() {
     const { preview, pageModel, configuration } = this.props;
@@ -57,10 +87,9 @@ export default class NewsList extends React.Component {
         <div className="col-sm-12 news-list">
           {listItems}
         </div>
-        <nav className="blog-pagination">
-          <a className="btn btn-outline-primary disabled" href="#pagination">Older</a>
-          <a className="btn btn-outline-secondary disabled" href="#pagination">Newer</a>
-        </nav>
+        <div className="col-sm-12">
+          <NewsListPagination {...getNestedObject(configuration, ['models', 'pageable'])} />
+        </div>
       </div>
     );
   }
