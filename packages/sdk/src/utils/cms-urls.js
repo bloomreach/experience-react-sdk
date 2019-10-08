@@ -16,8 +16,6 @@
 
 import pathToRegexp from 'path-to-regexp';
 
-const SSO_HANDSHAKE = /(?:^|&)(org.hippoecm.hst.container.render_host=.+?)(?:&|$)/;
-
 const defaultCmsUrls = {
   scheme: 'http',
   hostname: 'localhost',
@@ -97,9 +95,8 @@ export function buildApiUrl(pathInfo, query, preview, componentId, urls) {
   if (componentId) {
     url += urls.apiComponentRenderingUrlSuffix + componentId;
   }
-  const [, ssoHandshake] = (query && query.match(SSO_HANDSHAKE)) || [];
-  if (ssoHandshake) {
-    url += (url.indexOf('?') === -1 ? '?' : '&') + ssoHandshake;
+  if (query) {
+    url += (url.includes('?') ? '&' : '?') + query;
   }
 
   return url;
