@@ -484,6 +484,10 @@ Parses date-field of a content item and returns date as a string.
 
 ## Release notes
 
+### Version 0.6.1
+- Fixed a bug with query string passing to the Page Model API.
+- Fixed a bug with missing key prop in the link rewriter.
+
 ### Version 0.6.0
 - Added eslint.
 - Migrated to rollup.
