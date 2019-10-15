@@ -1,12 +1,12 @@
 {
   "name": "bloomreach-experience-react-sdk-ssr-example",
-  "version": "0.5.2",
+  "version": "0.6.1",
   "description": "Example server-side React App for the Bloomreach Experience SDK for React",
   "private": true,
   "author": "Bloomreach B.V.",
   "license": "Apache-2.0",
   "dependencies": {
-    "bloomreach-experience-react-sdk": "^0.6.0",
+    "bloomreach-experience-react-sdk": "^0.6.1",
     "dotenv": "^8.1.0",
     "isomorphic-unfetch": "^3.0.0",
     "next": "^9.0.2",
