@@ -51,7 +51,10 @@ export default class CmsPage extends React.Component {
   }
 
   updatePageModel(pageModel) {
-    addBodyComments(pageModel.page, this.state.preview);
+    if (pageModel) {
+      addBodyComments(pageModel.page, this.state.preview);
+    }
+
     this.setState({
       pageModel,
     });
@@ -118,9 +121,10 @@ export default class CmsPage extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.request.path !== prevProps.request.path) {
+    if (this.props.pageModel !== prevProps.pageModel) {
+      this.updatePageModel(this.props.pageModel);
+    } else if (this.props.request.path !== prevProps.request.path) {
       const parsedUrl = parseRequest(this.props.request);
-      Object.assign(this.state, parsedUrl);
       this.fetchPageModel(parsedUrl.path, parsedUrl.query, parsedUrl.preview);
     }
 
