@@ -15,7 +15,7 @@
  */
 
 import jsonpointer from 'jsonpointer';
-import globalCmsUrls from './cms-urls';
+import globalCmsUrls, { FULLY_QUALIFIED_LINK } from './cms-urls';
 import getNestedObject from './get-nested-object';
 
 export function getImageUrl(imageRef, pageModel, preview, variant) {
@@ -36,7 +36,7 @@ export function getImageUrl(imageRef, pageModel, preview, variant) {
     ? getNestedObject(image, [variant, '_links', 'site', 'href'])
     : getNestedObject(image, ['_links', 'site', 'href']);
 
-  if (imageUrl) {
+  if (imageUrl && !imageUrl.match(FULLY_QUALIFIED_LINK)) {
     imageUrl = globalCmsUrls[preview ? 'preview' : 'live'].baseUrl + imageUrl;
   }
 
