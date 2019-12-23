@@ -19,6 +19,8 @@ import ReactHtmlParser from 'react-html-parser';
 import globalCmsUrls from './cms-urls';
 import createLink from './create-link';
 
+const FULLY_QUALIFIED_LINK = /\w+:\/\//;
+
 function getChildren(node) {
   if (!node.children) {
     return '';
@@ -44,7 +46,12 @@ export default function parseAndRewriteLinks(html, preview) {
 
         return React.cloneElement(link, { key: node.parent ? node.parent.children.indexOf(node) : 0 });
       }
-      if (node.type === 'tag' && node.name === 'img' && node.attribs.src) {
+      if (
+        node.type === 'tag'
+        && node.name === 'img'
+        && node.attribs.src
+        && !node.attribs.src.match(FULLY_QUALIFIED_LINK)
+      ) {
         // transform image URLs in fully qualified URLs, so images are also loaded when requested from React app
         // which typically runs on a different port than CMS / HST
         const baseCmsUrl = globalCmsUrls[preview ? 'preview' : 'live'].baseUrl;
