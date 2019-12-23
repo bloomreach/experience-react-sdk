@@ -484,6 +484,9 @@ Parses date-field of a content item and returns date as a string.
 
 ## Release notes
 
+### Version 0.6.3
+- Add support of fully-qualified resource links.
+
 ### Version 0.6.2
 - Fixed page model fetch on the component update.
 
