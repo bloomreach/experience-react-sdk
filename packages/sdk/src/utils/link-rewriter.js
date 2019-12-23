@@ -16,10 +16,8 @@
 
 import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
-import globalCmsUrls from './cms-urls';
+import globalCmsUrls, { FULLY_QUALIFIED_LINK } from './cms-urls';
 import createLink from './create-link';
-
-const FULLY_QUALIFIED_LINK = /\w+:\/\//;
 
 function getChildren(node) {
   if (!node.children) {

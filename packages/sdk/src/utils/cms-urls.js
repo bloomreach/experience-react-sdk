@@ -16,6 +16,8 @@
 
 import pathToRegexp from 'path-to-regexp';
 
+export const FULLY_QUALIFIED_LINK = /\w+:\/\//;
+
 const defaultCmsUrls = {
   scheme: 'http',
   hostname: 'localhost',
