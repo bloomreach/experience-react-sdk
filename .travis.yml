@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+  - '12'
+
+env:
+  global:
+    secure: 0A1HJoYohOftnMOW484b5YntoODyHfKDjTci8ommhgLLw/gwozkyhG8LKTzvSEwB48WhJBD/D5OuZ7Py4/lz9CcEJHPy/1Yw5a0EYMzrWl8G7z4axG7fkDU+Xndt0pkjib+PW3TLMsAuzqABMtA3yzYW2sYIGJgp8Na1IBW4kxLn3TJsJmClM7pwBY+xFVY4utx5+Ek0Zq4U229F24XRoFVAIuBRUuSo0Z555XvOMipxWroS6WkPINS896bCSkAg9U8TtOXspWsadHREwRtJAB44bIFKJmgqWFTriY8lqaBtJceGEiKiX538Y5i47gNTvwaiAl16v4eJmzoXjoWxz5L7W6+ycf5iN01BB/H8KemZ8vE9E5dzJhUb8eW3RvZIk4dgvFFH/cC2sINUfmfMhQwsdIzbVsaPDlpLUy4Z7bEoRu+guncdxvzxlr+bmFHzuWLEJj+VIzkkPcDI/emCZQVO9tCWfeiVE3Xcpj5UTf/ySqmTH+emkmsAwq5yJZx9/S2aUYNa0lRPk5pB1W8fTVapbKNd0ZVUur1zFXfr6QIQAonI58D3MQbhHN64NS8kS+buN4qakUmCqbhNKB1Yy7wVrg/ejxHqqNJteoQVe1SIjQem/zFkEFLgVfKsmkkslmds0jhEUmu3WhHOeDvmB0optKvCiUQLCy014Md+ZQw=
+
+install:
+  - yarn
+
+script:
+  - yarn build
+
+deploy:
+  provider: script
+  script: yarn workspace bloomreach-experience-react-sdk publish --non-interactive
+  skip_cleanup: true
+  on:
+    tags: true
+    branch: master
