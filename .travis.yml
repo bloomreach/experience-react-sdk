@@ -6,6 +6,7 @@ install:
   - yarn
 
 script:
+  - yarn workspace bloomreach-experience-react-sdk lint
   - yarn build
 
 deploy:
