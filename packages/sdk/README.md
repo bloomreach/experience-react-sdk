@@ -1,5 +1,7 @@
 # BloomReach Experience SDK for React
 
+> The BloomReach Experience SDK for React works only with [Bloomreach Experience](https://www.bloomreach.com/en/products/experience-manager) version 13 and below. Please use [@bloomreach/react-sdk](https://www.npmjs.com/package/@bloomreach/react-sdk) with all the latest versions of Bloomreach Experience.
+
 SDK for powering content and components in React applications by [BloomReach Experience](https://www.bloomreach.com/en/products/experience). 
 This library makes integrating a React app with BloomReach Experience a breeze. It supports both 
 client-side- and server-side rendered/isomorphic React apps. 
