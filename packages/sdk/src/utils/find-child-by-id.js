@@ -21,7 +21,7 @@ export default function findChildById(object, id, parent, idx) {
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < props.length; i++) {
     const prop = props[i];
-    if (typeof object[prop] === 'object') {
+    if (typeof object[prop] === 'object' && object[prop] !== null) {
       const result = findChildById(object[prop], id, object, prop);
       if (result) {
         return result;
