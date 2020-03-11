@@ -486,6 +486,9 @@ Parses date-field of a content item and returns date as a string.
 
 ## Release notes
 
+### Version 0.6.4
+- Fix bug in the object type check in the `findChildById` function.
+
 ### Version 0.6.3
 - Add support of fully-qualified resource links.
 
