@@ -577,8 +577,8 @@ Upgrade steps:
 
 ## FAQ / Troubleshooting
 
-- Information about common problems and possible solutions can be found on [the troubleshooting page](https://documentation.bloomreach.com/library/concepts/spa-plus/sdk/spa-sdk-troubleshooting.html).
-- Information about the recommended setup can be found on [the best practices page](https://documentation.bloomreach.com/library/concepts/spa-plus/sdk/spa-sdk-best-practices.html).
+- Information about common problems and possible solutions can be found on [the troubleshooting page](https://documentation.bloomreach.com/library/concepts/spa-integration/troubleshooting.html).
+- Information about the recommended setup can be found on [the best practices page](https://documentation.bloomreach.com/library/concepts/spa-integration/best-practices.html).
 
 ## License
 
