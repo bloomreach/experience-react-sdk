@@ -14,7 +14,7 @@ deploy:
   provider: npm
   cleanup: false
   src: packages/sdk
-  api_token:
-    secure: M8a7LH/Y4Q2rO2Ay6AamhuYq2bRqcbp+Zfhe8b1CuKTUELpUdqIyrMLnootfPfviXcGbCGoN1bdDaYihxME9Dvhfl2ESAIGRN59Lf/6tkjQSB9SRnBMuVJAYTSF1iPv/u/8tYtYbDf1gyhOgcFTTqlNT0AwUy4wiUCjvn1tuniVyL1WwRKE8cfZmcTax6/bEhIZ3aiFP+ML5gwWlnAVTpcprJ+RRmZFqJBr5Ly7CJ7axDpj3F3q4fQteqghGhrFWyOaA56vrkNF29Tc8qlxP+RMoHHwa0qnM3cR+mgI3QGkk50C2dkWt95WYTUWcvWzQWXE8BHJ8hwTH+ITl/t14QkGx0ORNgt7eoUSRPCPTQtY7zIspu/E1JMJede/8AMN9l9W11awfuI1XX9CbPCggrhdVHfAJLQiAHAyf9qR3DkmWHtXkSPrLBA4AcC8kYgqZ5Atjl4a9TIY9x0Xn84xVqfne9rxnXaY1lutGWNy+4CB7GlejfLtFbJ+Fh5INo5dL2fzr5K+ngUjVLOvjVSIWKkc4RfxRQxto97FhDavxr4TFMPJ1068V7r8u3FTi1EGQntEcT+o1nlXQ6PXNUIp8RYzo0rNa313BrZeMeKgxWNtM292Gym6Vd1BFhNFk5tYYKF1edHLof1gjosk/K8xUqpeIiafkZMWg++ACWR4lKC8=
+  api_token: $NPM_AUTH_TOKEN
   on:
+    branch: master
     tags: true
